@@ -4,10 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Insights — StaamlCorp</title>
-  <meta name="description" content="Analysis and insights on cached executable security, temporal security discontinuities, and the evolving landscape of security policy transitions.">
+  <meta name="description" content="Research, analysis, and technical deep-dives on cached executable security, temporal security discontinuities, attack surfaces, and IP licensing strategy.">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+
+  <!-- Patent Banner -->
+  <div class="patent-banner">
+    <div class="container">
+      <strong>Patent Pending</strong> &mdash; U.S. App. No. 19/640,793 | Track One Prioritized Examination | 30 Claims | <a href="services.html" style="color:#fff;text-decoration:underline;">Licensing Available</a>
+    </div>
+  </div>
 
   <!-- Navigation -->
   <nav class="navbar">
@@ -16,7 +23,8 @@
       <ul class="nav-links" id="navLinks">
         <li><a href="index.html">Home</a></li>
         <li><a href="about.html">About</a></li>
-        <li><a href="services.html">Technology</a></li>
+        <li><a href="services.html">Licensing</a></li>
+        <li><a href="assessment.html">Risk Assessment</a></li>
         <li><a href="team.html">Team</a></li>
         <li><a href="blog.html" class="active">Insights</a></li>
         <li><a href="contact.html" class="btn btn-primary" style="padding:0.5rem 1.25rem;">Contact Us</a></li>
@@ -31,13 +39,38 @@
   <section class="hero" style="padding:4rem 0;">
     <div class="container">
       <h1>Insights</h1>
-      <p>Analysis on cached executable security, temporal security gaps, and the future of policy-aware systems.</p>
+      <p>Research, analysis, and technical deep-dives on temporal security discontinuities, attack surface landscapes, and the future of policy-aware cache security.</p>
     </div>
   </section>
 
-  <!-- Blog Posts -->
+  <!-- Featured Article -->
   <section class="section">
     <div class="container">
+      <div class="section-header">
+        <h2>Featured</h2>
+      </div>
+      <div class="card" style="display:grid;grid-template-columns:1fr 1.5fr;gap:2rem;align-items:center;">
+        <div style="height:260px;background:linear-gradient(135deg,var(--primary-light),var(--accent-light));border-radius:var(--radius);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.6);font-size:5rem;">&#128274;</div>
+        <div>
+          <div class="blog-meta" style="margin-bottom:0.75rem;">
+            <span>April 2026</span>
+            <span>Research</span>
+            <span>Stanley Lee Linton</span>
+          </div>
+          <h2 style="margin-bottom:0.75rem;"><a href="blog-lockdown-bypass.html" style="color:var(--primary);">Why Apple's Lockdown Mode Had a Three-Year Blind Spot</a></h2>
+          <p style="color:var(--text-light);">Apple's Lockdown Mode was introduced in September 2022 to protect high-risk users from targeted cyber-attacks. For nearly three years, a class of cached executable content persisted across the security transition undetected. The discovery, the disclosure, Apple's response, and what it means for every platform that caches executable content.</p>
+          <a href="blog-lockdown-bypass.html" class="btn btn-primary" style="margin-top:1rem;">Read Full Article</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- All Articles -->
+  <section class="section section-alt">
+    <div class="container">
+      <div class="section-header">
+        <h2>All Articles</h2>
+      </div>
       <div class="blog-grid">
 
         <div class="blog-card">
@@ -47,8 +80,8 @@
               <span>April 2026</span>
               <span>Research</span>
             </div>
-            <h3><a href="#">Why Apple's Lockdown Mode Had a Three-Year Blind Spot</a></h3>
-            <p>Apple's Lockdown Mode was introduced in September 2022 to protect high-risk users from targeted cyber-attacks. For nearly three years, a class of cached executable content persisted across the security transition undetected. Here's what that means for the industry.</p>
+            <h3><a href="blog-lockdown-bypass.html">Why Apple's Lockdown Mode Had a Three-Year Blind Spot</a></h3>
+            <p>For nearly three years, cached executable content persisted across the most hardened security transition in iOS. The full story of how LDB-01 was discovered, disclosed, and what it means for the industry.</p>
           </div>
         </div>
 
@@ -59,8 +92,8 @@
               <span>April 2026</span>
               <span>Technical</span>
             </div>
-            <h3><a href="#">Temporal Security Discontinuities: The Vulnerability Class No One Was Looking For</a></h3>
-            <p>When cached executables outlive the security policy they were created under, you get a temporal security discontinuity. We explain how this class of vulnerability works and why conventional cache management fails to address it.</p>
+            <h3><a href="blog-temporal-security.html">Temporal Security Discontinuities: The Vulnerability Class No One Was Looking For</a></h3>
+            <p>When cached executables outlive the security policy they were created under, you get a temporal security discontinuity. How this vulnerability class works and why every conventional defense fails to address it.</p>
           </div>
         </div>
 
@@ -71,8 +104,8 @@
               <span>March 2026</span>
               <span>Analysis</span>
             </div>
-            <h3><a href="#">Beyond WebAssembly: Seven Types of Cached Executable Content at Risk</a></h3>
-            <p>Our research identified seven categories of cached executable content vulnerable to temporal security gaps: WASM, JavaScript, Service Workers, ML inference modules, compiled shaders, native binary modules, and microservice containers.</p>
+            <h3><a href="blog-attack-surface.html">Beyond WebAssembly: Seven Types of Cached Executable Content at Risk</a></h3>
+            <p>Seven categories of cached executable content are vulnerable across six storage locations and seven platform categories. A comprehensive attack surface analysis.</p>
           </div>
         </div>
 
@@ -83,8 +116,8 @@
               <span>March 2026</span>
               <span>Architecture</span>
             </div>
-            <h3><a href="#">Policy Delta Computation: Surgical Validation Instead of Blanket Purges</a></h3>
-            <p>The naive approach to security policy transitions is to wipe all caches. Our policy delta computation uses set-theoretic analysis to determine exactly what changed, enabling targeted validation that's 78 times faster while preserving 88% of cached content.</p>
+            <h3><a href="blog-temporal-security.html#delta">Policy Delta Computation: Surgical Validation Instead of Blanket Purges</a></h3>
+            <p>The naive approach to security policy transitions is to wipe all caches. Our policy delta computation uses set-theoretic analysis to determine exactly what changed, enabling targeted validation that's 78 times faster.</p>
           </div>
         </div>
 
@@ -95,8 +128,8 @@
               <span>February 2026</span>
               <span>Industry</span>
             </div>
-            <h3><a href="#">Apple's $5M Bug Bounty and What It Means for Lockdown Mode Research</a></h3>
-            <p>In October 2025, Apple doubled its maximum bug bounty and added Lockdown Mode bypass bonuses up to $5 million. We discuss what this signals about the value the industry places on this category of security research.</p>
+            <h3><a href="blog-lockdown-bypass.html#bounty">Apple's $5M Bug Bounty and What It Means for Lockdown Mode Research</a></h3>
+            <p>In October 2025, Apple doubled its maximum bug bounty and added Lockdown Mode bypass bonuses up to $5 million. What this signals about the value the industry places on this research category.</p>
           </div>
         </div>
 
@@ -107,8 +140,8 @@
               <span>February 2026</span>
               <span>Future</span>
             </div>
-            <h3><a href="#">AI Sandbox Policies and the Next Frontier of Cached Executable Risk</a></h3>
-            <p>As AI systems adopt increasingly dynamic sandbox policies and governance frameworks, the risk of cached inference modules and pipeline components persisting across policy transitions grows. We explore where this vulnerability class is heading next.</p>
+            <h3><a href="blog-attack-surface.html#ai">AI Sandbox Policies and the Next Frontier of Cached Executable Risk</a></h3>
+            <p>As AI systems adopt increasingly dynamic sandbox policies, the risk of cached inference modules persisting across policy transitions grows. The vulnerability class is particularly acute in always-on autonomous agents.</p>
           </div>
         </div>
 
@@ -116,14 +149,27 @@
     </div>
   </section>
 
-  <!-- Newsletter CTA -->
-  <section class="section section-alt" style="text-align:center;">
-    <div class="container" style="max-width:600px;">
+  <!-- Engagement Section -->
+  <section class="section">
+    <div class="container" style="max-width:700px;text-align:center;">
       <h2>Stay Informed</h2>
-      <p style="color:var(--text-light);">Subscribe to receive our latest analysis on cached executable security, patent developments, and temporal security research.</p>
+      <p style="color:var(--text-light);">Subscribe to receive our latest research on cached executable security, patent developments, and licensing updates.</p>
       <div style="display:flex;gap:0.75rem;margin-top:1.5rem;flex-wrap:wrap;justify-content:center;">
         <input type="email" placeholder="Your email address" style="flex:1;min-width:240px;padding:0.75rem 1rem;border:1px solid var(--border);border-radius:var(--radius);font-size:0.95rem;">
         <button class="btn btn-primary">Subscribe</button>
+      </div>
+      <p style="font-size:0.8rem;color:var(--text-light);margin-top:0.75rem;">No spam. Unsubscribe anytime. Research and licensing updates only.</p>
+    </div>
+  </section>
+
+  <!-- Risk Assessment CTA -->
+  <section class="section" style="background:linear-gradient(135deg,var(--primary-dark),var(--primary-light));color:#fff;text-align:center;">
+    <div class="container">
+      <h2 style="color:#fff;">Is Your Platform Vulnerable?</h2>
+      <p style="max-width:540px;margin:1rem auto 2rem;opacity:0.9;">Take our interactive risk assessment to determine if your platform is exposed to temporal security discontinuities in cached executable content.</p>
+      <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+        <a href="assessment.html" class="btn btn-white">Take the Assessment</a>
+        <a href="services.html" class="btn btn-outline" style="color:#fff;border-color:#fff;">Explore Licensing</a>
       </div>
     </div>
   </section>
@@ -134,14 +180,15 @@
       <div class="footer-grid">
         <div>
           <h4>Staaml<span style="color:var(--accent);">Corp</span></h4>
-          <p>Cybersecurity innovation and software IP licensing. Patented solutions for mitigating cached executable persistence across security policy transitions.</p>
+          <p>Cybersecurity IP licensing. Patent-pending technology for mitigating cached executable persistence across security policy transitions. U.S. App. No. 19/640,793.</p>
         </div>
         <div>
           <h4>Pages</h4>
           <ul>
             <li><a href="index.html">Home</a></li>
             <li><a href="about.html">About</a></li>
-            <li><a href="services.html">Technology</a></li>
+            <li><a href="services.html">Licensing</a></li>
+            <li><a href="assessment.html">Risk Assessment</a></li>
             <li><a href="team.html">Team</a></li>
           </ul>
         </div>
@@ -149,6 +196,9 @@
           <h4>Resources</h4>
           <ul>
             <li><a href="blog.html">Insights</a></li>
+            <li><a href="blog-lockdown-bypass.html">Lockdown Bypass</a></li>
+            <li><a href="blog-temporal-security.html">Temporal Security</a></li>
+            <li><a href="blog-attack-surface.html">Attack Surface</a></li>
             <li><a href="contact.html">Contact</a></li>
           </ul>
         </div>
@@ -156,13 +206,14 @@
           <h4>Contact</h4>
           <ul>
             <li><a href="mailto:info@staamlcorp.com">info@staamlcorp.com</a></li>
+            <li><a href="tel:+15043802214">(504) 380-2214</a></li>
             <li>Lafayette, LA</li>
             <li>staamlcorp.com</li>
           </ul>
         </div>
       </div>
       <div class="footer-bottom">
-        <p>&copy; 2026 StaamlCorp. All rights reserved.</p>
+        <p>&copy; 2026 StaamlCorp. All rights reserved. | Patent Pending: U.S. App. No. 19/640,793</p>
       </div>
     </div>
   </footer>

@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Beyond WebAssembly: Seven Types of Cached Executable Content at Risk — StaamlCorp</title>
+  <meta name="description" content="LDB-01 identified seven categories of cached executable content that can persist across security policy transitions. This analysis examines each type, where it is stored, and why blanket purging is not the answer.">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .article-hero {
+      background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 50%, var(--primary-light) 100%);
+      color: #fff;
+      padding: 5rem 0 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .article-hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 600px;
+      height: 600px;
+      background: rgba(255,255,255,0.03);
+      border-radius: 50%;
+    }
+    .article-hero h1 {
+      color: #fff;
+      font-size: 2.4rem;
+      max-width: 800px;
+      margin-bottom: 1.25rem;
+      line-height: 1.2;
+    }
+    .article-meta {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+      flex-wrap: wrap;
+      font-size: 0.9rem;
+      opacity: 0.85;
+    }
+    .article-meta .category-badge {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 20px;
+      padding: 0.25rem 0.85rem;
+      font-weight: 600;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .article-content {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .article-content h2 {
+      font-size: 1.65rem;
+      color: var(--primary);
+      margin-top: 2.5rem;
+      margin-bottom: 1rem;
+    }
+    .article-content h3 {
+      font-size: 1.2rem;
+      color: var(--primary-dark);
+      margin-top: 1.75rem;
+      margin-bottom: 0.75rem;
+    }
+    .article-content p {
+      color: var(--text);
+      line-height: 1.85;
+      margin-bottom: 1.25rem;
+    }
+    .article-content ul,
+    .article-content ol {
+      margin: 1rem 0 1.25rem 1.5rem;
+      color: var(--text);
+      line-height: 1.85;
+    }
+    .article-content li {
+      margin-bottom: 0.5rem;
+    }
+    .article-content blockquote {
+      border-left: 4px solid var(--accent);
+      margin: 2rem 0;
+      padding: 1.25rem 1.75rem;
+      background: var(--bg-alt);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      font-style: italic;
+      color: var(--text-light);
+      font-size: 1.05rem;
+      line-height: 1.8;
+    }
+    .article-content blockquote cite {
+      display: block;
+      margin-top: 0.75rem;
+      font-style: normal;
+      font-weight: 600;
+      font-size: 0.875rem;
+      color: var(--primary);
+    }
+    .article-content strong {
+      color: var(--primary-dark);
+    }
+    .content-type-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem 1.5rem 1.5rem 4.25rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+    .content-type-card .ct-num {
+      position: absolute;
+      left: 1.25rem;
+      top: 1.35rem;
+      width: 36px;
+      height: 36px;
+      background: var(--primary);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.9rem;
+    }
+    .content-type-card h3 {
+      color: var(--primary);
+      font-size: 1.1rem;
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+    }
+    .content-type-card .ct-risk {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 0.2rem 0.65rem;
+      border-radius: 12px;
+      margin-bottom: 0.6rem;
+    }
+    .ct-risk.high { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+    .ct-risk.critical { background: #fff1f0; color: #c0392b; border: 1px solid #f5c6c6; }
+    .content-type-card p {
+      color: var(--text-light);
+      font-size: 0.93rem;
+      margin-bottom: 0;
+    }
+    .cache-locations {
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin: 1.75rem 0;
+    }
+    .cache-locations h3 {
+      margin-top: 0;
+      color: var(--primary);
+      font-size: 1.05rem;
+      margin-bottom: 1rem;
+    }
+    .cache-location-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.6rem;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .cache-location-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+      color: var(--text);
+      margin-bottom: 0;
+    }
+    .cache-location-list li::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      margin-top: 0.4rem;
+      flex-shrink: 0;
+    }
+    .platform-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.75rem 0;
+      font-size: 0.9rem;
+    }
+    .platform-table th {
+      background: var(--primary);
+      color: #fff;
+      padding: 0.7rem 1rem;
+      text-align: left;
+      font-weight: 600;
+    }
+    .platform-table td {
+      padding: 0.65rem 1rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    .platform-table tr:nth-child(even) td {
+      background: var(--bg-alt);
+    }
+    .risk-high { color: #dc2626; font-weight: 600; }
+    .risk-med { color: #d97706; font-weight: 600; }
+    .purge-comparison {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+    .purge-col {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+    }
+    .purge-col.bad { border-color: #fecaca; background: #fef2f2; }
+    .purge-col.good { border-color: #bbf7d0; background: #f0fdf4; }
+    .purge-col h3 {
+      margin-top: 0;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+    .purge-col.bad h3 { color: #dc2626; }
+    .purge-col.good h3 { color: #16a34a; }
+    .purge-col ul {
+      margin: 0;
+      padding-left: 1.2rem;
+      font-size: 0.88rem;
+    }
+    .purge-col li {
+      color: var(--text);
+      margin-bottom: 0.4rem;
+    }
+    .related-articles {
+      border-top: 1px solid var(--border);
+      margin-top: 3rem;
+      padding-top: 2.5rem;
+    }
+    .related-articles h2 {
+      font-size: 1.35rem;
+      margin-bottom: 1.5rem;
+    }
+    .related-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+    .related-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.5rem;
+      transition: all var(--transition);
+    }
+    .related-card:hover {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-3px);
+    }
+    .related-card .rc-cat {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--accent);
+      margin-bottom: 0.4rem;
+    }
+    .related-card h3 {
+      font-size: 1rem;
+      margin-bottom: 0;
+      line-height: 1.4;
+    }
+    .related-card h3 a {
+      color: var(--primary);
+    }
+    .related-card h3 a:hover {
+      color: var(--accent);
+    }
+    .article-cta {
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+      color: #fff;
+      border-radius: var(--radius);
+      padding: 2.5rem 2rem;
+      text-align: center;
+      margin-top: 3rem;
+    }
+    .article-cta h2 {
+      color: #fff;
+      font-size: 1.5rem;
+      margin-bottom: 0.75rem;
+    }
+    .article-cta p {
+      color: rgba(255,255,255,0.85);
+      margin-bottom: 1.5rem;
+    }
+    @media (max-width: 768px) {
+      .article-hero h1 { font-size: 1.75rem; }
+      .related-grid { grid-template-columns: 1fr; }
+      .purge-comparison { grid-template-columns: 1fr; }
+      .cache-location-list { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="logo">Staaml<span>Corp</span></a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="services.html">Technology</a></li>
+        <li><a href="team.html">Team</a></li>
+        <li><a href="blog.html" class="active">Insights</a></li>
+        <li><a href="contact.html" class="btn btn-primary" style="padding:0.5rem 1.25rem;">Contact Us</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Article Hero -->
+  <section class="article-hero">
+    <div class="container">
+      <div class="article-meta" style="margin-bottom:1.25rem;">
+        <span class="category-badge">Analysis</span>
+        <span>March 2026</span>
+        <span>By Stanley Lee Linton</span>
+      </div>
+      <h1>Beyond WebAssembly: Seven Types of Cached Executable Content at Risk</h1>
+      <p style="font-size:1.1rem; opacity:0.9; max-width:680px; margin-bottom:0;">
+        The LDB-01 vulnerability was discovered in WebAssembly and Service Workers — but the underlying vulnerability class affects seven categories of cached executable content across every major platform. Here is the full attack surface.
+      </p>
+    </div>
+  </section>
+
+  <!-- Article Content -->
+  <section class="section">
+    <div class="container">
+      <div class="article-content">
+
+        <h2>The Scope of the Problem</h2>
+        <p>
+          When StaamlCorp researcher Stanley Lee Linton submitted vulnerability report OE110220744757 to Apple in May 2025, the initial focus was on two content types: WebAssembly modules and Service Workers. These were the specific categories demonstrably affected in the LDB-01 (Lockdown-Bypass-01) instance within Apple's iOS Lockdown Mode.
+        </p>
+        <p>
+          But the underlying problem — cached executable content persisting across security policy transitions without retroactive validation — is not limited to WASM and Service Workers. The research behind U.S. Patent Application No. 19/640,793 identified <strong>seven categories of cached executable content</strong> that are structurally vulnerable to temporal security discontinuities. Each has different characteristics: different compilation behavior, different cache storage locations, different execution privileges, and different threat scenarios. All seven share the same fundamental architectural flaw: they can be cached under one security policy and executed under another.
+        </p>
+        <p>
+          Understanding the full scope of this attack surface is essential for any platform vendor, enterprise security team, or AI system architect who wants to understand what they are actually defending against.
+        </p>
+
+        <h2>The Seven Content Types</h2>
+
+        <div class="content-type-card">
+          <div class="ct-num">1</div>
+          <h3>WebAssembly (WASM) Modules</h3>
+          <span class="ct-risk critical">Critical Risk</span>
+          <p>
+            WebAssembly is a binary instruction format that runs near-native-speed compiled code in the browser. Once a WASM module is compiled from its binary representation to native machine code, the compiled artifact is cached by the browser's JIT compilation subsystem — separately from the HTTP resource cache. Under restrictive security policies like Lockdown Mode, new WASM JIT compilation is blocked. But previously compiled and cached WASM native code artifacts are not automatically invalidated. An attacker who pre-plants a malicious WASM module in the browser's compilation cache before a policy transition may retain execution capability after the transition. WASM runs in a sandboxed environment but with near-native performance and access to all APIs permitted by the current security context.
+          </p>
+        </div>
+
+        <div class="content-type-card">
+          <div class="ct-num">2</div>
+          <h3>JavaScript Compiled Bytecode and JIT Artifacts</h3>
+          <span class="ct-risk critical">Critical Risk</span>
+          <p>
+            Modern JavaScript engines (V8, JavaScriptCore, SpiderMonkey) compile JavaScript source code through multiple optimization tiers — from bytecode to optimized machine code — and cache these compiled representations. In restrictive security modes that disable JIT compilation, previously compiled JavaScript artifacts may remain in cache. The risk is compounded by JavaScript's ubiquity: virtually every web application relies on JavaScript, making the attack surface enormous. Cached JIT artifacts that predate a policy transition could execute with capabilities that would not be permitted under the new, more restrictive policy.
+          </p>
+        </div>
+
+        <div class="content-type-card">
+          <div class="ct-num">3</div>
+          <h3>Service Workers</h3>
+          <span class="ct-risk critical">Critical Risk</span>
+          <p>
+            Service Workers are JavaScript scripts registered to run in the background, independently of any web page. They intercept network requests, manage caches, and can execute even when no browser window is open for the associated origin. This persistent, page-independent execution model makes them particularly dangerous in the temporal security discontinuity context: a Service Worker registered and cached under a permissive security policy can continue to intercept network requests and execute code after the device transitions to a more restrictive policy. Service Workers have no natural expiry — they remain registered indefinitely until explicitly deregistered. The LDB-01 vulnerability directly involved Service Workers in the iOS Lockdown Mode context.
+          </p>
+        </div>
+
+        <div class="content-type-card">
+          <div class="ct-num">4</div>
+          <h3>ML Inference Modules and Model Weights</h3>
+          <span class="ct-risk high">High Risk</span>
+          <p>
+            Machine learning inference modules — compiled representations of neural network models optimized for a specific hardware target — are increasingly cached on end-user devices for performance. These include browser-based ML inference (TensorFlow.js, ONNX Runtime Web), native on-device inference engines, and compiled model artifacts from frameworks like Core ML on Apple platforms. ML models can be weaponized: a model that was served legitimately before a policy transition could contain adversarially crafted weights designed to produce specific outputs. Under a more restrictive security policy that would have blocked the model's download or compilation, a cached model artifact presents an unvalidated execution surface. As on-device AI proliferates, this risk category will grow substantially.
+          </p>
+        </div>
+
+        <div class="content-type-card">
+          <div class="ct-num">5</div>
+          <h3>Compiled Shaders (GPU Programs)</h3>
+          <span class="ct-risk high">High Risk</span>
+          <p>
+            Graphics shaders — programs that run on the GPU rather than the CPU — are compiled from source formats (GLSL, HLSL, WGSL) into GPU-specific binary representations and cached on disk. Shader compilation is expensive, so browsers and applications aggressively cache the compiled results. Under security policies that restrict GPU access or WebGL/WebGPU usage, newly compiled shaders would be blocked. Previously compiled and cached shader programs represent an unvalidated backdoor to the GPU execution environment. GPU-based computation has been demonstrated as a viable channel for side-channel attacks and for bypassing CPU-level security mitigations, making compiled shader persistence a non-trivial security concern.
+          </p>
+        </div>
+
+        <div class="content-type-card">
+          <div class="ct-num">6</div>
+          <h3>Native Binary Modules</h3>
+          <span class="ct-risk high">High Risk</span>
+          <p>
+            Native binary modules — platform-compiled code distributed as shared libraries or dynamic link libraries — can be cached by package managers, runtime environments, and application frameworks. In enterprise contexts, MDM-managed applications may cache native binary components. Under security policies that restrict the execution of unsigned or third-party native code, previously cached native binary modules may not be subject to retroactive re-validation. The risk profile of native binary modules is high: they execute without the sandboxing constraints of browser-based technologies and with access to full OS APIs. A cached native module that predates a restrictive policy change represents a high-privilege execution path that bypasses the new policy's intent.
+          </p>
+        </div>
+
+        <div class="content-type-card">
+          <div class="ct-num">7</div>
+          <h3>Microservice Container Images</h3>
+          <span class="ct-risk high">High Risk</span>
+          <p>
+            In enterprise and cloud-adjacent deployment contexts, containerized application components may be cached locally — either as full container images or as layer artifacts in container runtime caches. As enterprise security policies change (via MDM pushes, compliance requirement updates, or threat-response policy tightening), previously cached container images may contain components that would not pass validation under the new policy. This is particularly relevant in environments where edge computing or local microservice deployment is used, and where container image layer caches persist across policy transitions without automated re-evaluation.
+          </p>
+        </div>
+
+        <h2>The Six Cache Storage Locations</h2>
+        <p>
+          Understanding what content types are at risk is necessary but not sufficient. Effective remediation requires understanding <em>where</em> this content is stored — because each storage location has different access characteristics, different invalidation mechanics, and different interactions with security policy enforcement.
+        </p>
+
+        <div class="cache-locations">
+          <h3>Primary Cache Storage Locations</h3>
+          <ul class="cache-location-list">
+            <li>HTTP Disk Cache (browser managed, origin-keyed)</li>
+            <li>Browser Service Worker Cache API storage</li>
+            <li>JIT Compilation Cache (WASM, JS bytecode)</li>
+            <li>IndexedDB and Origin-Private File System</li>
+            <li>GPU Shader Compiled Program Cache (OS-level)</li>
+            <li>Application-Layer Package and Module Cache</li>
+          </ul>
+        </div>
+
+        <p>
+          These six storage locations are managed by different subsystems: the HTTP cache is managed by the browser's networking layer, the Service Worker cache is managed by the browser's service worker API layer, the JIT compilation cache is managed by the JavaScript engine, IndexedDB is managed by the browser's storage layer, the GPU shader cache is managed by the operating system's GPU driver stack, and the application-layer package cache is managed by whichever runtime environment (Node.js, Python, etc.) is in use.
+        </p>
+        <p>
+          <strong>None of these subsystems communicates with the security policy management layer about policy transitions.</strong> This is the architectural root cause of the temporal security discontinuity vulnerability class. The security policy changes; the cache subsystems, operating independently, do not respond to that change.
+        </p>
+
+        <h2>Platform-by-Platform Risk Analysis</h2>
+
+        <table class="platform-table">
+          <thead>
+            <tr>
+              <th>Platform</th>
+              <th>Primary Affected Content Types</th>
+              <th>Policy Transition Scenario</th>
+              <th>Risk Level</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>iOS / iPadOS</strong></td>
+              <td>WASM, Service Workers, ML (Core ML)</td>
+              <td>Enable / disable Lockdown Mode</td>
+              <td class="risk-high">High — fixed in iOS 26 for LDB-01</td>
+            </tr>
+            <tr>
+              <td><strong>Android</strong></td>
+              <td>WASM, JS JIT, Service Workers, native modules</td>
+              <td>MDM profile changes, Work Profile transitions</td>
+              <td class="risk-high">High — no known remediation</td>
+            </tr>
+            <tr>
+              <td><strong>Chromium Desktop</strong></td>
+              <td>WASM, JS JIT, Service Workers, shaders</td>
+              <td>Enterprise policy pushes, profile switches</td>
+              <td class="risk-high">High — no known remediation</td>
+            </tr>
+            <tr>
+              <td><strong>Firefox</strong></td>
+              <td>WASM, JS JIT, Service Workers</td>
+              <td>Enterprise policy changes via ADMX/GPO</td>
+              <td class="risk-med">Medium — no known remediation</td>
+            </tr>
+            <tr>
+              <td><strong>Electron Apps</strong></td>
+              <td>WASM, JS JIT, native modules, containers</td>
+              <td>App-level security policy changes</td>
+              <td class="risk-high">High — application-dependent</td>
+            </tr>
+            <tr>
+              <td><strong>Enterprise MDM</strong></td>
+              <td>Native modules, container images</td>
+              <td>MDM profile push, compliance policy update</td>
+              <td class="risk-high">High — no cross-layer validation</td>
+            </tr>
+            <tr>
+              <td><strong>AI / ML Systems</strong></td>
+              <td>Inference modules, model weights, pipelines</td>
+              <td>Governance policy changes, trust level updates</td>
+              <td class="risk-high">High and growing — no framework exists</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2>AI and ML: The Next Frontier</h2>
+        <p>
+          The seven content types identified in the LDB-01 research represent the current state of the vulnerability class. But the most significant growth area for temporal security discontinuity risk is in AI and machine learning systems, for reasons that are distinct from the browser-layer vulnerabilities described above.
+        </p>
+
+        <h3>Cached Inference Modules</h3>
+        <p>
+          As AI inference moves to the edge — onto user devices, enterprise endpoints, and embedded systems — compiled inference modules become a new category of cached executable content. These modules are compiled from model architectures and optimized for specific hardware targets. Under an AI governance framework that changes (for example, in response to a new regulatory requirement or a detected model compromise), previously cached and compiled inference modules may not be subject to retroactive validation. A cached inference module compiled under a permissive governance policy could continue to execute under a more restrictive one.
+        </p>
+
+        <h3>Model Weights and Pipeline Components</h3>
+        <p>
+          AI model weights are not traditionally thought of as "executable content" in the same way that WASM or JavaScript are. But in the context of inference systems, model weights are operationally equivalent to executable content: they determine the behavior of the inference process, they can be adversarially manipulated, and they can be cached locally for performance. AI pipeline components — preprocessing modules, embedding models, routing logic — are similarly cached and similarly subject to temporal security discontinuity risk.
+        </p>
+
+        <h3>The Autonomous AI Agent Risk</h3>
+        <p>
+          The most severe risk scenario in the AI/ML domain involves autonomous AI agents operating with locally cached models and pipeline components. Unlike a web browser's Service Worker, which eventually expires or is deregistered, an autonomous AI agent's cached inference pipeline may have <strong>indefinite operational persistence</strong> — no natural cache expiry, no user interaction that triggers re-validation, and no mechanism that associates the cached components with the governance policy that was in effect when they were downloaded and compiled.
+        </p>
+        <p>
+          An autonomous AI agent operating in an enterprise context could, under this vulnerability class, continue to use cached inference modules and model weights from before a security policy change — executing behavior that would be blocked under the new governance framework — without any system-level mechanism detecting or preventing this.
+        </p>
+
+        <blockquote>
+          As AI systems adopt increasingly dynamic governance frameworks — with security policies that change based on threat intelligence, regulatory requirements, and operational context — the temporal security discontinuity vulnerability class becomes not a browser-security niche problem but a fundamental AI safety concern.
+        </blockquote>
+
+        <h2>Why Blanket Cache Purging Is Not the Answer</h2>
+        <p>
+          When security practitioners first encounter the temporal security discontinuity problem, the instinctive response is: just clear the cache on every security policy transition. It is a simple, obviously correct solution from a security standpoint. If there is nothing in the cache, nothing non-compliant can persist.
+        </p>
+        <p>
+          The problem is that blanket cache purging, while secure, is operationally catastrophic at scale. The costs are real and measurable:
+        </p>
+
+        <div class="purge-comparison">
+          <div class="purge-col bad">
+            <h3>Blanket Cache Purging</h3>
+            <ul>
+              <li>100% cached content destroyed</li>
+              <li>180+ second re-cache time for complex apps</li>
+              <li>Complete loss of bandwidth savings</li>
+              <li>User experience impact: <strong>8.5 / 10</strong></li>
+              <li>Re-fetch of all resources from network</li>
+              <li>Full WASM recompilation required</li>
+              <li>Service Worker re-registration and activation</li>
+              <li>GPU shader recompilation from source</li>
+            </ul>
+          </div>
+          <div class="purge-col good">
+            <h3>Selective TSB Validation (Patented)</h3>
+            <ul>
+              <li>88% cached content preserved</li>
+              <li>78x faster than blanket purging</li>
+              <li>92% bandwidth reduction vs. purge-and-reload</li>
+              <li>User experience impact: <strong>0.3 / 10</strong></li>
+              <li>Only policy-delta-affected content re-validated</li>
+              <li>Fast-path catches 99.97% of non-compliant items</li>
+              <li>Full deep validation for only 0.03% of cases</li>
+              <li>Compliant cached content untouched</li>
+            </ul>
+          </div>
+        </div>
+
+        <p>
+          The 8.5 out of 10 user experience impact score for blanket purging is not a theoretical concern — it represents real user behavior. In enterprise environments where Lockdown Mode or equivalent restrictive security profiles are applied and removed based on threat context (for example, enabling a restrictive profile when connected to public Wi-Fi and disabling it on trusted networks), blanket cache purging would impose this performance penalty multiple times per day for every affected user.
+        </p>
+        <p>
+          In practice, a security mechanism with these operational costs will not be deployed uniformly. IT administrators will create exceptions. Users will find workarounds. The security guarantee will erode precisely because the cure is too expensive to administer.
+        </p>
+        <p>
+          This is why the policy-delta approach at the heart of U.S. Patent Application No. 19/640,793 is architecturally significant: it achieves the same security guarantee as blanket purging — ensuring no non-compliant content executes under the new security policy — while delivering a user experience impact that is operationally sustainable.
+        </p>
+
+        <h2>Patent Coverage Scope</h2>
+        <p>
+          The 30 claims of U.S. App. No. 19/640,793 are written to cover the full seven-category attack surface described in this analysis. The claims are not limited to the LDB-01 instance (iOS Lockdown Mode, WebAssembly and Service Workers). The independent claims describe the general architecture: a Policy Transition Detection module, a Policy Delta Computation engine, a Temporal Security Binding framework that applies to any class of cached executable content, a Retroactive Validation Engine with a multi-stage validation pipeline, and a Mitigation and Regeneration system for disposition of non-compliant content.
+        </p>
+        <p>
+          The 26 dependent claims address specific embodiments: particular content types (WASM, JS, Service Workers, ML inference modules, shaders, native binaries, container images), particular policy transition scenarios (Lockdown Mode, MDM profile transitions, enterprise browser policy changes, AI governance framework updates), and particular validation mechanisms appropriate to each content type's characteristics.
+        </p>
+        <p>
+          Any platform vendor or enterprise security product that implements a systematic solution to the temporal security discontinuity problem — covering the seven identified content types, operating across the six cache storage locations, and handling the policy transition scenarios described in this analysis — will need to license this architecture or design around claims that comprehensively cover the solution space.
+        </p>
+
+        <!-- Related Articles -->
+        <div class="related-articles">
+          <h2>Related Articles</h2>
+          <div class="related-grid">
+            <div class="related-card">
+              <div class="rc-cat">Research</div>
+              <h3><a href="blog-lockdown-bypass.html">Why Apple's Lockdown Mode Had a Three-Year Blind Spot</a></h3>
+            </div>
+            <div class="related-card">
+              <div class="rc-cat">Technical</div>
+              <h3><a href="blog-temporal-security.html">Temporal Security Discontinuities: The Vulnerability Class No One Was Looking For</a></h3>
+            </div>
+          </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="article-cta">
+          <h2>Interested in Licensing?</h2>
+          <p>Whether you are building a browser, an enterprise security product, or an AI governance platform, StaamlCorp's patented architecture covers the full attack surface described in this analysis. Let's talk.</p>
+          <a href="contact.html" class="btn btn-white">Get in Touch</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h4>Staaml<span style="color:var(--accent);">Corp</span></h4>
+          <p>Cybersecurity innovation and software IP licensing. Patented solutions for mitigating cached executable persistence across security policy transitions.</p>
+        </div>
+        <div>
+          <h4>Pages</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="services.html">Technology</a></li>
+            <li><a href="team.html">Team</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Resources</h4>
+          <ul>
+            <li><a href="blog.html">Insights</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <ul>
+            <li><a href="mailto:info@staamlcorp.com">info@staamlcorp.com</a></li>
+            <li>Lafayette, LA</li>
+            <li>staamlcorp.com</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 StaamlCorp. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('hamburger').addEventListener('click', function() {
+      document.getElementById('navLinks').classList.toggle('open');
+    });
+  </script>
+</body>
+</html>

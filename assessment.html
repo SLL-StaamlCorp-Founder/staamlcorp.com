@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attack Surface Assessment — StaamlCorp</title>
+  <meta name="description" content="Determine if your platform is vulnerable to Temporal Security Discontinuity — cached executable content persisting across security policy transitions. Interactive assessment tool by StaamlCorp.">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* ===== Assessment-specific styles ===== */
+
+    /* Intro callout */
+    .intro-callout {
+      background: linear-gradient(135deg, #eff6ff, #dbeafe);
+      border: 1px solid #bfdbfe;
+      border-left: 4px solid var(--accent);
+      border-radius: var(--radius);
+      padding: 1.75rem 2rem;
+      margin-top: 2rem;
+    }
+
+    .intro-callout h3 {
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .intro-callout p {
+      color: var(--text-light);
+      margin-bottom: 0;
+      font-size: 0.95rem;
+    }
+
+    .intro-callout .cve-badge {
+      display: inline-block;
+      background: var(--primary);
+      color: #fff;
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      margin-right: 0.5rem;
+      letter-spacing: 0.5px;
+    }
+
+    /* Assessment section */
+    .assessment-section {
+      padding: 5rem 0;
+    }
+
+    .assessment-layout {
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    /* Assessment form */
+    .assessment-form {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2.5rem;
+      box-shadow: var(--shadow);
+    }
+
+    .assessment-form h2 {
+      font-size: 1.5rem;
+      margin-bottom: 0.25rem;
+      color: var(--primary-dark);
+    }
+
+    .assessment-form .form-subtitle {
+      color: var(--text-light);
+      font-size: 0.9rem;
+      margin-bottom: 2rem;
+    }
+
+    /* Individual question */
+    .assessment-question {
+      margin-bottom: 2rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .assessment-question:last-of-type {
+      border-bottom: none;
+    }
+
+    .question-label {
+      display: block;
+      font-weight: 700;
+      color: var(--primary-dark);
+      margin-bottom: 0.25rem;
+      font-size: 1rem;
+    }
+
+    .question-hint {
+      font-size: 0.82rem;
+      color: var(--text-light);
+      margin-bottom: 0.85rem;
+    }
+
+    /* Checkbox and radio grids */
+    .checkbox-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem 1.5rem;
+    }
+
+    .checkbox-item,
+    .radio-item {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      cursor: pointer;
+      font-size: 0.9rem;
+      color: var(--text);
+      padding: 0.4rem 0;
+    }
+
+    .checkbox-item input[type="checkbox"],
+    .radio-item input[type="radio"] {
+      width: 16px;
+      height: 16px;
+      accent-color: var(--accent);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .radio-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    /* Submit area */
+    .assessment-submit {
+      text-align: center;
+      margin-top: 2rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .assessment-submit p {
+      font-size: 0.82rem;
+      color: var(--text-light);
+      margin-top: 0.75rem;
+      margin-bottom: 0;
+    }
+
+    .btn-assess {
+      background: var(--primary);
+      color: #fff;
+      padding: 0.9rem 2.5rem;
+      font-size: 1rem;
+      border-radius: var(--radius);
+      border: none;
+      cursor: pointer;
+      font-weight: 700;
+      transition: all var(--transition);
+      letter-spacing: 0.3px;
+    }
+
+    .btn-assess:hover {
+      background: var(--primary-light);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    /* Risk result panel */
+    .risk-result {
+      display: none;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2.5rem;
+      margin-top: 2rem;
+      box-shadow: var(--shadow-lg);
+      animation: fadeInUp 0.4s ease;
+    }
+
+    .risk-result.visible {
+      display: block;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .risk-result h3 {
+      font-size: 1.2rem;
+      margin-bottom: 1.25rem;
+      color: var(--primary-dark);
+    }
+
+    /* Risk meter */
+    .risk-meter {
+      margin-bottom: 1.5rem;
+    }
+
+    .risk-meter-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: var(--text-light);
+      margin-bottom: 0.35rem;
+    }
+
+    .risk-meter-track {
+      height: 14px;
+      border-radius: 999px;
+      background: linear-gradient(to right, #22c55e 0%, #facc15 40%, #f97316 70%, #ef4444 100%);
+      position: relative;
+      overflow: visible;
+    }
+
+    .risk-meter-pointer {
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 22px;
+      height: 22px;
+      background: #fff;
+      border: 3px solid #1e293b;
+      border-radius: 50%;
+      transition: left 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+    }
+
+    /* Risk level badge */
+    .risk-level-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.45rem 1.1rem;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .risk-level-badge.low      { background: #dcfce7; color: #166534; }
+    .risk-level-badge.medium   { background: #fef9c3; color: #854d0e; }
+    .risk-level-badge.high     { background: #ffedd5; color: #9a3412; }
+    .risk-level-badge.critical { background: #fee2e2; color: #991b1b; }
+
+    /* Findings list */
+    .findings-list {
+      list-style: none;
+      margin-bottom: 1.5rem;
+    }
+
+    .findings-list li {
+      padding: 0.6rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.9rem;
+      color: var(--text);
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+
+    .findings-list li:last-child {
+      border-bottom: none;
+    }
+
+    .finding-icon {
+      flex-shrink: 0;
+      font-size: 1rem;
+      margin-top: 1px;
+    }
+
+    /* Recommendation box */
+    .recommendation-box {
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .recommendation-box h4 {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-light);
+      margin-bottom: 0.5rem;
+    }
+
+    .recommendation-box p {
+      font-size: 0.92rem;
+      color: var(--text);
+      margin-bottom: 0;
+    }
+
+    /* CTA buttons inside result */
+    .result-ctas {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    /* Sidebar "Why this matters" */
+    .assessment-sidebar {
+      position: sticky;
+      top: 88px;
+    }
+
+    .sidebar-card {
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .sidebar-card h3 {
+      font-size: 1rem;
+      color: var(--primary-dark);
+      margin-bottom: 0.75rem;
+    }
+
+    .sidebar-card p {
+      font-size: 0.88rem;
+      color: var(--text-light);
+      margin-bottom: 0.75rem;
+    }
+
+    .sidebar-card p:last-child {
+      margin-bottom: 0;
+    }
+
+    .sidebar-stat {
+      text-align: center;
+      padding: 1.25rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 0.75rem;
+    }
+
+    .sidebar-stat h4 {
+      font-size: 1.75rem;
+      color: var(--accent);
+      margin-bottom: 0.25rem;
+    }
+
+    .sidebar-stat p {
+      font-size: 0.82rem;
+      color: var(--text-light);
+      margin: 0;
+    }
+
+    .patent-callout {
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+      color: #fff;
+      border-radius: var(--radius);
+      padding: 1.75rem;
+    }
+
+    .patent-callout h3 {
+      color: #fff;
+      font-size: 0.95rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .patent-callout p {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.8);
+      margin-bottom: 0;
+    }
+
+    /* Attack surface landscape */
+    .landscape-section {
+      padding: 5rem 0;
+    }
+
+    .landscape-card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .landscape-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      transition: all var(--transition);
+    }
+
+    .landscape-card:hover {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-4px);
+    }
+
+    .landscape-card-icon {
+      font-size: 2rem;
+      margin-bottom: 0.75rem;
+      display: block;
+    }
+
+    .landscape-card h3 {
+      font-size: 1.05rem;
+      color: var(--primary);
+      margin-bottom: 0.3rem;
+    }
+
+    .landscape-card .platform-sub {
+      font-size: 0.78rem;
+      color: var(--text-light);
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+
+    .landscape-card p {
+      font-size: 0.875rem;
+      color: var(--text-light);
+      margin-bottom: 0.75rem;
+    }
+
+    .landscape-card .learn-more {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .landscape-card .learn-more:hover {
+      color: var(--primary-light);
+    }
+
+    /* Undetected badge */
+    .undetected-badge {
+      display: inline-block;
+      background: #fee2e2;
+      color: #991b1b;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Patent coverage callout */
+    .patent-coverage {
+      background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-light) 100%);
+      color: #fff;
+      padding: 4rem 0;
+      text-align: center;
+    }
+
+    .patent-coverage h2 {
+      color: #fff;
+      margin-bottom: 1rem;
+    }
+
+    .patent-coverage p {
+      color: rgba(255,255,255,0.85);
+      max-width: 680px;
+      margin: 0 auto 1.5rem;
+      font-size: 1.05rem;
+    }
+
+    .patent-coverage .patent-number {
+      font-family: 'Courier New', monospace;
+      background: rgba(255,255,255,0.1);
+      padding: 0.3rem 0.8rem;
+      border-radius: 4px;
+      font-size: 0.95rem;
+    }
+
+    /* Progress indicator */
+    .progress-bar-wrap {
+      height: 4px;
+      background: var(--border);
+      border-radius: 999px;
+      margin-bottom: 2rem;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 999px;
+      transition: width 0.3s ease;
+      width: 0%;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .assessment-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .assessment-sidebar {
+        position: static;
+      }
+
+      .checkbox-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .assessment-form {
+        padding: 1.5rem;
+      }
+
+      .result-ctas {
+        flex-direction: column;
+      }
+
+      .result-ctas .btn {
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="logo">Staaml<span>Corp</span></a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="services.html">Technology</a></li>
+        <li><a href="team.html">Team</a></li>
+        <li><a href="blog.html">Insights</a></li>
+        <li><a href="assessment.html" class="active">Assessment</a></li>
+        <li><a href="contact.html" class="btn btn-primary" style="padding:0.5rem 1.25rem;">Contact Us</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <h1>Is Your Platform at Risk?</h1>
+      <p>Temporal Security Discontinuities are a newly documented class of vulnerability affecting any system where cached executable content can survive a security policy transition. Find out if your products are exposed.</p>
+      <div class="hero-buttons">
+        <a href="#assessment" class="btn btn-white">Start the Assessment</a>
+        <a href="services.html" class="btn btn-outline" style="color:#fff;border-color:#fff;">Learn About Our Patent</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Introduction -->
+  <section class="section section-alt">
+    <div class="container">
+      <div class="section-header">
+        <h2>This Vulnerability Class Is Real — and Widespread</h2>
+        <p>Any system with cached executable content <em>and</em> security policy transitions is potentially vulnerable. This is not theoretical.</p>
+      </div>
+
+      <div class="intro-callout">
+        <h3><span class="cve-badge">CVE</span> webkit-294380 &mdash; 3 Years Undetected in Apple iOS Lockdown Mode</h3>
+        <p>Our founder discovered that Apple's Lockdown Mode &mdash; introduced in 2022 to protect journalists, activists, and government officials from nation-state attacks &mdash; could be silently bypassed through WebAssembly and JavaScript that had been cached prior to the mode transition. The vulnerability persisted undetected for three years (2022&ndash;2025) and was assigned internal reference <strong>LDB-01</strong> and <strong>webkit-294380</strong>. Apple remediated the issue in iOS&nbsp;26 / iPadOS&nbsp;26. Our patent (U.S. App. No. 19/640,793) covers the generalized, platform-independent framework &mdash; extending far beyond iOS to every system that caches executable content.</p>
+      </div>
+
+      <div class="card-grid" style="margin-top: 2.5rem;">
+        <div class="card">
+          <div class="card-icon">&#9888;</div>
+          <h3>The Core Mechanism</h3>
+          <p>When a platform transitions to a more restrictive security policy, previously cached executable content &mdash; compiled shaders, WebAssembly, ML models, service workers &mdash; is not re-evaluated against the new policy. The cache is trusted implicitly.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">&#128272;</div>
+          <h3>Why It Goes Undetected</h3>
+          <p>Traditional security audits focus on content at the moment it executes, not its provenance. Temporal context &mdash; when content was cached relative to a policy change &mdash; is invisible to conventional security tooling.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">&#128202;</div>
+          <h3>Who Should Be Concerned</h3>
+          <p>Platform developers across mobile OS, desktop OS, browsers, enterprise MDM, AI/ML, IoT, and cloud/container orchestration all face exposure if their systems manage cached executable content and support security mode transitions.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Assessment -->
+  <section class="assessment-section" id="assessment">
+    <div class="container">
+      <div class="section-header">
+        <h2>Interactive Attack Surface Assessment</h2>
+        <p>Answer the questions below to receive a personalized risk profile for your platform or product. All processing happens in your browser &mdash; no data is transmitted.</p>
+      </div>
+
+      <div class="assessment-layout">
+        <!-- Form -->
+        <div>
+          <div class="assessment-form" id="assessmentForm">
+            <h2>Platform Risk Questionnaire</h2>
+            <p class="form-subtitle">7 questions &bull; Takes approximately 2 minutes</p>
+
+            <div class="progress-bar-wrap">
+              <div class="progress-bar-fill" id="progressBar"></div>
+            </div>
+
+            <!-- Q1: Types of cached executable content -->
+            <div class="assessment-question" data-question="1">
+              <span class="question-label">1. Does your platform cache executable content?</span>
+              <span class="question-hint">Select all types your platform stores or manages.</span>
+              <div class="checkbox-grid" id="q1">
+                <label class="checkbox-item">
+                  <input type="checkbox" name="q1" value="wasm"> WebAssembly (Wasm)
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="q1" value="js"> JavaScript / ESM bundles
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="q1" value="sw"> Service Workers
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="q1" value="ml"> ML / AI Models
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="q1" value="shaders"> Compiled Shaders (GPU)
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="q1" value="native"> Native modules / plugins
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="q1" value="containers"> Container images / layers
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="q1" value="none"> None of the above
+                </label>
+              </div>
+            </div>
+
+            <!-- Q2: Security policy transitions -->
+            <div class="assessment-question" data-question="2">
+              <span class="question-label">2. Does your platform support security policy transitions?</span>
+              <span class="question-hint">Select all modes or transitions that apply.</span>
+              <div class="checkbox-grid" id="q2">
+                <label class="checkbox-item">
+                  <input type="checkbox" name="q2" value="lockdown"> OS lockdown / hardened modes
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="q2" value="mdm"> Enterprise MDM policy push
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="q2" value="browser"> Browser security levels
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="q2" value="ai_sandbox"> AI sandbox policies
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="q2" value="privacy"> Privacy / incognito modes
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="q2" value="compliance"> Regulatory compliance modes
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="q2" value="none"> None of the above
+                </label>
+              </div>
+            </div>
+
+            <!-- Q3: Cache handling at transitions -->
+            <div class="assessment-question" data-question="3">
+              <span class="question-label">3. How does your platform handle cached content during security policy transitions?</span>
+              <span class="question-hint">Select the option that best describes current behavior.</span>
+              <div class="radio-group" id="q3">
+                <label class="radio-item">
+                  <input type="radio" name="q3" value="none"> No specific action is taken — cached content persists unchanged
+                </label>
+                <label class="radio-item">
+                  <input type="radio" name="q3" value="clear_all"> All caches are purged at transition time
+                </label>
+                <label class="radio-item">
+                  <input type="radio" name="q3" value="selective"> Selective validation — content is checked against new policy constraints
+                </label>
+                <label class="radio-item">
+                  <input type="radio" name="q3" value="unknown"> I don't know / not documented
+                </label>
+              </div>
+            </div>
+
+            <!-- Q4: Cache storage locations -->
+            <div class="assessment-question" data-question="4">
+              <span class="question-label">4. What cache storage locations does your platform use?</span>
+              <span class="question-hint">Select all that apply.</span>
+              <div class="checkbox-grid" id="q4">
+                <label class="checkbox-item">
+                  <input type="checkbox" name="q4" value="http"> HTTP cache / disk cache
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="q4" value="cache_api"> Cache API (browser / PWA)
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="q4" value="idb"> IndexedDB
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="q4" value="localstorage"> localStorage / sessionStorage
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="q4" value="mmap"> Memory-mapped / OS file cache
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="q4" value="app"> App-specific / proprietary cache
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="q4" value="none"> None / not applicable
+                </label>
+              </div>
+            </div>
+
+            <!-- Q5: Cache persistence duration -->
+            <div class="assessment-question" data-question="5">
+              <span class="question-label">5. How long does cached executable content persist on your platform?</span>
+              <span class="question-hint">Select the typical maximum duration.</span>
+              <div class="radio-group" id="q5">
+                <label class="radio-item">
+                  <input type="radio" name="q5" value="session"> Session only — purged when app/session closes
+                </label>
+                <label class="radio-item">
+                  <input type="radio" name="q5" value="days"> Days — with periodic expiry
+                </label>
+                <label class="radio-item">
+                  <input type="radio" name="q5" value="weeks"> Weeks — long-lived cache
+                </label>
+                <label class="radio-item">
+                  <input type="radio" name="q5" value="indefinite"> Indefinitely — until explicitly cleared
+                </label>
+                <label class="radio-item">
+                  <input type="radio" name="q5" value="unknown"> Unknown / not tracked
+                </label>
+              </div>
+            </div>
+
+            <!-- Q6: Security context binding -->
+            <div class="assessment-question" data-question="6">
+              <span class="question-label">6. Does your platform bind cached content to its security context at the time of caching?</span>
+              <span class="question-hint">E.g., storing policy ID, security level, or timestamps alongside cached executables.</span>
+              <div class="radio-group" id="q6">
+                <label class="radio-item">
+                  <input type="radio" name="q6" value="yes"> Yes — cache entries include security context metadata
+                </label>
+                <label class="radio-item">
+                  <input type="radio" name="q6" value="no"> No — cached content is stored without policy context
+                </label>
+                <label class="radio-item">
+                  <input type="radio" name="q6" value="unknown"> Don't know / not specified
+                </label>
+              </div>
+            </div>
+
+            <!-- Q7: High-risk user populations -->
+            <div class="assessment-question" data-question="7">
+              <span class="question-label">7. Does your platform serve high-risk user populations?</span>
+              <span class="question-hint">Select all that apply. These groups are priority targets for sophisticated adversaries.</span>
+              <div class="checkbox-grid" id="q7">
+                <label class="checkbox-item">
+                  <input type="checkbox" name="q7" value="journalists"> Journalists &amp; media
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="q7" value="activists"> Activists &amp; NGOs
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="q7" value="government"> Government officials
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="q7" value="enterprise"> Enterprise / corporate
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="q7" value="healthcare"> Healthcare
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="q7" value="financial"> Financial services
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="q7" value="none"> None specifically
+                </label>
+              </div>
+            </div>
+
+            <!-- Submit -->
+            <div class="assessment-submit">
+              <button class="btn-assess" id="assessBtn" type="button">Assess My Risk</button>
+              <p>Results are generated entirely in your browser. No data is collected or transmitted.</p>
+            </div>
+          </div>
+
+          <!-- Risk Result -->
+          <div class="risk-result" id="riskResult">
+            <h3>Your Assessment Results</h3>
+
+            <!-- Risk meter -->
+            <div class="risk-meter">
+              <div class="risk-meter-labels">
+                <span>Low</span>
+                <span>Medium</span>
+                <span>High</span>
+                <span>Critical</span>
+              </div>
+              <div class="risk-meter-track">
+                <div class="risk-meter-pointer" id="riskPointer" style="left: 5%;"></div>
+              </div>
+            </div>
+
+            <div id="riskBadge" class="risk-level-badge low">&#9679; Low Risk</div>
+
+            <!-- Findings -->
+            <h4 style="font-size:0.9rem;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-light);margin-bottom:0.75rem;">Key Findings</h4>
+            <ul class="findings-list" id="findingsList"></ul>
+
+            <!-- Recommendation -->
+            <div class="recommendation-box">
+              <h4>Recommendation</h4>
+              <p id="recommendationText"></p>
+            </div>
+
+            <!-- CTAs -->
+            <div class="result-ctas">
+              <a href="contact.html" class="btn btn-primary">Schedule a Technical Briefing</a>
+              <a href="services.html" class="btn btn-outline">Learn About Our Licensing</a>
+            </div>
+
+            <p style="font-size:0.8rem;color:var(--text-light);margin-top:1.25rem;margin-bottom:0;">
+              This assessment provides a directional risk estimate based on platform characteristics. A formal technical engagement is required for definitive vulnerability analysis.
+            </p>
+          </div>
+        </div>
+
+        <!-- Sidebar -->
+        <aside class="assessment-sidebar">
+          <div class="sidebar-card">
+            <h3>Why This Assessment Matters</h3>
+            <p>Temporal Security Discontinuities are invisible to conventional security tooling. They require a new detection paradigm — one that tracks the relationship between cache state and policy state over time.</p>
+            <p>This assessment helps you determine whether your platform architecture is structurally at risk — before an adversary discovers it for you.</p>
+          </div>
+
+          <div class="sidebar-stat">
+            <h4>3 Years</h4>
+            <p>Duration Apple's Lockdown Mode vulnerability went undetected</p>
+          </div>
+          <div class="sidebar-stat">
+            <h4>7+</h4>
+            <p>Major platform categories with documented exposure vectors</p>
+          </div>
+          <div class="sidebar-stat">
+            <h4>30</h4>
+            <p>Patent claims covering detection, validation, and mitigation</p>
+          </div>
+
+          <div class="patent-callout">
+            <h3>Patent Coverage</h3>
+            <p>U.S. Application No. 19/640,793 covers the generalized framework for temporal security context binding across all platform and cache types.</p>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- Attack Surface Landscape -->
+  <section class="landscape-section section-alt">
+    <div class="container">
+      <div class="section-header">
+        <h2>Attack Surface Landscape</h2>
+        <p>Temporal Security Discontinuities are not limited to any single platform. Here are the major categories of systems that carry structural exposure.</p>
+      </div>
+
+      <div class="landscape-card-grid">
+
+        <div class="landscape-card">
+          <span class="landscape-card-icon">&#128241;</span>
+          <h3>Mobile Operating Systems</h3>
+          <p class="platform-sub">iOS &bull; Android &bull; HarmonyOS</p>
+          <span class="undetected-badge">3 years undetected in iOS Lockdown Mode</span>
+          <p>Mobile OS platforms cache WebAssembly, JavaScript, compiled app code, and ML inference models. Lockdown modes, enterprise profiles, and parental controls all represent policy transitions that cached content can survive.</p>
+          <a href="services.html" class="learn-more">Learn more &rarr;</a>
+        </div>
+
+        <div class="landscape-card">
+          <span class="landscape-card-icon">&#128187;</span>
+          <h3>Desktop Operating Systems</h3>
+          <p class="platform-sub">Windows &bull; macOS &bull; Linux</p>
+          <p>Security zone transitions, User Account Control escalations, enterprise group policy updates, and system integrity protection modes can all leave cached executables from less restrictive states active and unvalidated.</p>
+          <a href="services.html" class="learn-more">Learn more &rarr;</a>
+        </div>
+
+        <div class="landscape-card">
+          <span class="landscape-card-icon">&#127760;</span>
+          <h3>Web Browsers</h3>
+          <p class="platform-sub">Chrome &bull; Firefox &bull; Safari &bull; Edge</p>
+          <p>Browsers cache WebAssembly binaries, compiled JavaScript, Service Workers, and shared-array-buffer content. Privacy mode transitions and per-site security level changes create discontinuities in the execution security context.</p>
+          <a href="services.html" class="learn-more">Learn more &rarr;</a>
+        </div>
+
+        <div class="landscape-card">
+          <span class="landscape-card-icon">&#127970;</span>
+          <h3>Enterprise MDM Platforms</h3>
+          <p class="platform-sub">Intune &bull; Jamf &bull; VMware Workspace ONE</p>
+          <p>MDM policy pushes can dramatically tighten endpoint security posture within seconds. Cached executables pre-dating the policy change remain on-device and may execute before the new policy can intercept them.</p>
+          <a href="services.html" class="learn-more">Learn more &rarr;</a>
+        </div>
+
+        <div class="landscape-card">
+          <span class="landscape-card-icon">&#129302;</span>
+          <h3>AI / ML Platforms</h3>
+          <p class="platform-sub">Inference runtimes &bull; Model servers &bull; Edge AI</p>
+          <p>AI platforms cache compiled model artifacts, operator kernels, and tokenizers. As model governance policies evolve — restricting certain capabilities or enforcing safety constraints — previously cached model versions may bypass those controls.</p>
+          <a href="services.html" class="learn-more">Learn more &rarr;</a>
+        </div>
+
+        <div class="landscape-card">
+          <span class="landscape-card-icon">&#128268;</span>
+          <h3>IoT &amp; Embedded Systems</h3>
+          <p class="platform-sub">Firmware &bull; RTOS &bull; Edge devices</p>
+          <p>IoT devices that cache firmware update staging data, compiled automation scripts, or edge ML models face exposure during secure boot transitions and firmware update cycles where prior-state cached content may persist in flash storage.</p>
+          <a href="services.html" class="learn-more">Learn more &rarr;</a>
+        </div>
+
+        <div class="landscape-card">
+          <span class="landscape-card-icon">&#9729;</span>
+          <h3>Cloud &amp; Container Platforms</h3>
+          <p class="platform-sub">Kubernetes &bull; Docker &bull; Serverless runtimes</p>
+          <p>Container orchestration platforms cache image layers, compiled workload artifacts, and runtime snapshots. Security policy changes applied at the orchestrator level do not retroactively invalidate already-cached image content running in pods.</p>
+          <a href="services.html" class="learn-more">Learn more &rarr;</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Patent Coverage Callout -->
+  <section class="patent-coverage">
+    <div class="container">
+      <h2>Comprehensive Patent Coverage Across All Platforms</h2>
+      <p>Our patent covers the generalized framework for detecting, validating, and mitigating cached executable content that persists across security policy transitions &mdash; regardless of platform, cache type, or execution environment.</p>
+      <p><span class="patent-number">U.S. App. No. 19/640,793</span></p>
+      <div style="margin-top:2rem;display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+        <a href="contact.html" class="btn btn-white">Discuss Licensing</a>
+        <a href="services.html" class="btn btn-outline" style="color:#fff;border-color:rgba(255,255,255,0.5);">View Full Technology Overview</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h4>Staaml<span style="color:var(--accent);">Corp</span></h4>
+          <p>Cybersecurity innovation and software IP licensing. Patented solutions for mitigating cached executable persistence across security policy transitions.</p>
+        </div>
+        <div>
+          <h4>Pages</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="services.html">Technology</a></li>
+            <li><a href="team.html">Team</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Resources</h4>
+          <ul>
+            <li><a href="blog.html">Insights</a></li>
+            <li><a href="assessment.html">Assessment</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <ul>
+            <li><a href="mailto:info@staamlcorp.com">info@staamlcorp.com</a></li>
+            <li>Lafayette, LA</li>
+            <li>staamlcorp.com</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 StaamlCorp. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ===== Hamburger menu =====
+    document.getElementById('hamburger').addEventListener('click', function () {
+      document.getElementById('navLinks').classList.toggle('open');
+    });
+
+    // ===== Progress bar update on interaction =====
+    const allInputs = document.querySelectorAll('#assessmentForm input[type="checkbox"], #assessmentForm input[type="radio"]');
+    const progressBar = document.getElementById('progressBar');
+
+    function updateProgress() {
+      const questions = [1, 2, 3, 4, 5, 6, 7];
+      let answered = 0;
+
+      questions.forEach(function (q) {
+        // Check if any input for this question has been selected
+        const inputs = document.querySelectorAll('[name="q' + q + '"]');
+        for (let i = 0; i < inputs.length; i++) {
+          if (inputs[i].checked) {
+            answered++;
+            break;
+          }
+        }
+      });
+
+      const pct = Math.round((answered / questions.length) * 100);
+      progressBar.style.width = pct + '%';
+    }
+
+    allInputs.forEach(function (inp) {
+      inp.addEventListener('change', updateProgress);
+    });
+
+    // ===== Assessment scoring =====
+    document.getElementById('assessBtn').addEventListener('click', function () {
+      // --- Gather answers ---
+      function getChecked(name) {
+        const boxes = document.querySelectorAll('[name="' + name + '"]:checked');
+        return Array.from(boxes).map(function (b) { return b.value; });
+      }
+
+      function getRadio(name) {
+        const sel = document.querySelector('[name="' + name + '"]:checked');
+        return sel ? sel.value : null;
+      }
+
+      const q1 = getChecked('q1');   // cache types
+      const q2 = getChecked('q2');   // policy transition types
+      const q3 = getRadio('q3');     // cache handling behavior
+      const q4 = getChecked('q4');   // storage locations
+      const q5 = getRadio('q5');     // persistence duration
+      const q6 = getRadio('q6');     // security context binding
+      const q7 = getChecked('q7');   // high-risk users
+
+      // Require at least some answers
+      if (!q3 && !q5 && !q6 && q1.length === 0 && q2.length === 0) {
+        alert('Please answer at least a few questions before assessing your risk.');
+        return;
+      }
+
+      // ===== Scoring model (0–100) =====
+      let score = 0;
+
+      // --- Q1: Cache types (max 25 pts) ---
+      const executableTypes = q1.filter(function (v) { return v !== 'none'; });
+      if (!q1.includes('none') && executableTypes.length > 0) {
+        // High-severity types weighted more
+        const highWeight = ['wasm', 'sw', 'native', 'containers', 'ml'];
+        const medWeight  = ['js', 'shaders'];
+
+        executableTypes.forEach(function (t) {
+          if (highWeight.includes(t)) score += 4;
+          else if (medWeight.includes(t)) score += 3;
+        });
+        score = Math.min(score, 25);
+      }
+
+      // --- Q2: Policy transitions (max 20 pts) ---
+      const transitions = q2.filter(function (v) { return v !== 'none'; });
+      if (!q2.includes('none') && transitions.length > 0) {
+        transitions.forEach(function () { score += 3; });
+        score = Math.min(score + 0, 45); // running total guard
+        score = Math.min(score, 45);
+      } else if (!q2.includes('none') && transitions.length === 0) {
+        // Nothing selected at all — neutral
+      }
+      // Simplified: just add 3 per transition up to 20
+      // Re-apply properly below to avoid double confusion:
+      // (reset transition contribution)
+      let transitionScore = 0;
+      transitions.forEach(function () { transitionScore += 3; });
+      transitionScore = Math.min(transitionScore, 20);
+
+      // Recalculate cleanly
+      score = 0;
+
+      // Q1 contribution (0–25)
+      let q1Score = 0;
+      if (!q1.includes('none')) {
+        executableTypes.forEach(function (t) {
+          if (['wasm', 'sw', 'native', 'containers', 'ml'].includes(t)) q1Score += 4;
+          else q1Score += 3;
+        });
+      }
+      q1Score = Math.min(q1Score, 25);
+
+      // Q2 contribution (0–20)
+      let q2Score = transitionScore;
+
+      // Q3: handling behavior (0–20)
+      let q3Score = 0;
+      if (q3 === 'none')        q3Score = 20;  // no action = maximum risk
+      else if (q3 === 'unknown') q3Score = 16;  // don't know = very high risk
+      else if (q3 === 'clear_all') q3Score = 4;  // clears all = partial credit (blanket purge has perf cost but is more secure)
+      else if (q3 === 'selective') q3Score = 0;   // best practice — minimal risk contribution
+
+      // Q4: storage locations (0–10)
+      let q4Score = 0;
+      const storageTypes = q4.filter(function (v) { return v !== 'none'; });
+      q4Score = Math.min(storageTypes.length * 2, 10);
+
+      // Q5: persistence duration (0–10)
+      let q5Score = 0;
+      if (q5 === 'indefinite') q5Score = 10;
+      else if (q5 === 'unknown') q5Score = 9;
+      else if (q5 === 'weeks')   q5Score = 7;
+      else if (q5 === 'days')    q5Score = 4;
+      else if (q5 === 'session') q5Score = 1;
+
+      // Q6: context binding (0–10)
+      let q6Score = 0;
+      if (q6 === 'no')      q6Score = 10;
+      else if (q6 === 'unknown') q6Score = 7;
+      else if (q6 === 'yes') q6Score = 0;
+
+      // Q7: high-risk users (0–5 multiplier bonus)
+      let q7Score = 0;
+      const highRiskUsers = q7.filter(function (v) { return v !== 'none'; });
+      q7Score = Math.min(highRiskUsers.length, 5);
+
+      // If "no specific users" or nothing selected, no bonus
+      if (q7.includes('none') || q7.length === 0) q7Score = 0;
+
+      score = q1Score + q2Score + q3Score + q4Score + q5Score + q6Score + q7Score;
+
+      // Cap at 100
+      score = Math.min(Math.max(score, 0), 100);
+
+      // ===== Determine risk level =====
+      let riskLevel, riskLabel, riskColor, pointerPct;
+      if (score < 20) {
+        riskLevel = 'low';
+        riskLabel = 'Low Risk';
+        pointerPct = Math.max(3, score / 20 * 22);
+      } else if (score < 45) {
+        riskLevel = 'medium';
+        riskLabel = 'Medium Risk';
+        pointerPct = 22 + ((score - 20) / 25) * 25;
+      } else if (score < 70) {
+        riskLevel = 'high';
+        riskLabel = 'High Risk';
+        pointerPct = 47 + ((score - 45) / 25) * 25;
+      } else {
+        riskLevel = 'critical';
+        riskLabel = 'Critical Risk';
+        pointerPct = 72 + ((score - 70) / 30) * 25;
+      }
+      pointerPct = Math.min(pointerPct, 97);
+
+      // ===== Build findings =====
+      const findings = [];
+
+      // Q1 findings
+      if (q1.includes('none')) {
+        findings.push({ icon: '&#10003;', text: 'No executable content caching detected — baseline risk is low for this dimension.' });
+      } else {
+        if (q1.includes('wasm')) findings.push({ icon: '&#9888;', text: 'WebAssembly caching: Wasm binaries compiled under one security context can execute under a stricter context without re-validation.' });
+        if (q1.includes('sw'))   findings.push({ icon: '&#9888;', text: 'Service Workers: Registered service workers persist across browser security level changes and privacy mode transitions.' });
+        if (q1.includes('ml'))   findings.push({ icon: '&#9888;', text: 'ML/AI Models: Cached model artifacts may not be re-evaluated when AI sandbox or governance policies change.' });
+        if (q1.includes('native')) findings.push({ icon: '&#9888;', text: 'Native modules: Platform-loaded native code cached before a lockdown event may bypass post-transition policy controls.' });
+        if (q1.includes('containers')) findings.push({ icon: '&#9888;', text: 'Container image layers: Cached OCI image layers pre-dating an orchestrator policy change may be instantiated without re-validation.' });
+        if (q1.includes('js'))   findings.push({ icon: '&#128308;', text: 'JavaScript bundles: V8/SpiderMonkey bytecode cache persists across security transitions in most browser configurations.' });
+        if (q1.includes('shaders')) findings.push({ icon: '&#128308;', text: 'Compiled shaders: GPU shader caches are not typically included in security policy scope, leaving a blind spot.' });
+      }
+
+      // Q2 findings
+      if (!q2.includes('none') && transitions.length > 0) {
+        if (q2.includes('lockdown')) findings.push({ icon: '&#9888;', text: 'OS lockdown mode: This is the exact transition vector validated in the Apple LDB-01 / webkit-294380 disclosure.' });
+        if (q2.includes('mdm'))  findings.push({ icon: '&#9888;', text: 'MDM policy push: Enterprise policy updates are frequent and asynchronous — a prime vector for temporal discontinuity.' });
+        if (q2.includes('ai_sandbox')) findings.push({ icon: '&#9888;', text: 'AI sandbox policies: Model governance rules applied post-caching do not retroactively invalidate cached model artifacts.' });
+        if (q2.includes('privacy'))   findings.push({ icon: '&#128308;', text: 'Privacy/incognito modes: Session isolation often does not include cache invalidation for compiled executable content.' });
+      } else if (q2.includes('none')) {
+        findings.push({ icon: '&#10003;', text: 'No security policy transitions identified — temporal discontinuity risk is minimal for this dimension.' });
+      }
+
+      // Q3 findings
+      if (q3 === 'none') {
+        findings.push({ icon: '&#128308;', text: 'Critical gap: No cache action is taken at security transition time. This is the textbook Temporal Security Discontinuity configuration.' });
+      } else if (q3 === 'unknown') {
+        findings.push({ icon: '&#9888;', text: 'Unknown handling behavior: If your engineers cannot confirm cache handling, the safe assumption is that caches persist unchanged — a high-risk posture.' });
+      } else if (q3 === 'clear_all') {
+        findings.push({ icon: '&#128994;', text: 'Blanket cache purge provides protection but is suboptimal. Our patented selective validation approach preserves 88% of cache entries while maintaining security.' });
+      } else if (q3 === 'selective') {
+        findings.push({ icon: '&#10003;', text: 'Selective validation is the correct approach. Ensure your validation pipeline covers all identified cache storage locations and executable content types.' });
+      }
+
+      // Q5 findings
+      if (q5 === 'indefinite') {
+        findings.push({ icon: '&#128308;', text: 'Indefinite cache persistence maximizes the window of exposure between a policy transition and content re-validation or purge.' });
+      } else if (q5 === 'unknown') {
+        findings.push({ icon: '&#9888;', text: 'Unknown persistence duration: Without lifecycle controls on cached executables, assume worst-case indefinite persistence for risk planning.' });
+      }
+
+      // Q6 findings
+      if (q6 === 'no') {
+        findings.push({ icon: '&#128308;', text: 'No security context binding: Without storing policy metadata alongside cache entries, it is impossible to perform retroactive validation after a transition.' });
+      } else if (q6 === 'unknown') {
+        findings.push({ icon: '&#9888;', text: 'Security context binding status unknown: Absence of this metadata prevents effective temporal validation — a fundamental architectural gap.' });
+      } else if (q6 === 'yes') {
+        findings.push({ icon: '&#10003;', text: 'Security context binding is in place. Ensure binding metadata includes policy version identifiers, timestamps, and cryptographic content hashes.' });
+      }
+
+      // Q7 findings
+      if (q7Score > 0) {
+        findings.push({ icon: '&#9888;', text: 'Your platform serves high-risk user populations (' + highRiskUsers.join(', ') + '). Sophisticated adversaries actively target these groups using exactly these vulnerability classes. Remediation priority should be elevated.' });
+      }
+
+      // ===== Build recommendations =====
+      const recommendations = {
+        low: 'Your platform appears to have limited exposure based on current architecture. We recommend a periodic review as platform capabilities expand, particularly if cached executable types or security mode features are added. Consider a technical briefing to confirm findings.',
+        medium: 'Your platform has meaningful exposure vectors that warrant formal investigation. The combination of cached executable content and security policy transitions creates structural risk. We recommend engaging StaamlCorp for a technical briefing to assess specific vulnerability surface and licensing options.',
+        high: 'Your platform carries significant exposure to Temporal Security Discontinuity vulnerabilities. Based on your answers, cached executable content in multiple formats may survive policy transitions without validation. Immediate technical engagement is recommended to scope remediation and discuss licensing of our patented detection and validation framework.',
+        critical: 'Your platform exhibits all the primary indicators of critical Temporal Security Discontinuity exposure: multiple cached executable types, frequent or severe policy transitions, no contextual binding, and long cache persistence. This profile mirrors the conditions that allowed webkit-294380 to remain undetected for three years. We strongly recommend an urgent technical briefing to assess immediate risk and remediation pathways.'
+      };
+
+      // ===== Render results =====
+      const resultEl = document.getElementById('riskResult');
+      const badgeEl  = document.getElementById('riskBadge');
+      const pointer  = document.getElementById('riskPointer');
+      const findingsEl = document.getElementById('findingsList');
+      const recEl    = document.getElementById('recommendationText');
+
+      // Badge
+      badgeEl.className = 'risk-level-badge ' + riskLevel;
+      badgeEl.innerHTML = '&#9679; ' + riskLabel + ' <span style="font-weight:400;font-size:0.85rem;margin-left:0.5rem;">(Score: ' + score + '/100)</span>';
+
+      // Pointer (animate after a brief delay so transition fires)
+      setTimeout(function () {
+        pointer.style.left = pointerPct + '%';
+      }, 100);
+
+      // Findings
+      findingsEl.innerHTML = '';
+      if (findings.length === 0) {
+        findingsEl.innerHTML = '<li><span class="finding-icon">&#10003;</span> No specific risk indicators identified based on selected answers.</li>';
+      } else {
+        findings.forEach(function (f) {
+          const li = document.createElement('li');
+          li.innerHTML = '<span class="finding-icon">' + f.icon + '</span><span>' + f.text + '</span>';
+          findingsEl.appendChild(li);
+        });
+      }
+
+      // Recommendation
+      recEl.textContent = recommendations[riskLevel];
+
+      // Show result
+      resultEl.classList.add('visible');
+
+      // Scroll to result
+      setTimeout(function () {
+        resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 200);
+    });
+  </script>
+</body>
+</html>
