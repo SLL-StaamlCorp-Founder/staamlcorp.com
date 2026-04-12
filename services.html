@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Licensing — StaamlCorp</title>
   <meta name="description" content="License StaamlCorp's patented temporal security binding technology. Platform vendors, browser developers, enterprise security, and AI platforms — flexible licensing for U.S. App. No. 19/640,793.">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -237,10 +240,10 @@
           <h4>Resources</h4>
           <ul>
             <li><a href="blog.html">Insights</a></li>
-            <li><a href="blog-temporal-discontinuity.html">Temporal Discontinuity</a></li>
-            <li><a href="blog-ldb01-three-years.html">LDB-01 Three Years</a></li>
-            <li><a href="blog-ai-governance.html">AI Governance</a></li>
-            <li><a href="contact.html">Contact</a></li>
+            <li><a href="compliance.html">Compliance</a></li>
+            <li><a href="privacy.html">Privacy Policy</a></li>
+            <li><a href="terms.html">Terms of Service</a></li>
+            <li><a href="accessibility.html">Accessibility</a></li>
           </ul>
         </div>
         <div>
@@ -254,7 +257,7 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <p>&copy; 2026 StaamlCorp. All rights reserved. | Patent Pending: U.S. App. No. 19/640,793</p>
+        <p>&copy; 2026 StaamlCorp. All rights reserved. | Patent Pending: U.S. App. No. 19/640,793 | <a href="privacy.html" style="color:inherit;">Privacy</a> | <a href="terms.html" style="color:inherit;">Terms</a> | <a href="accessibility.html" style="color:inherit;">Accessibility</a></p>
       </div>
     </div>
   </footer>
@@ -264,5 +267,16 @@
       document.getElementById('navLinks').classList.toggle('open');
     });
   </script>
+  <!-- StaamlCorp Temporal Security Binding Engine (Patent Pending: U.S. App. No. 19/640,793) -->
+  <script src="staaml-tsb.js"></script>
+  <script>
+    // Register TSB Service Worker (Patent Derivative Implementation)
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/staaml-sw.js', { scope: '/' })
+        .then(function(reg) { console.log('[StaamlCorp] TSB Service Worker registered:', reg.scope); })
+        .catch(function(err) { console.warn('[StaamlCorp] TSB Service Worker registration failed:', err); });
+    }
+  </script>
+  <script src="cookie-consent.js"></script>
 </body>
 </html>
