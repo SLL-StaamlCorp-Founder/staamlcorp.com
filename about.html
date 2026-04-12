@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — StaamlCorp</title>
+  <meta name="description" content="Learn how StaamlCorp was founded through the discovery of a critical vulnerability class and the development of a patented cybersecurity framework.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="logo">Staaml<span>Corp</span></a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html" class="active">About</a></li>
+        <li><a href="services.html">Technology</a></li>
+        <li><a href="team.html">Team</a></li>
+        <li><a href="blog.html">Insights</a></li>
+        <li><a href="contact.html" class="btn btn-primary" style="padding:0.5rem 1.25rem;">Contact Us</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Page Hero -->
+  <section class="hero" style="padding:4rem 0;">
+    <div class="container">
+      <h1>About StaamlCorp</h1>
+      <p>Born from independent security research. Built on a discovery that Apple took three years to miss.</p>
+    </div>
+  </section>
+
+  <!-- Origin Story -->
+  <section class="section">
+    <div class="container" style="max-width:800px;">
+      <h2>Our Origin</h2>
+      <p>StaamlCorp was founded by Stanley Lee Linton, a cybersecurity researcher and software engineer based in Lafayette, Louisiana. The company's intellectual property originated from a critical discovery made during independent security research between January and April 2025.</p>
+      <p>While analyzing how Apple's Safari browser manages cached content across security mode transitions, Stanley identified a previously undocumented vulnerability class &mdash; designated <strong>LDB-01</strong> (Lockdown-Bypass-01). The finding revealed that WebAssembly modules, JavaScript blobs, and Service Worker scripts cached during normal operation persisted and remained fully executable after a device transitioned into Lockdown Mode &mdash; Apple's most hardened security state, designed to protect high-risk individuals from targeted cyber-attacks.</p>
+      <p>This meant that malicious cached content from before Lockdown Mode was activated could continue running as if Lockdown Mode didn't exist. The vulnerability persisted across app restarts and device reboots.</p>
+    </div>
+  </section>
+
+  <!-- Timeline -->
+  <section class="section section-alt">
+    <div class="container" style="max-width:800px;">
+      <h2>Discovery Timeline</h2>
+      <div style="display:flex;flex-direction:column;gap:1.5rem;">
+        <div class="card" style="border-left:4px solid var(--accent);">
+          <h3>January &ndash; April 2025</h3>
+          <p>Independent security research uncovers the LDB-01 vulnerability class: cached executable content persists and executes in Safari after Lockdown Mode activation on iOS, iPadOS, and macOS.</p>
+        </div>
+        <div class="card" style="border-left:4px solid var(--accent);">
+          <h3>May 5, 2025</h3>
+          <p>Comprehensive vulnerability report submitted to Apple through their Security Research Program (Report ID OE110220744757), including proof-of-concept code, reproduction steps, and impact analysis.</p>
+        </div>
+        <div class="card" style="border-left:4px solid var(--accent);">
+          <h3>June 2025</h3>
+          <p>Apple confirms reproduction of the issue: <em>"We reproduced the issue and are investigating."</em> Remediation planned for Fall 2025. Multi-round technical exchange with Apple Product Security.</p>
+        </div>
+        <div class="card" style="border-left:4px solid var(--accent);">
+          <h3>August 2025</h3>
+          <p>Apple assigns internal CVE reference <strong>webkit-294380</strong> to the vulnerability.</p>
+        </div>
+        <div class="card" style="border-left:4px solid var(--accent);">
+          <h3>September 15, 2025</h3>
+          <p>Apple ships the fix in iOS 26 and iPadOS 26. Stanley credited in Apple security advisories. Apple awards monetary recognition: <em>"This is solid, security beneficial research that we feel deserves recognition."</em></p>
+        </div>
+        <div class="card" style="border-left:4px solid var(--accent);">
+          <h3>April 2026</h3>
+          <p>Utility patent application filed for the generalized, platform-independent framework &mdash; 30 claims covering temporal security binding, policy delta computation, retroactive validation, and the Policy-Aware Cache Registry (PACR).</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Beyond the Fix -->
+  <section class="section">
+    <div class="container" style="max-width:800px;">
+      <h2>Beyond a Single Fix</h2>
+      <p>Apple's remediation addressed the specific LDB-01 instance on their own platform. But the underlying problem &mdash; temporal security discontinuities in cached executable content &mdash; is not unique to Apple. Any computing system that caches executables and supports security policy transitions is vulnerable.</p>
+      <p>StaamlCorp's patent covers the <strong>generalized architectural framework</strong> for solving this entire class of vulnerabilities. Our technology applies across operating systems (Windows, Linux, Android, iOS, macOS, embedded systems), across all cache types (HTTP cache, Cache API, IndexedDB, memory-mapped caches, application-specific caches), and across all security policy transition types (OS lockdown modes, enterprise MDM, browser security levels, AI sandbox policies, regulatory compliance modes).</p>
+      <p>Where Apple fixed a bug, StaamlCorp patented the solution to the problem.</p>
+    </div>
+  </section>
+
+  <!-- Mission -->
+  <section class="section section-alt">
+    <div class="container">
+      <div class="section-header">
+        <h2>Our Mission</h2>
+      </div>
+      <div class="card-grid">
+        <div class="card">
+          <h3>Advance Security</h3>
+          <p>We believe that cached executable persistence across security policy transitions represents one of the most overlooked vulnerability classes in modern computing. Our mission is to ensure this class of vulnerability is systematically addressed across the industry.</p>
+        </div>
+        <div class="card">
+          <h3>License Responsibly</h3>
+          <p>Our licensing program is built on the belief that patented security innovations should be deployed broadly. We work with companies to integrate our framework in ways that strengthen their products and protect their users.</p>
+        </div>
+        <div class="card">
+          <h3>Innovate Continuously</h3>
+          <p>The threat landscape evolves constantly. We continue our research into temporal security discontinuities, AI sandbox policy transitions, and emerging cache architectures to stay ahead of the next generation of vulnerabilities.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section" style="background:linear-gradient(135deg,var(--primary-dark),var(--primary-light));color:#fff;text-align:center;">
+    <div class="container">
+      <h2 style="color:#fff;">Ready to Learn More?</h2>
+      <p style="max-width:540px;margin:1rem auto 2rem;opacity:0.9;">Whether you're interested in licensing, partnership, or understanding how our technology applies to your platform, we'd like to hear from you.</p>
+      <a href="contact.html" class="btn btn-white">Get in Touch</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h4>Staaml<span style="color:var(--accent);">Corp</span></h4>
+          <p>Cybersecurity innovation and software IP licensing. Patented solutions for mitigating cached executable persistence across security policy transitions.</p>
+        </div>
+        <div>
+          <h4>Pages</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="services.html">Technology</a></li>
+            <li><a href="team.html">Team</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Resources</h4>
+          <ul>
+            <li><a href="blog.html">Insights</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <ul>
+            <li><a href="mailto:info@staamlcorp.com">info@staamlcorp.com</a></li>
+            <li>Lafayette, LA</li>
+            <li>staamlcorp.com</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 StaamlCorp. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('hamburger').addEventListener('click', function() {
+      document.getElementById('navLinks').classList.toggle('open');
+    });
+  </script>
+</body>
+</html>

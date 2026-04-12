@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact — StaamlCorp</title>
+  <meta name="description" content="Contact StaamlCorp for licensing inquiries, partnership opportunities, or to learn more about our patented cybersecurity technology.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="logo">Staaml<span>Corp</span></a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="services.html">Technology</a></li>
+        <li><a href="team.html">Team</a></li>
+        <li><a href="blog.html">Insights</a></li>
+        <li><a href="contact.html" class="btn btn-primary active" style="padding:0.5rem 1.25rem;">Contact Us</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Page Hero -->
+  <section class="hero" style="padding:4rem 0;">
+    <div class="container">
+      <h1>Contact Us</h1>
+      <p>Interested in licensing, partnerships, or learning more about our technology? We'd like to hear from you.</p>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="section">
+    <div class="container">
+      <div class="contact-wrapper">
+
+        <!-- Form -->
+        <div>
+          <h2>Send Us a Message</h2>
+          <p style="color:var(--text-light);margin-bottom:2rem;">Fill out the form below and we'll respond within one business day.</p>
+          <form action="#" method="POST" onsubmit="handleSubmit(event)">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+              <div class="form-group">
+                <label for="firstName">First Name</label>
+                <input type="text" id="firstName" name="firstName" required>
+              </div>
+              <div class="form-group">
+                <label for="lastName">Last Name</label>
+                <input type="text" id="lastName" name="lastName" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="email">Email Address</label>
+              <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+              <label for="company">Company / Organization</label>
+              <input type="text" id="company" name="company">
+            </div>
+            <div class="form-group">
+              <label for="subject">Subject</label>
+              <select id="subject" name="subject">
+                <option value="">Select a topic...</option>
+                <option value="licensing">Technology Licensing</option>
+                <option value="partnership">Partnership Opportunity</option>
+                <option value="technical">Technical Inquiry</option>
+                <option value="media">Media / Press</option>
+                <option value="careers">Careers</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="message">Message</label>
+              <textarea id="message" name="message" placeholder="Tell us about your interest in StaamlCorp's technology..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width:100%;">Send Message</button>
+          </form>
+          <div id="formSuccess" style="display:none;margin-top:1.5rem;padding:1.25rem;background:#ecfdf5;border:1px solid #6ee7b7;border-radius:var(--radius);color:#065f46;font-weight:500;">
+            Thank you for reaching out! We'll be in touch within one business day.
+          </div>
+        </div>
+
+        <!-- Contact Info -->
+        <div class="contact-info">
+          <h2>Get in Touch</h2>
+          <p style="margin-bottom:2rem;">Prefer to reach out directly? Here's how to connect.</p>
+
+          <div class="contact-detail">
+            <div class="icon">&#9993;</div>
+            <div>
+              <h3 style="font-size:1rem;">Email</h3>
+              <p><a href="mailto:info@staamlcorp.com">info@staamlcorp.com</a></p>
+            </div>
+          </div>
+
+          <div class="contact-detail">
+            <div class="icon">&#128222;</div>
+            <div>
+              <h3 style="font-size:1rem;">Phone</h3>
+              <p><a href="tel:+15043802214">(504) 380-2214</a></p>
+            </div>
+          </div>
+
+          <div class="contact-detail">
+            <div class="icon">&#127760;</div>
+            <div>
+              <h3 style="font-size:1rem;">Website</h3>
+              <p><a href="https://staamlcorp.com">staamlcorp.com</a></p>
+            </div>
+          </div>
+
+          <div class="contact-detail">
+            <div class="icon">&#128205;</div>
+            <div>
+              <h3 style="font-size:1rem;">Locations</h3>
+              <p>Lafayette, Louisiana<br>Wilmington, Delaware</p>
+            </div>
+          </div>
+
+          <div style="margin-top:2.5rem;padding:2rem;background:var(--bg-alt);border-radius:var(--radius);border:1px solid var(--border);">
+            <h3 style="margin-bottom:0.75rem;">Licensing Inquiries</h3>
+            <p style="color:var(--text-light);font-size:0.9rem;">If you represent a platform vendor, browser developer, enterprise security company, or AI platform and are interested in discussing licensing arrangements for our patented technology, please reach out directly. We're happy to schedule a detailed technical briefing.</p>
+            <a href="mailto:info@staamlcorp.com?subject=Licensing Inquiry" class="btn btn-outline" style="margin-top:1rem;">Email Us Directly</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h4>Staaml<span style="color:var(--accent);">Corp</span></h4>
+          <p>Cybersecurity innovation and software IP licensing. Patented solutions for mitigating cached executable persistence across security policy transitions.</p>
+        </div>
+        <div>
+          <h4>Pages</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="services.html">Technology</a></li>
+            <li><a href="team.html">Team</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Resources</h4>
+          <ul>
+            <li><a href="blog.html">Insights</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <ul>
+            <li><a href="mailto:info@staamlcorp.com">info@staamlcorp.com</a></li>
+            <li>Lafayette, LA</li>
+            <li>staamlcorp.com</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 StaamlCorp. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('hamburger').addEventListener('click', function() {
+      document.getElementById('navLinks').classList.toggle('open');
+    });
+
+    function handleSubmit(e) {
+      e.preventDefault();
+      document.getElementById('formSuccess').style.display = 'block';
+      e.target.reset();
+      window.scrollTo({ top: document.getElementById('formSuccess').offsetTop - 100, behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>

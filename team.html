@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Team — StaamlCorp</title>
+  <meta name="description" content="Meet Stanley Lee Linton, founder of StaamlCorp, cybersecurity researcher, and inventor of the patented temporal security binding framework.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="logo">Staaml<span>Corp</span></a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="services.html">Technology</a></li>
+        <li><a href="team.html" class="active">Team</a></li>
+        <li><a href="blog.html">Insights</a></li>
+        <li><a href="contact.html" class="btn btn-primary" style="padding:0.5rem 1.25rem;">Contact Us</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Page Hero -->
+  <section class="hero" style="padding:4rem 0;">
+    <div class="container">
+      <h1>Our Team</h1>
+      <p>Security research, software engineering, and the drive to solve problems others haven't seen.</p>
+    </div>
+  </section>
+
+  <!-- Founder -->
+  <section class="section">
+    <div class="container" style="max-width:800px;">
+      <div style="text-align:center;margin-bottom:2rem;">
+        <div class="team-avatar" style="width:120px;height:120px;font-size:2.5rem;margin:0 auto 1.5rem;">SL</div>
+        <h2 style="margin-bottom:0.25rem;">Stanley Lee Linton</h2>
+        <p style="color:var(--accent);font-weight:600;font-size:1.1rem;margin-bottom:1.5rem;">Founder &amp; Sole Inventor</p>
+      </div>
+      <p>Stanley Lee Linton is a cybersecurity researcher, software engineer, and vulnerability analyst based in Lafayette, Louisiana. His expertise spans computer security, penetration testing, secure software development, and vulnerability research.</p>
+      <p>In early 2025, Stanley conducted independent security research that led to the discovery of a previously undocumented vulnerability class (LDB-01) affecting Apple's iOS and iPadOS operating systems. The vulnerability demonstrated that cached WebAssembly modules and Service Worker scripts could persist and execute after Lockdown Mode activation, bypassing Apple's most hardened security state.</p>
+      <p>Stanley responsibly disclosed the vulnerability to Apple through their Security Research Program in May 2025. Apple reproduced the issue, assigned CVE reference webkit-294380, shipped a remediation in iOS 26 and iPadOS 26, and credited Stanley in their security advisories. Apple recognized the work with a monetary award, noting: <em>"This is solid, security beneficial research that we feel deserves recognition."</em></p>
+      <p>Beyond the specific vulnerability, Stanley developed and patented a generalized, platform-independent framework for solving the entire class of temporal security discontinuities in cached executable content. The patent application (Attorney Docket SLL-2025-001), filed under Track One Prioritized Examination, covers 30 claims including temporal security binding, policy delta computation, retroactive validation, and the Policy-Aware Cache Registry.</p>
+
+      <div style="margin-top:2.5rem;">
+        <h3>Key Credentials</h3>
+        <div class="card-grid" style="margin-top:1rem;">
+          <div class="card">
+            <h3>Apple Security Credit</h3>
+            <p>Credited by Apple in security advisories for iOS 26 and iPadOS 26 for the discovery of a Lockdown Mode bypass vulnerability.</p>
+          </div>
+          <div class="card">
+            <h3>CVE Attribution</h3>
+            <p>Vulnerability assigned Apple internal CVE reference webkit-294380, confirming technical validation of the discovery.</p>
+          </div>
+          <div class="card">
+            <h3>Patent Inventor</h3>
+            <p>Sole inventor on a 30-claim utility patent for mitigating cached executable persistence across security policy transitions.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Industry Recognition -->
+  <section class="section section-alt">
+    <div class="container" style="max-width:800px;">
+      <h2>Industry Context</h2>
+      <p>The significance of this class of vulnerability was underscored in October 2025, when Apple's VP of Security Engineering, Ivan Krsti&cacute;, presented at the Hexacon offensive security conference in Paris. Apple announced a doubling of its maximum bug bounty to $2 million (up to $5 million with Lockdown Mode bypass bonuses), explicitly emphasizing Lockdown Mode bypass research as a top-priority bounty category.</p>
+      <p>This announcement &mdash; made while Stanley's vulnerability report was under active review &mdash; reflects the critical importance the industry places on the exact category of research that led to StaamlCorp's founding.</p>
+    </div>
+  </section>
+
+  <!-- Growing the Team -->
+  <section class="section">
+    <div class="container" style="max-width:800px;text-align:center;">
+      <h2>Growing the Team</h2>
+      <p style="color:var(--text-light);max-width:600px;margin:0 auto;">StaamlCorp is actively looking to expand with professionals who share our passion for cybersecurity innovation. If you have experience in IP licensing, patent law, security research, or software engineering and want to be part of something built from the ground up, we'd love to hear from you.</p>
+      <a href="contact.html" class="btn btn-primary" style="margin-top:1.5rem;">Get in Touch</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h4>Staaml<span style="color:var(--accent);">Corp</span></h4>
+          <p>Cybersecurity innovation and software IP licensing. Patented solutions for mitigating cached executable persistence across security policy transitions.</p>
+        </div>
+        <div>
+          <h4>Pages</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="services.html">Technology</a></li>
+            <li><a href="team.html">Team</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Resources</h4>
+          <ul>
+            <li><a href="blog.html">Insights</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <ul>
+            <li><a href="mailto:info@staamlcorp.com">info@staamlcorp.com</a></li>
+            <li>Lafayette, LA</li>
+            <li>staamlcorp.com</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 StaamlCorp. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('hamburger').addEventListener('click', function() {
+      document.getElementById('navLinks').classList.toggle('open');
+    });
+  </script>
+</body>
+</html>

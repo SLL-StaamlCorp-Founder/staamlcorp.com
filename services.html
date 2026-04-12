@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Technology — StaamlCorp</title>
+  <meta name="description" content="StaamlCorp's patented technology for temporal security binding, policy delta computation, retroactive validation, and the Policy-Aware Cache Registry (PACR).">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="logo">Staaml<span>Corp</span></a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="services.html" class="active">Technology</a></li>
+        <li><a href="team.html">Team</a></li>
+        <li><a href="blog.html">Insights</a></li>
+        <li><a href="contact.html" class="btn btn-primary" style="padding:0.5rem 1.25rem;">Contact Us</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Page Hero -->
+  <section class="hero" style="padding:4rem 0;">
+    <div class="container">
+      <h1>Our Technology</h1>
+      <p>A comprehensive, platform-independent framework for mitigating cached executable persistence across security policy transitions.</p>
+    </div>
+  </section>
+
+  <!-- The Vulnerability Class -->
+  <section class="section">
+    <div class="container" style="max-width:800px;">
+      <h2>The Vulnerability Class: Temporal Security Discontinuities</h2>
+      <p>When a computing device transitions from one security policy to another (for example, from standard mode to hardened/lockdown mode), cached executable content from the prior policy state remains in storage &mdash; fully executable and invisible to the new, more restrictive policy.</p>
+      <p>This class of vulnerability, which we designated <strong>LDB-01</strong>, was first demonstrated in Apple's Lockdown Mode: WebAssembly modules and Service Workers cached under standard mode persisted and executed after Lockdown Mode activation, completely bypassing its intended security restrictions. The vulnerability went undetected for nearly three years (2022&ndash;2025) in one of the most security-conscious platforms in the world.</p>
+      <p>Our patented framework provides the systematic solution.</p>
+    </div>
+  </section>
+
+  <!-- Core Components -->
+  <section class="section section-alt">
+    <div class="container">
+      <div class="section-header">
+        <h2>Core Technology Components</h2>
+        <p>Our patent covers a multi-stage architecture with five key innovations.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:2rem;max-width:800px;margin:0 auto;">
+        <div class="card" style="border-left:4px solid var(--accent);">
+          <h3>1. Policy Transition Detection</h3>
+          <p>Automated detection of security policy transitions through parallel monitoring channels: OS API listeners, policy server push notifications, periodic queries, and configuration file monitoring. The system detects transitions from any prior policy state (Policy<sub>PRIOR</sub>) to any current state (Policy<sub>CURRENT</sub>) and triggers the validation pipeline.</p>
+        </div>
+        <div class="card" style="border-left:4px solid var(--accent);">
+          <h3>2. Policy Delta Computation</h3>
+          <p>Set-theoretic analysis computes the exact difference between security policies: <strong>&Delta;Policy_ADDED</strong> (new restrictions), <strong>&Delta;Policy_REMOVED</strong> (relaxed restrictions), and <strong>&Delta;Policy_UNCHANGED</strong> (stable rules). This precision enables targeted validation rather than expensive blanket operations.</p>
+        </div>
+        <div class="card" style="border-left:4px solid var(--accent);">
+          <h3>3. Temporal Security Binding</h3>
+          <p>Every cached executable is bound to its security context at the moment of caching. The binding includes: caching timestamp, prior policy context identifier, origin identifier, content hash (SHA-256/BLAKE2), and optional cryptographic signatures. This metadata enables retroactive policy comparison.</p>
+        </div>
+        <div class="card" style="border-left:4px solid var(--accent);">
+          <h3>4. Retroactive Validation Engine</h3>
+          <p>A six-stage validation pipeline evaluates each cached executable against the current security policy: origin validation, integrity verification, signature validation, temporal constraint evaluation, execution restriction checks, and policy compatibility assessment. Content that fails any stage is flagged as non-compliant.</p>
+        </div>
+        <div class="card" style="border-left:4px solid var(--accent);">
+          <h3>5. Mitigation &amp; Regeneration</h3>
+          <p>Non-compliant content is handled through four mitigation paths selected by risk assessment: <strong>Block</strong> (prevent execution), <strong>Purge</strong> (remove from cache), <strong>Quarantine</strong> (isolate for review), or <strong>Regenerate</strong> (create a policy-compliant variant preserving functionality). The regeneration system achieves a 65% success rate.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PACR -->
+  <section class="section">
+    <div class="container" style="max-width:800px;">
+      <h2>Policy-Aware Cache Registry (PACR)</h2>
+      <p>At the heart of the system is the <strong>Policy-Aware Cache Registry</strong> &mdash; a comprehensive tracking and forensic database that maintains records for every cached executable, including content IDs, temporal attributes, validation states, execution attempt logs, and mitigation action history.</p>
+      <p>The PACR provides enterprise-grade audit capabilities through tamper-evident, hash-chained audit records. Every validation decision, every mitigation action, and every execution attempt is logged with timestamps, rationale, and cryptographic integrity guarantees.</p>
+    </div>
+  </section>
+
+  <!-- Coverage -->
+  <section class="section section-alt">
+    <div class="container">
+      <div class="section-header">
+        <h2>Coverage Scope</h2>
+        <p>Our patent covers a broad technology landscape.</p>
+      </div>
+      <div class="card-grid">
+        <div class="card" style="text-align:center;">
+          <h3>7 Content Types</h3>
+          <p>WebAssembly, JavaScript, Service Workers, ML inference modules, compiled shaders, native binary modules, and microservice containers.</p>
+        </div>
+        <div class="card" style="text-align:center;">
+          <h3>6+ Cache Locations</h3>
+          <p>HTTP cache, Cache API, IndexedDB, localStorage, memory-mapped caches, and application-specific caches.</p>
+        </div>
+        <div class="card" style="text-align:center;">
+          <h3>7+ Platforms</h3>
+          <p>Windows, Linux, Android, iOS, macOS, embedded systems, and autonomous AI agent environments.</p>
+        </div>
+        <div class="card" style="text-align:center;">
+          <h3>All Policy Types</h3>
+          <p>OS lockdown modes, enterprise MDM, browser security levels, AI sandbox policies, regulatory compliance modes, and more.</p>
+        </div>
+        <div class="card" style="text-align:center;">
+          <h3>30 Patent Claims</h3>
+          <p>4 independent claims and 26 dependent claims providing comprehensive protection of the framework architecture.</p>
+        </div>
+        <div class="card" style="text-align:center;">
+          <h3>Track One Filing</h3>
+          <p>Filed under USPTO Track One Prioritized Examination for accelerated review and issuance.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Licensing -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2>Licensing Opportunities</h2>
+        <p>StaamlCorp offers flexible licensing arrangements for companies building products that involve cached executable content and security policy transitions.</p>
+      </div>
+      <div class="card-grid">
+        <div class="card">
+          <h3>Platform Vendors</h3>
+          <p>Operating system developers (mobile, desktop, embedded) who manage security modes and cached content across policy transitions.</p>
+        </div>
+        <div class="card">
+          <h3>Browser Vendors</h3>
+          <p>Web browser developers whose products cache WebAssembly, JavaScript, and Service Workers across security contexts and privacy modes.</p>
+        </div>
+        <div class="card">
+          <h3>Enterprise Security</h3>
+          <p>MDM providers, endpoint protection platforms, and compliance tools that enforce security policies across managed device fleets.</p>
+        </div>
+        <div class="card">
+          <h3>AI &amp; ML Platforms</h3>
+          <p>AI systems that cache inference modules, model weights, and pipeline components across sandbox policy and data governance transitions.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section" style="background:linear-gradient(135deg,var(--primary-dark),var(--primary-light));color:#fff;text-align:center;">
+    <div class="container">
+      <h2 style="color:#fff;">Explore Licensing</h2>
+      <p style="max-width:540px;margin:1rem auto 2rem;opacity:0.9;">If your platform caches executable content and supports security policy transitions, our technology is relevant to your products. Let's discuss how to work together.</p>
+      <a href="contact.html" class="btn btn-white">Contact Us</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h4>Staaml<span style="color:var(--accent);">Corp</span></h4>
+          <p>Cybersecurity innovation and software IP licensing. Patented solutions for mitigating cached executable persistence across security policy transitions.</p>
+        </div>
+        <div>
+          <h4>Pages</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="services.html">Technology</a></li>
+            <li><a href="team.html">Team</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Resources</h4>
+          <ul>
+            <li><a href="blog.html">Insights</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <ul>
+            <li><a href="mailto:info@staamlcorp.com">info@staamlcorp.com</a></li>
+            <li>Lafayette, LA</li>
+            <li>staamlcorp.com</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 StaamlCorp. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('hamburger').addEventListener('click', function() {
+      document.getElementById('navLinks').classList.toggle('open');
+    });
+  </script>
+</body>
+</html>

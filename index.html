@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StaamlCorp — Cybersecurity Innovation &amp; Software IP Licensing</title>
+  <meta name="description" content="StaamlCorp develops and licenses patented cybersecurity solutions addressing temporal security discontinuities in cached executable content across security policy transitions.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="logo">Staaml<span>Corp</span></a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="services.html">Technology</a></li>
+        <li><a href="team.html">Team</a></li>
+        <li><a href="blog.html">Insights</a></li>
+        <li><a href="contact.html" class="btn btn-primary" style="padding:0.5rem 1.25rem;">Contact Us</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <h1>Securing What Others Overlook</h1>
+      <p>StaamlCorp holds patented technology that solves a critical, previously undocumented class of security vulnerabilities &mdash; where cached executable content persists and bypasses hardened security policies. Validated by Apple. Built for every platform.</p>
+      <div class="hero-buttons">
+        <a href="services.html" class="btn btn-white">Explore Our Technology</a>
+        <a href="contact.html" class="btn btn-outline" style="color:#fff;border-color:#fff;">Licensing Inquiries</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- The Problem -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2>The Problem No One Saw</h2>
+        <p>Modern devices switch between security modes &mdash; standard, hardened, lockdown. But cached executable content from the prior mode persists, creating a dangerous blind spot.</p>
+      </div>
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon">&#9888;</div>
+          <h3>Temporal Security Gaps</h3>
+          <p>When a device transitions to a hardened security state, cached WebAssembly modules, JavaScript, and Service Workers from the previous state remain in cache &mdash; fully executable and invisible to the new security policy.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">&#128274;</div>
+          <h3>Lockdown Mode Bypass</h3>
+          <p>Our founder discovered that Apple's Lockdown Mode &mdash; designed to protect journalists, activists, and officials from targeted attacks &mdash; could be bypassed through cached executables that persisted across the security transition.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">&#127760;</div>
+          <h3>Cross-Platform Vulnerability</h3>
+          <p>This isn't just an Apple problem. Any system with cached executable content and security policy transitions &mdash; Windows, Linux, Android, enterprise MDM, AI sandboxes &mdash; is susceptible to the same class of vulnerability.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Validation -->
+  <section class="section section-alt">
+    <div class="container">
+      <div class="section-header">
+        <h2>Validated by Industry Leaders</h2>
+        <p>Our discovery was independently reproduced and remediated by Apple Inc., one of the world's leading technology companies.</p>
+      </div>
+      <div class="stats-row">
+        <div class="stat">
+          <h3>CVE Assigned</h3>
+          <p>webkit-294380 &mdash; Apple's internal CVE reference for our discovered vulnerability</p>
+        </div>
+        <div class="stat">
+          <h3>iOS 26 &amp; iPadOS 26</h3>
+          <p>Apple shipped a remediation in a major OS release based on our report</p>
+        </div>
+        <div class="stat">
+          <h3>3 Years Undetected</h3>
+          <p>The vulnerability persisted in Lockdown Mode from 2022 to 2025 &mdash; proving non-obviousness</p>
+        </div>
+        <div class="stat">
+          <h3>30 Claims</h3>
+          <p>Comprehensive patent coverage with 4 independent and 26 dependent claims</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Our Solution -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2>Our Patented Solution</h2>
+        <p>While Apple fixed one instance, StaamlCorp's patent covers the generalized, platform-independent framework.</p>
+      </div>
+      <div class="card-grid">
+        <div class="card">
+          <h3>Temporal Security Binding</h3>
+          <p>Every cached executable is bound to its security policy context at time of caching &mdash; with timestamps, policy IDs, origin identifiers, content hashes, and cryptographic signatures.</p>
+        </div>
+        <div class="card">
+          <h3>Policy Delta Computation</h3>
+          <p>Set-theoretic analysis computes exactly what changed between security policies &mdash; rules added, removed, and unchanged &mdash; enabling surgical validation rather than blanket cache purges.</p>
+        </div>
+        <div class="card">
+          <h3>Retroactive Validation &amp; Mitigation</h3>
+          <p>A six-stage validation pipeline checks origin, integrity, signatures, temporal constraints, execution restrictions, and policy compatibility. Non-compliant content is blocked, purged, quarantined, or regenerated.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Performance -->
+  <section class="section" style="background:linear-gradient(135deg,var(--primary-dark),var(--primary-light));color:#fff;">
+    <div class="container">
+      <div class="section-header">
+        <h2 style="color:#fff;">Performance That Matters</h2>
+        <p style="color:rgba(255,255,255,0.85);">Our approach doesn't sacrifice user experience for security.</p>
+      </div>
+      <div class="stats-row">
+        <div class="stat">
+          <h3 style="color:#fff;">78&times;</h3>
+          <p style="color:rgba(255,255,255,0.8);">Faster than blanket cache purging</p>
+        </div>
+        <div class="stat">
+          <h3 style="color:#fff;">88%</h3>
+          <p style="color:rgba(255,255,255,0.8);">Cache preservation rate</p>
+        </div>
+        <div class="stat">
+          <h3 style="color:#fff;">92%</h3>
+          <p style="color:rgba(255,255,255,0.8);">Bandwidth reduction</p>
+        </div>
+        <div class="stat">
+          <h3 style="color:#fff;">96%</h3>
+          <p style="color:rgba(255,255,255,0.8);">Reduction in user-perceived impact</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section" style="text-align:center;">
+    <div class="container">
+      <h2>Interested in Licensing Our Technology?</h2>
+      <p style="max-width:600px;margin:1rem auto 2rem;color:var(--text-light);">StaamlCorp's patented framework applies across platforms, cache types, and security policy architectures. If your products manage cached executable content, let's talk.</p>
+      <a href="contact.html" class="btn btn-primary">Start a Conversation</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h4>Staaml<span style="color:var(--accent);">Corp</span></h4>
+          <p>Cybersecurity innovation and software IP licensing. Patented solutions for mitigating cached executable persistence across security policy transitions.</p>
+        </div>
+        <div>
+          <h4>Pages</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="services.html">Technology</a></li>
+            <li><a href="team.html">Team</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Resources</h4>
+          <ul>
+            <li><a href="blog.html">Insights</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <ul>
+            <li><a href="mailto:info@staamlcorp.com">info@staamlcorp.com</a></li>
+            <li>Lafayette, LA</li>
+            <li>staamlcorp.com</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 StaamlCorp. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('hamburger').addEventListener('click', function() {
+      document.getElementById('navLinks').classList.toggle('open');
+    });
+  </script>
+</body>
+</html>
