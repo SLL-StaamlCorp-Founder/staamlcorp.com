@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Temporal Security Discontinuity: The Vulnerability Class Hiding in Every Cache — StaamlCorp</title>
+  <meta name="description" content="Every modern computing device relies on cached executable content and supports multiple security states. The vulnerability class exists at the intersection of these two realities.">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .article-hero {
+      background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 50%, var(--primary-light) 100%);
+      color: #fff;
+      padding: 5rem 0 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .article-hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 600px;
+      height: 600px;
+      background: rgba(255,255,255,0.03);
+      border-radius: 50%;
+    }
+    .article-hero h1 {
+      color: #fff;
+      font-size: 2.4rem;
+      max-width: 800px;
+      margin-bottom: 1.25rem;
+      line-height: 1.2;
+    }
+    .article-meta {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+      flex-wrap: wrap;
+      font-size: 0.9rem;
+      opacity: 0.85;
+    }
+    .article-meta .category-badge {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 20px;
+      padding: 0.25rem 0.85rem;
+      font-weight: 600;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .article-content {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .article-content h2 {
+      font-size: 1.65rem;
+      color: var(--primary);
+      margin-top: 2.5rem;
+      margin-bottom: 1rem;
+    }
+    .article-content h3 {
+      font-size: 1.2rem;
+      color: var(--primary-dark);
+      margin-top: 1.75rem;
+      margin-bottom: 0.75rem;
+    }
+    .article-content p {
+      color: var(--text);
+      line-height: 1.85;
+      margin-bottom: 1.25rem;
+    }
+    .article-content ul,
+    .article-content ol {
+      margin: 1rem 0 1.25rem 1.5rem;
+      color: var(--text);
+      line-height: 1.85;
+    }
+    .article-content li {
+      margin-bottom: 0.5rem;
+    }
+    .article-content blockquote {
+      border-left: 4px solid var(--accent);
+      margin: 2rem 0;
+      padding: 1.25rem 1.75rem;
+      background: var(--bg-alt);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      font-style: italic;
+      color: var(--text-light);
+      font-size: 1.05rem;
+      line-height: 1.8;
+    }
+    .article-content strong {
+      color: var(--primary-dark);
+    }
+    .author-bio {
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.75rem 2rem;
+      margin-top: 3rem;
+      font-style: italic;
+      color: var(--text-light);
+      line-height: 1.8;
+    }
+    .related-articles {
+      border-top: 1px solid var(--border);
+      margin-top: 3rem;
+      padding-top: 2.5rem;
+    }
+    .related-articles h2 {
+      font-size: 1.35rem;
+      margin-bottom: 1.5rem;
+    }
+    .related-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+    .related-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.5rem;
+      transition: all var(--transition);
+    }
+    .related-card:hover {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-3px);
+    }
+    .related-card .rc-cat {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--accent);
+      margin-bottom: 0.4rem;
+    }
+    .related-card h3 {
+      font-size: 1rem;
+      margin-bottom: 0;
+      line-height: 1.4;
+    }
+    .related-card h3 a {
+      color: var(--primary);
+    }
+    .related-card h3 a:hover {
+      color: var(--accent);
+    }
+    .article-cta {
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+      color: #fff;
+      border-radius: var(--radius);
+      padding: 2.5rem 2rem;
+      text-align: center;
+      margin-top: 3rem;
+    }
+    .article-cta h2 {
+      color: #fff;
+      font-size: 1.5rem;
+      margin-bottom: 0.75rem;
+    }
+    .article-cta p {
+      color: rgba(255,255,255,0.85);
+      margin-bottom: 1.5rem;
+    }
+    @media (max-width: 768px) {
+      .article-hero h1 { font-size: 1.75rem; }
+      .related-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Patent Banner -->
+  <div class="patent-banner">
+    <div class="container">
+      <strong>Patent Pending</strong> &mdash; U.S. App. No. 19/640,793 | Track One Prioritized Examination | 30 Claims (4 Independent, 26 Dependent) | <a href="services.html" style="color:#fff;text-decoration:underline;">Licensing Available</a>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="logo">Staaml<span>Corp</span></a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="services.html">Licensing</a></li>
+        <li><a href="assessment.html">Risk Assessment</a></li>
+        <li><a href="team.html">Team</a></li>
+        <li><a href="blog.html" class="active">Insights</a></li>
+        <li><a href="contact.html" class="btn btn-primary" style="padding:0.5rem 1.25rem;">Contact Us</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Article Hero -->
+  <section class="article-hero">
+    <div class="container">
+      <div class="article-meta" style="margin-bottom:1.25rem;">
+        <span class="category-badge">Vulnerability Research</span>
+        <span>April 2026</span>
+        <span>By Stanley Lee Linton</span>
+      </div>
+      <h1>Temporal Security Discontinuity: The Vulnerability Class Hiding in Every Cache</h1>
+    </div>
+  </section>
+
+  <!-- Article Content -->
+  <section class="section">
+    <div class="container">
+      <div class="article-content">
+
+        <p>Every modern computing device relies on cached executable content. WebAssembly modules compiled once and stored for reuse. Service Workers running in the background across browser sessions. JavaScript bundles preserved to shave seconds off load times. Machine learning inference engines cached to avoid reloading multi-gigabyte model weights. This caching is not a flaw &mdash; it is a foundational optimization that makes modern software usable.</p>
+
+        <p>Every modern computing device also supports multiple security states. A smartphone has standard mode and Lockdown Mode. A browser has standard browsing, private mode, and enterprise-managed configurations. An AI platform has permissive development contexts and restricted production governance modes. An enterprise laptop shifts between baseline policies and threat-elevated restrictions pushed by MDM administrators responding to active incidents.</p>
+
+        <p>The vulnerability class I am describing here exists at the intersection of these two realities.</p>
+
+        <h3>The Gap Nobody Checked</h3>
+
+        <p>When a system transitions from a permissive security state to a restrictive one, something happens to the active security policy. Restrictions are added. Permissions are removed. Features are disabled. The system's security posture hardens.</p>
+
+        <p>But something does not happen to the cache.</p>
+
+        <p>Executable content that was stored under the permissive policy &mdash; content that was perfectly legitimate when it was cached &mdash; remains sitting in storage. It does not know the security policy changed. It was not designed to know. No mechanism exists to inform it. No process runs to re-evaluate it. No system checks whether it should still be allowed to execute.</p>
+
+        <p>When that content is subsequently loaded and run, it executes with the capabilities it had when it was cached, not the capabilities permitted by the current security policy. The old policy authorized it. The new policy would prohibit it. But the new policy never gets a chance to weigh in, because nobody asks.</p>
+
+        <p>I call this vulnerability class <em>temporal security discontinuity</em> &mdash; a mismatch between the security context at the time of content caching and the security context at the time of content execution. The word "temporal" is critical. This is not a privilege escalation across user boundaries. It is not a sandbox escape across process boundaries. It is a security bypass across <em>time</em> &mdash; content authorized at time T&#8321; executing at time T&#8322; under a policy that would have rejected it.</p>
+
+        <h3>Why It Went Undetected</h3>
+
+        <p>The most revealing fact about temporal security discontinuity is how long it survived in plain sight. I discovered a specific instantiation of this vulnerability class &mdash; designated LDB-01 &mdash; affecting Apple's iOS and iPadOS platforms. The vulnerability involved WebAssembly modules and Service Worker scripts cached by Safari during standard operation continuing to execute after the user enabled Lockdown Mode, Apple's highest-security state designed for individuals facing targeted cyber-attacks.</p>
+
+        <p>Apple introduced Lockdown Mode in iOS 16 in September 2022. I discovered LDB-01 in early 2025 and responsibly disclosed it to Apple through their Security Research Program in May 2025 (Report ID OE11022074757). Apple acknowledged the vulnerability under internal tracking reference webkit-294380 and deployed a fix in Safari 26, iOS 26, and iPadOS 26 (build 23A635 and later). Apple credited my contribution in their public security advisory at support.apple.com/125113.</p>
+
+        <p>That is a three-year window. From September 2022 to September 2025, one of the world's most sophisticated technology companies shipped a hardened security mode that did not retroactively validate cached executable content upon activation. This was not a failure of engineering talent &mdash; Apple employs some of the best security engineers in the world. It was a failure of conceptual framing. The assumption embedded in every cache management system I have examined is that security validation happens <em>at caching time</em> and does not need to happen again. Cache management and security policy management operate as independent subsystems. Neither knows what the other is doing.</p>
+
+        <p>This assumption &mdash; what I call "forward-only validation" &mdash; is the root cause. Content is validated when it enters the cache. If it passes, it is marked safe. That mark persists indefinitely, regardless of how the security landscape changes after caching. The mark is a statement about the past ("this content was compliant when we checked") being treated as a statement about the present ("this content is compliant now"). In a world of static security policies, the distinction does not matter. In a world where security policies evolve &mdash; where users enable hardened modes, where enterprises push policy updates, where AI governance frameworks activate new restrictions &mdash; the distinction is everything.</p>
+
+        <h3>The Scope of the Problem</h3>
+
+        <p>LDB-01 is one instantiation. The vulnerability class is general.</p>
+
+        <p>Consider an enterprise that pushes an MDM policy update blocking a specific content delivery network flagged by threat intelligence as a supply chain compromise risk. JavaScript bundles cached from that CDN before the policy update remain in every managed device's browser cache, executable and unvalidated against the new restriction.</p>
+
+        <p>Consider an AI governance platform that activates GDPR-enhanced privacy restrictions prohibiting biometric data processing by cached inference models. Neural network weights and prompt templates cached under the prior, permissive policy remain loaded and ready to execute biometric operations that the current policy explicitly forbids.</p>
+
+        <p>Consider a browser transitioning from standard mode to private mode and back. Content cached during standard browsing may persist into and beyond the private session, depending on implementation. The security boundaries that private mode is supposed to enforce are undermined by cache state that predates them.</p>
+
+        <p>In every case, the pattern is identical: cached executable content authorized under Policy A continues executing after transition to Policy B, which would prohibit it. The cache does not participate in security transitions. It is a temporal island &mdash; frozen in the security context of the moment it was written, indifferent to everything that happens afterward.</p>
+
+        <h3>Why This Matters Now</h3>
+
+        <p>Three converging forces make temporal security discontinuity an urgent problem rather than a theoretical curiosity.</p>
+
+        <p>First, the surface area of cached executable content is expanding. WebAssembly adoption is accelerating across performance-critical web applications. Service Workers power the offline capabilities of Progressive Web Apps used by hundreds of millions of people. Machine learning inference is moving to the edge, with model weights and inference engines cached on-device for latency and privacy reasons. Every new category of cached executable content is a new category of content that can persist across security transitions unvalidated.</p>
+
+        <p>Second, security policies are becoming more dynamic. Static, rarely-changing security configurations are giving way to adaptive, context-sensitive policies that shift based on threat intelligence, user behavior, regulatory requirements, and operational context. The EU AI Act's 2026 enforcement timeline, the NIST AI Risk Management Framework's governance requirements, and enterprise zero-trust architectures all assume that security policies will evolve frequently. Each policy evolution is a potential temporal security discontinuity event if cached content is not re-evaluated.</p>
+
+        <p>Third, the stakes are highest for the people who need protection most. Lockdown Mode exists for journalists, human rights activists, and government officials facing targeted cyber-attacks from nation-state adversaries. These are individuals who activate hardened security precisely because they are under threat. A vulnerability class that allows pre-positioned cached content to execute despite hardened protections is a vulnerability class that directly undermines protections designed for the most vulnerable users.</p>
+
+        <h3>What the Industry Needs to Recognize</h3>
+
+        <p>I am not going to describe a solution in this post. What I want to establish is that the problem exists, that it is general, and that it is not addressed by any existing security mechanism.</p>
+
+        <p>Content Security Policy does not retroactively validate cached content when policies change. MDM frameworks do not enumerate and re-evaluate cached executables across browser storage layers after a policy push. HTTP cache-control directives govern freshness based on content age, not security policy compatibility. Browser private modes create ephemeral sessions but do not invalidate content cached during prior standard sessions. Trusted Platform Module attestation operates at the platform level and does not reach into application-layer caches.</p>
+
+        <p>Every one of these mechanisms validates content going forward. None of them look backward. None of them ask: "Given that the security policy just changed, is the content we already cached still allowed to run?"</p>
+
+        <p>That is the question that temporal security discontinuity forces the industry to confront. The answer, today, for every major platform I have examined, is that nobody is asking it.</p>
+
+        <p>Apple's fix for LDB-01 addresses the specific instantiation in Safari on iOS and iPadOS. It is a vendor-specific patch for a single product on a single platform. The general problem &mdash; cached executables persisting unvalidated across security policy transitions in any computing environment &mdash; remains open.</p>
+
+        <p>Three years of undetected exposure on a platform used by over a billion people should be sufficient evidence that this is not a problem the industry will solve by accident.</p>
+
+        <!-- Author Bio -->
+        <div class="author-bio">
+          <p style="margin-bottom:0;"><strong style="color:var(--primary);">Stanley Lee Linton</strong> is the founder of STAAML Corp. and the discoverer of the LDB-01 vulnerability class. Apple credited his contribution in their Safari 26 security advisory (support.apple.com/125113) under WebKit additional recognition.</p>
+        </div>
+
+        <!-- Related Articles -->
+        <div class="related-articles">
+          <h2>Related Articles</h2>
+          <div class="related-grid">
+            <div class="related-card">
+              <div class="rc-cat">Vulnerability Research</div>
+              <h3><a href="blog-ldb01-three-years.html">Three Years in Plain Sight: What LDB-01 Reveals About Security Assumptions</a></h3>
+            </div>
+            <div class="related-card">
+              <div class="rc-cat">Industry Analysis</div>
+              <h3><a href="blog-ai-governance.html">Why AI Governance Makes Temporal Security Discontinuity an Urgent Problem</a></h3>
+            </div>
+          </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="article-cta">
+          <h2>Interested in licensing our technology?</h2>
+          <p>StaamlCorp licenses the patented Temporal Security Binding architecture to platform vendors, browser developers, and enterprise security teams building the next generation of policy-aware systems.</p>
+          <a href="contact.html" class="btn btn-white">Get in Touch</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h4>Staaml<span style="color:var(--accent);">Corp</span></h4>
+          <p>Cybersecurity IP licensing. Patent-pending technology for mitigating cached executable persistence across security policy transitions. U.S. App. No. 19/640,793.</p>
+        </div>
+        <div>
+          <h4>Pages</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="services.html">Licensing</a></li>
+            <li><a href="assessment.html">Risk Assessment</a></li>
+            <li><a href="team.html">Team</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Resources</h4>
+          <ul>
+            <li><a href="blog.html">Insights</a></li>
+            <li><a href="blog-temporal-discontinuity.html">Temporal Discontinuity</a></li>
+            <li><a href="blog-ldb01-three-years.html">LDB-01 Three Years</a></li>
+            <li><a href="blog-ai-governance.html">AI Governance</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <ul>
+            <li><a href="mailto:info@staamlcorp.com">info@staamlcorp.com</a></li>
+            <li><a href="tel:+15043802214">(504) 380-2214</a></li>
+            <li>Lafayette, LA</li>
+            <li>staamlcorp.com</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 StaamlCorp. All rights reserved. | Patent Pending: U.S. App. No. 19/640,793</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('hamburger').addEventListener('click', function() {
+      document.getElementById('navLinks').classList.toggle('open');
+    });
+  </script>
+</body>
+</html>

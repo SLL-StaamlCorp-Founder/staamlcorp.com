@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Three Years in Plain Sight: What LDB-01 Reveals About Security Assumptions — StaamlCorp</title>
+  <meta name="description" content="What the three-year window between Lockdown Mode's introduction and the LDB-01 vulnerability's discovery tells us about assumptions built into the security architectures we depend on.">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .article-hero {
+      background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 50%, var(--primary-light) 100%);
+      color: #fff;
+      padding: 5rem 0 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .article-hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 600px;
+      height: 600px;
+      background: rgba(255,255,255,0.03);
+      border-radius: 50%;
+    }
+    .article-hero h1 {
+      color: #fff;
+      font-size: 2.4rem;
+      max-width: 800px;
+      margin-bottom: 1.25rem;
+      line-height: 1.2;
+    }
+    .article-meta {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+      flex-wrap: wrap;
+      font-size: 0.9rem;
+      opacity: 0.85;
+    }
+    .article-meta .category-badge {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 20px;
+      padding: 0.25rem 0.85rem;
+      font-weight: 600;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .article-content {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .article-content h2 {
+      font-size: 1.65rem;
+      color: var(--primary);
+      margin-top: 2.5rem;
+      margin-bottom: 1rem;
+    }
+    .article-content h3 {
+      font-size: 1.2rem;
+      color: var(--primary-dark);
+      margin-top: 1.75rem;
+      margin-bottom: 0.75rem;
+    }
+    .article-content p {
+      color: var(--text);
+      line-height: 1.85;
+      margin-bottom: 1.25rem;
+    }
+    .article-content ul,
+    .article-content ol {
+      margin: 1rem 0 1.25rem 1.5rem;
+      color: var(--text);
+      line-height: 1.85;
+    }
+    .article-content li {
+      margin-bottom: 0.5rem;
+    }
+    .article-content blockquote {
+      border-left: 4px solid var(--accent);
+      margin: 2rem 0;
+      padding: 1.25rem 1.75rem;
+      background: var(--bg-alt);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      font-style: italic;
+      color: var(--text-light);
+      font-size: 1.05rem;
+      line-height: 1.8;
+    }
+    .article-content strong {
+      color: var(--primary-dark);
+    }
+    .author-bio {
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.75rem 2rem;
+      margin-top: 3rem;
+      font-style: italic;
+      color: var(--text-light);
+      line-height: 1.8;
+    }
+    .related-articles {
+      border-top: 1px solid var(--border);
+      margin-top: 3rem;
+      padding-top: 2.5rem;
+    }
+    .related-articles h2 {
+      font-size: 1.35rem;
+      margin-bottom: 1.5rem;
+    }
+    .related-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+    .related-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.5rem;
+      transition: all var(--transition);
+    }
+    .related-card:hover {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-3px);
+    }
+    .related-card .rc-cat {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--accent);
+      margin-bottom: 0.4rem;
+    }
+    .related-card h3 {
+      font-size: 1rem;
+      margin-bottom: 0;
+      line-height: 1.4;
+    }
+    .related-card h3 a {
+      color: var(--primary);
+    }
+    .related-card h3 a:hover {
+      color: var(--accent);
+    }
+    .article-cta {
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+      color: #fff;
+      border-radius: var(--radius);
+      padding: 2.5rem 2rem;
+      text-align: center;
+      margin-top: 3rem;
+    }
+    .article-cta h2 {
+      color: #fff;
+      font-size: 1.5rem;
+      margin-bottom: 0.75rem;
+    }
+    .article-cta p {
+      color: rgba(255,255,255,0.85);
+      margin-bottom: 1.5rem;
+    }
+    @media (max-width: 768px) {
+      .article-hero h1 { font-size: 1.75rem; }
+      .related-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Patent Banner -->
+  <div class="patent-banner">
+    <div class="container">
+      <strong>Patent Pending</strong> &mdash; U.S. App. No. 19/640,793 | Track One Prioritized Examination | 30 Claims (4 Independent, 26 Dependent) | <a href="services.html" style="color:#fff;text-decoration:underline;">Licensing Available</a>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="logo">Staaml<span>Corp</span></a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="services.html">Licensing</a></li>
+        <li><a href="assessment.html">Risk Assessment</a></li>
+        <li><a href="team.html">Team</a></li>
+        <li><a href="blog.html" class="active">Insights</a></li>
+        <li><a href="contact.html" class="btn btn-primary" style="padding:0.5rem 1.25rem;">Contact Us</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Article Hero -->
+  <section class="article-hero">
+    <div class="container">
+      <div class="article-meta" style="margin-bottom:1.25rem;">
+        <span class="category-badge">Vulnerability Research</span>
+        <span>April 2026</span>
+        <span>By Stanley Lee Linton</span>
+      </div>
+      <h1>Three Years in Plain Sight: What LDB-01 Reveals About Security Assumptions</h1>
+    </div>
+  </section>
+
+  <!-- Article Content -->
+  <section class="section">
+    <div class="container">
+      <div class="article-content">
+
+        <p>In September 2022, Apple introduced Lockdown Mode to iOS 16. It was positioned as an extreme security measure for a narrow population: journalists, activists, diplomats, and others who face sophisticated, targeted cyber-attacks. When enabled, Lockdown Mode disables JIT JavaScript compilation, blocks most attachment types, restricts web fonts, limits complex web technologies including WebAssembly, disables link previews, and restricts network protocols. It is, by design, the most restrictive security state available on a consumer device.</p>
+
+        <p>In May 2025, I submitted a vulnerability report to Apple documenting that WebAssembly modules and Service Worker scripts cached by Safari during standard operation persisted and remained executable after Lockdown Mode activation. Apple assigned the report ID OE11022074757, tracked the issue as webkit-294380, and deployed a fix in Safari 26 and iOS 26 (build 23A635 and later), released September 2025. My contribution is credited in Apple's public security advisory at support.apple.com/125113.</p>
+
+        <p>This post is not about criticizing Apple. Apple responded to the disclosure through their established Security Research Program, confirmed the vulnerability, and remediated it in a major release. That is responsible vendor behavior. This post is about what the three-year window between Lockdown Mode's introduction and the vulnerability's discovery tells us about assumptions built into the security architectures we depend on.</p>
+
+        <h3>The Forward-Only Assumption</h3>
+
+        <p>Every cache management system I have examined operates on an implicit assumption: security validation is a point-in-time event that occurs when content enters the cache. Once content passes validation and is stored, its security status is considered settled. The cache treats stored content as inherently authorized, because it was authorized at the moment it was cached.</p>
+
+        <p>This assumption is so deeply embedded that it does not appear as an explicit design decision in any specification I have reviewed. It is not documented as a tradeoff. It is not flagged as a known limitation. It is simply the way caches work &mdash; and have always worked &mdash; because cache management evolved to solve performance problems, not security problems. The metadata that caches track reflects this origin: content size (for storage management), expiration timestamps (for freshness), access frequency (for eviction decisions), and cache priority (for replacement policies). Nowhere in this metadata is there a record of what security policy was active when the content was stored.</p>
+
+        <p>When Lockdown Mode activates, the operating system transitions to a hardened security state. Active processes are notified. New content requests are evaluated against the restrictive policy. But the cache &mdash; containing potentially thousands of previously stored executable items &mdash; is not re-evaluated. It exists outside the security transition. It is a remnant of the prior security state, persisting into and through the new one.</p>
+
+        <h3>What the Attack Looks Like</h3>
+
+        <p>The attack model enabled by this gap is patient and precise. A sophisticated adversary &mdash; the exact kind of adversary Lockdown Mode is designed to defend against &mdash; does not need to attack a target while Lockdown Mode is active. The adversary compromises a website or deploys malicious content on a legitimate site that the target is likely to visit during normal (non-Lockdown) browsing. The target visits the site. Safari caches WebAssembly modules and registers Service Workers as part of normal browsing behavior. The content appears entirely benign under standard security policies, because it is &mdash; standard policies permit WebAssembly execution and Service Worker registration.</p>
+
+        <p>Days, weeks, or months later, the target enables Lockdown Mode &mdash; perhaps after receiving a threat notification, perhaps before traveling to a high-risk region, perhaps as a precautionary measure following a security incident. The target believes they are now operating under maximum security protections.</p>
+
+        <p>But the cached content from the pre-Lockdown browsing session remains. When the target revisits the associated website, or when a Service Worker activates in response to a background event, the cached executable content runs with the capabilities it possessed under the prior, permissive policy. WebAssembly modules that Lockdown Mode is specifically designed to block execute normally. The security transition that the user initiated &mdash; the transition that was supposed to eliminate these exact attack surfaces &mdash; did not reach the cache.</p>
+
+        <p>The vulnerability window for pre-positioning content is essentially unlimited. An adversary who plans months ahead can establish cached footholds long before a target even considers enabling hardened security.</p>
+
+        <h3>The Broader Pattern</h3>
+
+        <p>The instinct is to treat this as an Apple-specific implementation bug. That framing is incorrect and, more importantly, dangerous. The vulnerability exists because of a structural gap in how the entire computing industry conceptualizes the relationship between caching and security policy.</p>
+
+        <p>I have examined, at a conceptual level, the cache architectures of multiple browsers, operating systems, and application frameworks. The pattern is consistent: cache management operates independently of security policy management. They are separate subsystems with separate concerns, separate metadata, and separate lifecycle management. When security policies change, no signal propagates to the cache layer. When cached content is loaded for execution, no check occurs to determine whether the security context has changed since caching.</p>
+
+        <p>This is not negligence. It is architectural inertia. Caches were designed in an era of static security configurations, where the assumption that "validated once means validated forever" was approximately true. That era is over. Security policies now change in response to user actions (enabling hardened modes), administrative commands (enterprise policy pushes), threat intelligence (dynamic risk elevation), regulatory requirements (governance framework activations), and AI governance contexts (model permission transitions). Each of these transitions creates a potential temporal security discontinuity if cached content is not reassessed.</p>
+
+        <h3>The Scale Question</h3>
+
+        <p>Apple's Lockdown Mode affects a subset of iOS users who choose to enable it. But the temporal security discontinuity vulnerability class is not limited to opt-in hardened modes. It applies to any security policy transition that affects cached executable content.</p>
+
+        <p>Enterprise MDM policy updates affect millions of managed devices. Browser private mode transitions occur billions of times per day across all browser platforms. AI governance framework activations will affect every organization deploying AI models under the EU AI Act's 2026 enforcement timeline. Cloud container security policy updates affect every microservice deployment in every cloud environment.</p>
+
+        <p>The question is not whether other instantiations of this vulnerability class exist. The question is how many exist, across how many platforms, affecting how many users, and how long they will persist before being individually discovered and individually patched &mdash; one vendor-specific fix at a time, each addressing a single product on a single platform, while the general problem remains unaddressed.</p>
+
+        <p>Three years of undetected exposure on Apple's platform is data. It is reasonable to infer that analogous exposure windows exist elsewhere.</p>
+
+        <!-- Author Bio -->
+        <div class="author-bio">
+          <p style="margin-bottom:0;"><strong style="color:var(--primary);">Stanley Lee Linton</strong> is the founder of STAAML Corp. and the discoverer of the LDB-01 vulnerability class (Apple webkit-294380, Report ID OE11022074757). Apple's public advisory is available at support.apple.com/125113.</p>
+        </div>
+
+        <!-- Related Articles -->
+        <div class="related-articles">
+          <h2>Related Articles</h2>
+          <div class="related-grid">
+            <div class="related-card">
+              <div class="rc-cat">Vulnerability Research</div>
+              <h3><a href="blog-temporal-discontinuity.html">Temporal Security Discontinuity: The Vulnerability Class Hiding in Every Cache</a></h3>
+            </div>
+            <div class="related-card">
+              <div class="rc-cat">Industry Analysis</div>
+              <h3><a href="blog-ai-governance.html">Why AI Governance Makes Temporal Security Discontinuity an Urgent Problem</a></h3>
+            </div>
+          </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="article-cta">
+          <h2>Interested in licensing our technology?</h2>
+          <p>StaamlCorp licenses the patented Temporal Security Binding architecture to platform vendors, browser developers, and enterprise security teams building the next generation of policy-aware systems.</p>
+          <a href="contact.html" class="btn btn-white">Get in Touch</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h4>Staaml<span style="color:var(--accent);">Corp</span></h4>
+          <p>Cybersecurity IP licensing. Patent-pending technology for mitigating cached executable persistence across security policy transitions. U.S. App. No. 19/640,793.</p>
+        </div>
+        <div>
+          <h4>Pages</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="services.html">Licensing</a></li>
+            <li><a href="assessment.html">Risk Assessment</a></li>
+            <li><a href="team.html">Team</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Resources</h4>
+          <ul>
+            <li><a href="blog.html">Insights</a></li>
+            <li><a href="blog-temporal-discontinuity.html">Temporal Discontinuity</a></li>
+            <li><a href="blog-ldb01-three-years.html">LDB-01 Three Years</a></li>
+            <li><a href="blog-ai-governance.html">AI Governance</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <ul>
+            <li><a href="mailto:info@staamlcorp.com">info@staamlcorp.com</a></li>
+            <li><a href="tel:+15043802214">(504) 380-2214</a></li>
+            <li>Lafayette, LA</li>
+            <li>staamlcorp.com</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 StaamlCorp. All rights reserved. | Patent Pending: U.S. App. No. 19/640,793</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('hamburger').addEventListener('click', function() {
+      document.getElementById('navLinks').classList.toggle('open');
+    });
+  </script>
+</body>
+</html>

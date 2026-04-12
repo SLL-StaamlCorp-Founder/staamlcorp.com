@@ -54,12 +54,12 @@
         <div>
           <div class="blog-meta" style="margin-bottom:0.75rem;">
             <span>April 2026</span>
-            <span>Research</span>
+            <span>Vulnerability Research</span>
             <span>Stanley Lee Linton</span>
           </div>
-          <h2 style="margin-bottom:0.75rem;"><a href="blog-lockdown-bypass.html" style="color:var(--primary);">Why Apple's Lockdown Mode Had a Three-Year Blind Spot</a></h2>
-          <p style="color:var(--text-light);">Apple's Lockdown Mode was introduced in September 2022 to protect high-risk users from targeted cyber-attacks. For nearly three years, a class of cached executable content persisted across the security transition undetected. The discovery, the disclosure, Apple's response, and what it means for every platform that caches executable content.</p>
-          <a href="blog-lockdown-bypass.html" class="btn btn-primary" style="margin-top:1rem;">Read Full Article</a>
+          <h2 style="margin-bottom:0.75rem;"><a href="blog-temporal-discontinuity.html" style="color:var(--primary);">Temporal Security Discontinuity: The Vulnerability Class Hiding in Every Cache</a></h2>
+          <p style="color:var(--text-light);">Every modern computing device relies on cached executable content and supports multiple security states. The vulnerability class I am describing exists at the intersection of these two realities &mdash; a mismatch between the security context at the time of content caching and the security context at the time of content execution.</p>
+          <a href="blog-temporal-discontinuity.html" class="btn btn-primary" style="margin-top:1rem;">Read Full Article</a>
         </div>
       </div>
     </div>
@@ -78,10 +78,10 @@
           <div class="blog-body">
             <div class="blog-meta">
               <span>April 2026</span>
-              <span>Research</span>
+              <span>Vulnerability Research</span>
             </div>
-            <h3><a href="blog-lockdown-bypass.html">Why Apple's Lockdown Mode Had a Three-Year Blind Spot</a></h3>
-            <p>For nearly three years, cached executable content persisted across the most hardened security transition in iOS. The full story of how LDB-01 was discovered, disclosed, and what it means for the industry.</p>
+            <h3><a href="blog-temporal-discontinuity.html">Temporal Security Discontinuity: The Vulnerability Class Hiding in Every Cache</a></h3>
+            <p>Every modern computing device relies on cached executable content and supports multiple security states. The vulnerability class exists at the intersection of these two realities &mdash; a security bypass across time.</p>
           </div>
         </div>
 
@@ -90,10 +90,10 @@
           <div class="blog-body">
             <div class="blog-meta">
               <span>April 2026</span>
-              <span>Technical</span>
+              <span>Vulnerability Research</span>
             </div>
-            <h3><a href="blog-temporal-security.html">Temporal Security Discontinuities: The Vulnerability Class No One Was Looking For</a></h3>
-            <p>When cached executables outlive the security policy they were created under, you get a temporal security discontinuity. How this vulnerability class works and why every conventional defense fails to address it.</p>
+            <h3><a href="blog-ldb01-three-years.html">Three Years in Plain Sight: What LDB-01 Reveals About Security Assumptions</a></h3>
+            <p>What the three-year window between Lockdown Mode's introduction and the LDB-01 vulnerability's discovery tells us about assumptions built into the security architectures we depend on.</p>
           </div>
         </div>
 
@@ -101,47 +101,11 @@
           <div class="blog-thumb">&#128200;</div>
           <div class="blog-body">
             <div class="blog-meta">
-              <span>March 2026</span>
-              <span>Analysis</span>
+              <span>April 2026</span>
+              <span>Industry Analysis</span>
             </div>
-            <h3><a href="blog-attack-surface.html">Beyond WebAssembly: Seven Types of Cached Executable Content at Risk</a></h3>
-            <p>Seven categories of cached executable content are vulnerable across six storage locations and seven platform categories. A comprehensive attack surface analysis.</p>
-          </div>
-        </div>
-
-        <div class="blog-card">
-          <div class="blog-thumb">&#9881;</div>
-          <div class="blog-body">
-            <div class="blog-meta">
-              <span>March 2026</span>
-              <span>Architecture</span>
-            </div>
-            <h3><a href="blog-temporal-security.html#delta">Policy Delta Computation: Surgical Validation Instead of Blanket Purges</a></h3>
-            <p>The naive approach to security policy transitions is to wipe all caches. Our policy delta computation uses set-theoretic analysis to determine exactly what changed, enabling targeted validation that's 78 times faster.</p>
-          </div>
-        </div>
-
-        <div class="blog-card">
-          <div class="blog-thumb">&#128187;</div>
-          <div class="blog-body">
-            <div class="blog-meta">
-              <span>February 2026</span>
-              <span>Industry</span>
-            </div>
-            <h3><a href="blog-lockdown-bypass.html#bounty">Apple's $5M Bug Bounty and What It Means for Lockdown Mode Research</a></h3>
-            <p>In October 2025, Apple doubled its maximum bug bounty and added Lockdown Mode bypass bonuses up to $5 million. What this signals about the value the industry places on this research category.</p>
-          </div>
-        </div>
-
-        <div class="blog-card">
-          <div class="blog-thumb">&#128302;</div>
-          <div class="blog-body">
-            <div class="blog-meta">
-              <span>February 2026</span>
-              <span>Future</span>
-            </div>
-            <h3><a href="blog-attack-surface.html#ai">AI Sandbox Policies and the Next Frontier of Cached Executable Risk</a></h3>
-            <p>As AI systems adopt increasingly dynamic sandbox policies, the risk of cached inference modules persisting across policy transitions grows. The vulnerability class is particularly acute in always-on autonomous agents.</p>
+            <h3><a href="blog-ai-governance.html">Why AI Governance Makes Temporal Security Discontinuity an Urgent Problem</a></h3>
+            <p>The most consequential instantiations of temporal security discontinuity may not involve browsers at all. They will involve artificial intelligence and the EU AI Act's 2026 enforcement deadline.</p>
           </div>
         </div>
 
@@ -196,9 +160,9 @@
           <h4>Resources</h4>
           <ul>
             <li><a href="blog.html">Insights</a></li>
-            <li><a href="blog-lockdown-bypass.html">Lockdown Bypass</a></li>
-            <li><a href="blog-temporal-security.html">Temporal Security</a></li>
-            <li><a href="blog-attack-surface.html">Attack Surface</a></li>
+            <li><a href="blog-temporal-discontinuity.html">Temporal Discontinuity</a></li>
+            <li><a href="blog-ldb01-three-years.html">LDB-01 Three Years</a></li>
+            <li><a href="blog-ai-governance.html">AI Governance</a></li>
             <li><a href="contact.html">Contact</a></li>
           </ul>
         </div>
