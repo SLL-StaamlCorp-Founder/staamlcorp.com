@@ -267,15 +267,43 @@
       document.getElementById('navLinks').classList.toggle('open');
     });
   </script>
-  <!-- StaamlCorp Temporal Security Binding Engine (Patent Pending: U.S. App. No. 19/640,793) -->
+  <!-- StaamlCorp Security Framework (Patent Pending: U.S. App. No. 19/640,793) -->
+  <!-- Qeratheon-1 Post-Quantum Encryption Primitive -->
+  <script src="qeratheon-core.js"></script>
+  <!-- Temporal Security Binding Engine (Primitive) -->
   <script src="staaml-tsb.js"></script>
+  <!-- Layer 2: Governance Derivatives (D34, D37, D48, D49, D58) -->
+  <script src="staaml-layer2-governance.js"></script>
+  <!-- Layer 3: Infrastructure Security Derivatives (D33, D35, D36, D38, D43, D50) -->
+  <script src="staaml-layer3-infrastructure.js"></script>
+  <!-- Layer 4: Verification Derivatives (RIT, CBQE) -->
+  <script src="staaml-layer4-verification.js"></script>
+  <!-- TSB Orchestrator — Full 59-Derivative Coordination -->
+  <script src="staaml-orchestrator.js"></script>
   <script>
-    // Register TSB Service Worker (Patent Derivative Implementation)
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/staaml-sw.js', { scope: '/' })
-        .then(function(reg) { console.log('[StaamlCorp] TSB Service Worker registered:', reg.scope); })
-        .catch(function(err) { console.warn('[StaamlCorp] TSB Service Worker registration failed:', err); });
-    }
+    // Initialize Full STAAML Security Framework
+    (async function() {
+      try {
+        // Generate session master key (512-bit → 128-char hex string)
+        var rawKey = crypto.getRandomValues(new Uint8Array(64));
+        var masterKey = Array.from(rawKey).map(function(b) { return b.toString(16).padStart(2, '0'); }).join('');
+        var agentId = 'staamlcorp-web-' + Date.now().toString(36);
+
+        // Initialize all layers
+        if (window.QeratheonCore) { console.log('[StaamlCorp] Qeratheon-1 core loaded:', QeratheonCore.getVersion()); }
+        if (window.StaamlLayer2) { await StaamlLayer2.init(masterKey); console.log('[StaamlCorp] Layer 2 Governance initialized'); }
+        if (window.StaamlLayer3) { await StaamlLayer3.init(masterKey); console.log('[StaamlCorp] Layer 3 Infrastructure initialized'); }
+        if (window.StaamlLayer4) { await StaamlLayer4.init(masterKey, agentId); console.log('[StaamlCorp] Layer 4 Verification initialized'); }
+        if (window.StaamlOrchestrator) { await StaamlOrchestrator.init(masterKey, agentId); console.log('[StaamlCorp] TSB Orchestrator initialized — full derivative framework active'); }
+
+        // Register TSB Service Worker
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.register('/staaml-sw.js', { scope: '/' })
+            .then(function(reg) { console.log('[StaamlCorp] TSB Service Worker registered:', reg.scope); })
+            .catch(function(err) { console.warn('[StaamlCorp] TSB Service Worker registration failed:', err); });
+        }
+      } catch(e) { console.warn('[StaamlCorp] Framework initialization:', e.message); }
+    })();
   </script>
   <script src="cookie-consent.js"></script>
 </body>
