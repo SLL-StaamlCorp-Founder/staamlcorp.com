@@ -1,5 +1,5 @@
 /**
- * StaamlCorp Temporal Security Binding (TSB) Engine
+ * Staaml Temporal Security Binding (TSB) Engine
  * Core implementation of patent-pending technology
  * U.S. Patent Application No. 19/640,793
  *
@@ -16,7 +16,7 @@
  *   Claim 6 — Preventing execution of non-compliant content
  *   Claim 7 — Generating tamper-evident audit trails
  *
- * (c) 2024-2026 StaamlCorp. All rights reserved.
+ * (c) 2024-2026 Staaml. All rights reserved.
  */
 
 (function(global) {

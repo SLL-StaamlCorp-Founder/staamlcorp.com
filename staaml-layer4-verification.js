@@ -1,15 +1,15 @@
 'use strict';
 
 /**
- * StaamlCorp Layer 4 Verification Derivatives
+ * Staaml Layer 4 Verification Derivatives
  * RIT (Recursive Identity Transformers) and CBQE (Curvature-Based Quantum Encryption)
  *
  * @fileoverview Tier 1 identity verification and functional encryption for
- * highest-sensitivity data within the StaamlCorp TSB framework.
+ * highest-sensitivity data within the Staaml TSB framework.
  * Uses Web Crypto API exclusively. No external dependencies.
  *
  * @version 1.0.0
- * @license Proprietary - StaamlCorp
+ * @license Proprietary - Staaml
  */
 
 // ============================================================================

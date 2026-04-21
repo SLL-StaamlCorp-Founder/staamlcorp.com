@@ -1,13 +1,13 @@
 /**
  * STAAML Layer 3 Infrastructure Security Derivatives
- * staamlcorp.com - Static GitHub Pages Deployment
+ * staaml.com - Static GitHub Pages Deployment
  *
  * Implements D33, D35, D36, D38, D43, D50 from the STAAML derivative framework.
  * All cryptographic operations use the Web Crypto API.
  * No external dependencies.
  *
  * @version 1.0.0
- * @license Proprietary - StaamlCorp
+ * @license Proprietary - Staaml
  */
 (function () {
   'use strict';

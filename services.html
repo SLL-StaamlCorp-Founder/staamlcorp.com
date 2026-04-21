@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Licensing — StaamlCorp</title>
-  <meta name="description" content="License StaamlCorp's patented temporal security binding technology. Platform vendors, browser developers, enterprise security, and AI platforms — flexible licensing for U.S. App. No. 19/640,793.">
+  <title>Licensing — Staaml</title>
+  <meta name="description" content="License Staaml's patented temporal security binding technology. Platform vendors, browser developers, enterprise security, and AI platforms — flexible licensing for U.S. App. No. 19/640,793.">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta http-equiv="X-Frame-Options" content="DENY">
   <meta name="referrer" content="strict-origin-when-cross-origin">
@@ -50,8 +50,8 @@
   <!-- Why License -->
   <section class="section">
     <div class="container" style="max-width:800px;">
-      <h2>Why License From StaamlCorp?</h2>
-      <p>StaamlCorp holds the patent-pending framework for the <strong>only systematic, platform-independent solution</strong> to temporal security discontinuities in cached executable content. Our patent covers the generalized architectural approach &mdash; not just one vendor's fix for one product.</p>
+      <h2>Why License From Staaml?</h2>
+      <p>Staaml holds the patent-pending framework for the <strong>only systematic, platform-independent solution</strong> to temporal security discontinuities in cached executable content. Our patent covers the generalized architectural approach &mdash; not just one vendor's fix for one product.</p>
       <p>Apple fixed their specific instance (webkit-294380). Our patent covers the <strong>entire vulnerability class</strong> and the framework for solving it across every platform, cache type, and security policy architecture. Any organization implementing solutions to this vulnerability class &mdash; whether independently discovered or informed by public disclosure &mdash; should evaluate whether their implementation falls within our patent claims.</p>
     </div>
   </section>
@@ -249,15 +249,15 @@
         <div>
           <h4>Contact</h4>
           <ul>
-            <li><a href="mailto:info@staamlcorp.com">info@staamlcorp.com</a></li>
+            <li><a href="mailto:info@staaml.com">info@staaml.com</a></li>
             <li><a href="tel:+15043802214">(504) 380-2214</a></li>
             <li>Lafayette, LA</li>
-            <li>staamlcorp.com</li>
+            <li>staaml.com</li>
           </ul>
         </div>
       </div>
       <div class="footer-bottom">
-        <p>&copy; 2026 StaamlCorp. All rights reserved. | Patent Pending: U.S. App. No. 19/640,793 | <a href="privacy.html" style="color:inherit;">Privacy</a> | <a href="terms.html" style="color:inherit;">Terms</a> | <a href="accessibility.html" style="color:inherit;">Accessibility</a></p>
+        <p>&copy; 2026 Staaml. All rights reserved. | Patent Pending: U.S. App. No. 19/640,793 | <a href="privacy.html" style="color:inherit;">Privacy</a> | <a href="terms.html" style="color:inherit;">Terms</a> | <a href="accessibility.html" style="color:inherit;">Accessibility</a></p>
       </div>
     </div>
   </footer>
@@ -267,7 +267,7 @@
       document.getElementById('navLinks').classList.toggle('open');
     });
   </script>
-  <!-- StaamlCorp Security Framework (Patent Pending: U.S. App. No. 19/640,793) -->
+  <!-- Staaml Security Framework (Patent Pending: U.S. App. No. 19/640,793) -->
   <!-- Qeratheon-1 Post-Quantum Encryption Primitive -->
   <script src="qeratheon-core.js"></script>
   <!-- Temporal Security Binding Engine (Primitive) -->
@@ -287,22 +287,22 @@
         // Generate session master key (512-bit → 128-char hex string)
         var rawKey = crypto.getRandomValues(new Uint8Array(64));
         var masterKey = Array.from(rawKey).map(function(b) { return b.toString(16).padStart(2, '0'); }).join('');
-        var agentId = 'staamlcorp-web-' + Date.now().toString(36);
+        var agentId = 'staaml-web-' + Date.now().toString(36);
 
         // Initialize all layers
-        if (window.QeratheonCore) { console.log('[StaamlCorp] Qeratheon-1 core loaded:', QeratheonCore.getVersion()); }
-        if (window.StaamlLayer2) { await StaamlLayer2.init(masterKey); console.log('[StaamlCorp] Layer 2 Governance initialized'); }
-        if (window.StaamlLayer3) { await StaamlLayer3.init(masterKey); console.log('[StaamlCorp] Layer 3 Infrastructure initialized'); }
-        if (window.StaamlLayer4) { await StaamlLayer4.init(masterKey, agentId); console.log('[StaamlCorp] Layer 4 Verification initialized'); }
-        if (window.StaamlOrchestrator) { await StaamlOrchestrator.init(masterKey, agentId); console.log('[StaamlCorp] TSB Orchestrator initialized — full derivative framework active'); }
+        if (window.QeratheonCore) { console.log('[Staaml] Qeratheon-1 core loaded:', QeratheonCore.getVersion()); }
+        if (window.StaamlLayer2) { await StaamlLayer2.init(masterKey); console.log('[Staaml] Layer 2 Governance initialized'); }
+        if (window.StaamlLayer3) { await StaamlLayer3.init(masterKey); console.log('[Staaml] Layer 3 Infrastructure initialized'); }
+        if (window.StaamlLayer4) { await StaamlLayer4.init(masterKey, agentId); console.log('[Staaml] Layer 4 Verification initialized'); }
+        if (window.StaamlOrchestrator) { await StaamlOrchestrator.init(masterKey, agentId); console.log('[Staaml] TSB Orchestrator initialized — full derivative framework active'); }
 
         // Register TSB Service Worker
         if ('serviceWorker' in navigator) {
           navigator.serviceWorker.register('/staaml-sw.js', { scope: '/' })
-            .then(function(reg) { console.log('[StaamlCorp] TSB Service Worker registered:', reg.scope); })
-            .catch(function(err) { console.warn('[StaamlCorp] TSB Service Worker registration failed:', err); });
+            .then(function(reg) { console.log('[Staaml] TSB Service Worker registered:', reg.scope); })
+            .catch(function(err) { console.warn('[Staaml] TSB Service Worker registration failed:', err); });
         }
-      } catch(e) { console.warn('[StaamlCorp] Framework initialization:', e.message); }
+      } catch(e) { console.warn('[Staaml] Framework initialization:', e.message); }
     })();
   </script>
   <script src="cookie-consent.js"></script>

@@ -3,7 +3,7 @@
  * @description Qeratheon-1 Post-Quantum Symmetric Encryption Primitive
  *              Entropy-Permutation Cipher (EPC) Pipeline
  * @version 1.0.0
- * @license Proprietary - StaamlCorp
+ * @license Proprietary - Staaml
  *
  * Architecture:
  *   Master Key (512-bit)

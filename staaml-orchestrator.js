@@ -1,8 +1,8 @@
 'use strict';
 
 /**
- * StaamlCorp TSB Orchestrator
- * Master coordinator for ALL StaamlCorp layers and derivatives.
+ * Staaml TSB Orchestrator
+ * Master coordinator for ALL Staaml layers and derivatives.
  *
  * @fileoverview Coordinates Layer 2 (D34/D37), Layer 3 (D43/D48/D49/D58),
  * Layer 4 (RIT/CBQE), QeratheonCore, and the TSB cache engine.
@@ -10,7 +10,7 @@
  * Uses Web Crypto API exclusively. No external dependencies.
  *
  * @version 1.0.0
- * @license Proprietary - StaamlCorp
+ * @license Proprietary - Staaml
  */
 
 // ============================================================================
@@ -356,7 +356,7 @@ class AuditEntry {
 /**
  * Master TSB Orchestrator.
  *
- * Coordinates all StaamlCorp layers and derivatives:
+ * Coordinates all Staaml layers and derivatives:
  *  - Layer 2: D34 (session management), D37 (token management)
  *  - Layer 3: D43 (network policy), D48 (tenant boundaries), D49 (model registry), D58 (behavioral baselines)
  *  - Layer 4: RIT (identity verification), CBQE (encryption)

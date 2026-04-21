@@ -1,5 +1,5 @@
 /**
- * StaamlCorp Cookie Consent Banner
+ * Staaml Cookie Consent Banner
  * Lightweight, accessible, GDPR-compliant cookie consent
  * Stores preference in localStorage — no cookies used for consent itself
  */
@@ -7,7 +7,7 @@
   'use strict';
 
   // Exit if consent has already been given or declined
-  if (localStorage.getItem('staamlcorp_cookie_consent') !== null) {
+  if (localStorage.getItem('staaml_cookie_consent') !== null) {
     return;
   }
 
@@ -135,20 +135,20 @@
 
   // Handle accept
   banner.querySelector('.cc-btn-accept').addEventListener('click', function() {
-    localStorage.setItem('staamlcorp_cookie_consent', 'accepted');
+    localStorage.setItem('staaml_cookie_consent', 'accepted');
     closeBanner();
   });
 
   // Handle decline
   banner.querySelector('.cc-btn-decline').addEventListener('click', function() {
-    localStorage.setItem('staamlcorp_cookie_consent', 'declined');
+    localStorage.setItem('staaml_cookie_consent', 'declined');
     closeBanner();
   });
 
   // Handle Escape key to decline
   banner.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
-      localStorage.setItem('staamlcorp_cookie_consent', 'declined');
+      localStorage.setItem('staaml_cookie_consent', 'declined');
       closeBanner();
     }
     // Trap focus within the banner

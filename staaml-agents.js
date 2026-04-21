@@ -1,7 +1,7 @@
 /**
- * StaamlCorp Agent Integration Layer
+ * Staaml Agent Integration Layer
  * Provides ingress/egress to STAAML Corp autonomous AI agents
- * from the staamlcorp.com website.
+ * from the staaml.com website.
  *
  * Agent Fleet:
  *   CIPO Agent       — Chief IP Officer (port 8090)
@@ -63,7 +63,7 @@ const StaamlAgents = (function() {
         platform: data.platform,
         interestLevel: data.interestLevel,
         message: data.message,
-        source: 'staamlcorp.com'
+        source: 'staaml.com'
       });
     },
 
@@ -77,7 +77,7 @@ const StaamlAgents = (function() {
         cacheLocations: data.cacheLocations,
         currentMitigation: data.currentMitigation,
         timestamp: new Date().toISOString(),
-        source: 'staamlcorp.com/assessment'
+        source: 'staaml.com/assessment'
       });
     },
 
@@ -85,7 +85,7 @@ const StaamlAgents = (function() {
     subscribeNewsletter: async function(email) {
       return await callAgent('evangelist', '/api/outreach/subscribe', {
         email: email,
-        source: 'staamlcorp.com',
+        source: 'staaml.com',
         interests: ['research', 'licensing', 'patent-updates']
       });
     },
@@ -99,7 +99,7 @@ const StaamlAgents = (function() {
         company: data.company,
         subject: data.subject,
         message: data.message,
-        source: 'staamlcorp.com/contact',
+        source: 'staaml.com/contact',
         timestamp: new Date().toISOString()
       });
     },
@@ -140,8 +140,8 @@ const StaamlAgents = (function() {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'X-StaamlCorp-Source': 'website',
-            'X-StaamlCorp-Agent': agentId,
+            'X-Staaml-Source': 'website',
+            'X-Staaml-Agent': agentId,
             ...(CONFIG.gatewayAuth ? { 'Authorization': 'Bearer ' + CONFIG.gatewayAuth } : {})
           },
           body: JSON.stringify(payload),

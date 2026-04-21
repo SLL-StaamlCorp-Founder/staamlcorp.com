@@ -1,5 +1,5 @@
 /**
- * StaamlCorp Temporal Security Binding -- Service Worker Derivative
+ * Staaml Temporal Security Binding -- Service Worker Derivative
  * U.S. Patent Application No. 19/640,793
  *
  * Implements cache interception and policy-aware validation at the network
@@ -13,7 +13,7 @@
  *
  * @file staaml-sw.js
  * @version 1.0.0
- * @license Proprietary -- StaamlCorp
+ * @license Proprietary -- Staaml
  */
 
 'use strict';
@@ -196,7 +196,7 @@ async function getAuditLog() {
  * @returns {string}
  */
 function metaKey(url) {
-  return `https://tsb-meta.staamlcorp.internal/${encodeURIComponent(url)}`;
+  return `https://tsb-meta.staaml.internal/${encodeURIComponent(url)}`;
 }
 
 /**

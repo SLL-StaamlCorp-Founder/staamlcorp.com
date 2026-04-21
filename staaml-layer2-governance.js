@@ -2,7 +2,7 @@
 
 /**
  * STAAML Layer 2 Governance Derivatives
- * Posture-bound governance controls for staamlcorp.com
+ * Posture-bound governance controls for staaml.com
  *
  * Derivatives implemented:
  *   D34 - Posture-Bound Session Attestation
@@ -15,7 +15,7 @@
  * No external dependencies.
  *
  * @version 1.0.0
- * @license Proprietary - StaamlCorp
+ * @license Proprietary - Staaml
  */
 (function (globalThis) {
 

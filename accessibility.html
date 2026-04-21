@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Accessibility Statement — StaamlCorp</title>
-  <meta name="description" content="StaamlCorp's commitment to web accessibility. Learn about our WCAG 2.2 Level AA conformance and how we ensure our site is accessible to all users.">
+  <title>Accessibility Statement — Staaml</title>
+  <meta name="description" content="Staaml's commitment to web accessibility. Learn about our WCAG 2.2 Level AA conformance and how we ensure our site is accessible to all users.">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta http-equiv="X-Frame-Options" content="DENY">
   <meta name="referrer" content="strict-origin-when-cross-origin">
@@ -42,7 +42,7 @@
   <section class="hero" style="padding:4rem 0;">
     <div class="container">
       <h1>Accessibility Statement</h1>
-      <p>StaamlCorp is committed to ensuring digital accessibility for people of all abilities.</p>
+      <p>Staaml is committed to ensuring digital accessibility for people of all abilities.</p>
     </div>
   </section>
 
@@ -51,7 +51,7 @@
     <div class="container" style="max-width:900px;">
 
       <h2>Our Commitment</h2>
-      <p>StaamlCorp is dedicated to providing an inclusive online experience for all visitors, regardless of ability or technology. We strive to ensure that our website conforms to the <strong>Web Content Accessibility Guidelines (WCAG) 2.2 Level AA</strong> published by the World Wide Web Consortium (W3C).</p>
+      <p>Staaml is dedicated to providing an inclusive online experience for all visitors, regardless of ability or technology. We strive to ensure that our website conforms to the <strong>Web Content Accessibility Guidelines (WCAG) 2.2 Level AA</strong> published by the World Wide Web Consortium (W3C).</p>
       <p>Accessibility is an ongoing effort, and we continually work to improve the usability and accessibility of our website for all users.</p>
 
       <h2>Conformance Target</h2>
@@ -143,13 +143,13 @@
       <h2>Contact Us</h2>
       <p>For accessibility-related questions, feedback, or to request content in an alternative format, please contact us:</p>
       <ul style="margin-bottom:1.5rem;padding-left:1.5rem;">
-        <li><strong>Email:</strong> <a href="mailto:info@staamlcorp.com">info@staamlcorp.com</a> (Subject: Accessibility)</li>
+        <li><strong>Email:</strong> <a href="mailto:info@staaml.com">info@staaml.com</a> (Subject: Accessibility)</li>
         <li><strong>Phone:</strong> <a href="tel:+15043802214">(504) 380-2214</a></li>
         <li><strong>Website:</strong> <a href="contact.html">Contact Form</a></li>
       </ul>
 
       <h2>Compliance Standards</h2>
-      <p>This accessibility statement is part of StaamlCorp's broader commitment to compliance. WCAG 2.2 AA is one of <a href="compliance.html">12 certification standards</a> we are actively pursuing. For more details on our full compliance program, visit our <a href="compliance.html">Compliance &amp; Certifications</a> page.</p>
+      <p>This accessibility statement is part of Staaml's broader commitment to compliance. WCAG 2.2 AA is one of <a href="compliance.html">12 certification standards</a> we are actively pursuing. For more details on our full compliance program, visit our <a href="compliance.html">Compliance &amp; Certifications</a> page.</p>
 
       <p style="color:var(--text-light);margin-top:2rem;"><em>This statement was last updated on April 1, 2026.</em></p>
 
@@ -186,15 +186,15 @@
         <div>
           <h4>Contact</h4>
           <ul>
-            <li><a href="mailto:info@staamlcorp.com">info@staamlcorp.com</a></li>
+            <li><a href="mailto:info@staaml.com">info@staaml.com</a></li>
             <li><a href="tel:+15043802214">(504) 380-2214</a></li>
             <li>Lafayette, LA</li>
-            <li>staamlcorp.com</li>
+            <li>staaml.com</li>
           </ul>
         </div>
       </div>
       <div class="footer-bottom">
-        <p>&copy; 2026 StaamlCorp. All rights reserved. | Patent Pending: U.S. App. No. 19/640,793</p>
+        <p>&copy; 2026 Staaml. All rights reserved. | Patent Pending: U.S. App. No. 19/640,793</p>
       </div>
     </div>
   </footer>
@@ -204,7 +204,7 @@
       document.getElementById('navLinks').classList.toggle('open');
     });
   </script>
-  <!-- StaamlCorp Security Framework (Patent Pending: U.S. App. No. 19/640,793) -->
+  <!-- Staaml Security Framework (Patent Pending: U.S. App. No. 19/640,793) -->
   <!-- Qeratheon-1 Post-Quantum Encryption Primitive -->
   <script src="qeratheon-core.js"></script>
   <!-- Temporal Security Binding Engine (Primitive) -->
@@ -224,22 +224,22 @@
         // Generate session master key (512-bit → 128-char hex string)
         var rawKey = crypto.getRandomValues(new Uint8Array(64));
         var masterKey = Array.from(rawKey).map(function(b) { return b.toString(16).padStart(2, '0'); }).join('');
-        var agentId = 'staamlcorp-web-' + Date.now().toString(36);
+        var agentId = 'staaml-web-' + Date.now().toString(36);
 
         // Initialize all layers
-        if (window.QeratheonCore) { console.log('[StaamlCorp] Qeratheon-1 core loaded:', QeratheonCore.getVersion()); }
-        if (window.StaamlLayer2) { await StaamlLayer2.init(masterKey); console.log('[StaamlCorp] Layer 2 Governance initialized'); }
-        if (window.StaamlLayer3) { await StaamlLayer3.init(masterKey); console.log('[StaamlCorp] Layer 3 Infrastructure initialized'); }
-        if (window.StaamlLayer4) { await StaamlLayer4.init(masterKey, agentId); console.log('[StaamlCorp] Layer 4 Verification initialized'); }
-        if (window.StaamlOrchestrator) { await StaamlOrchestrator.init(masterKey, agentId); console.log('[StaamlCorp] TSB Orchestrator initialized — full derivative framework active'); }
+        if (window.QeratheonCore) { console.log('[Staaml] Qeratheon-1 core loaded:', QeratheonCore.getVersion()); }
+        if (window.StaamlLayer2) { await StaamlLayer2.init(masterKey); console.log('[Staaml] Layer 2 Governance initialized'); }
+        if (window.StaamlLayer3) { await StaamlLayer3.init(masterKey); console.log('[Staaml] Layer 3 Infrastructure initialized'); }
+        if (window.StaamlLayer4) { await StaamlLayer4.init(masterKey, agentId); console.log('[Staaml] Layer 4 Verification initialized'); }
+        if (window.StaamlOrchestrator) { await StaamlOrchestrator.init(masterKey, agentId); console.log('[Staaml] TSB Orchestrator initialized — full derivative framework active'); }
 
         // Register TSB Service Worker
         if ('serviceWorker' in navigator) {
           navigator.serviceWorker.register('/staaml-sw.js', { scope: '/' })
-            .then(function(reg) { console.log('[StaamlCorp] TSB Service Worker registered:', reg.scope); })
-            .catch(function(err) { console.warn('[StaamlCorp] TSB Service Worker registration failed:', err); });
+            .then(function(reg) { console.log('[Staaml] TSB Service Worker registered:', reg.scope); })
+            .catch(function(err) { console.warn('[Staaml] TSB Service Worker registration failed:', err); });
         }
-      } catch(e) { console.warn('[StaamlCorp] Framework initialization:', e.message); }
+      } catch(e) { console.warn('[Staaml] Framework initialization:', e.message); }
     })();
   </script>
   <script src="cookie-consent.js"></script>
