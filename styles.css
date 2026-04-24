@@ -107,7 +107,7 @@ p { margin-bottom: 1rem; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 72px;
+  height: 120px;
 }
 
 .logo {
@@ -125,15 +125,15 @@ p { margin-bottom: 1rem; }
 }
 
 .logo-img {
-  height: 52px;
+  height: 100px;
   width: auto;
   display: block;
 }
 
 .footer-logo-img {
-  width: 200px;
+  height: 200px;
+  width: auto;
   max-width: 100%;
-  height: auto;
   display: block;
   margin-bottom: 1rem;
 }
