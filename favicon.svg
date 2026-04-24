@@ -40,11 +40,20 @@
   </g>
 
   <!-- Wordmark -->
-  <text x="300" y="320"
+  <text x="300" y="310"
         font-family="Georgia, 'Times New Roman', serif"
         font-size="28"
         font-weight="400"
         fill="#0A1F44"
         text-anchor="middle"
         letter-spacing="14">STAAML</text>
+
+  <!-- Sub-wordmark -->
+  <text x="300" y="340"
+        font-family="Georgia, 'Times New Roman', serif"
+        font-size="14"
+        font-weight="400"
+        fill="#1B3A6B"
+        text-anchor="middle"
+        letter-spacing="8">CORP</text>
 </svg>
