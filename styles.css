@@ -115,10 +115,27 @@ p { margin-bottom: 1rem; }
   font-weight: 800;
   color: var(--primary);
   letter-spacing: -0.5px;
+  display: inline-flex;
+  align-items: center;
+  line-height: 0;
 }
 
 .logo span {
   color: var(--accent);
+}
+
+.logo-img {
+  height: 52px;
+  width: auto;
+  display: block;
+}
+
+.footer-logo-img {
+  width: 200px;
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin-bottom: 1rem;
 }
 
 .nav-links {
