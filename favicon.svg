@@ -1,21 +1,50 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="1254" height="1254" viewBox="0 0 1254 1254" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Staaml Corp">
-  <title>Staaml Corp</title>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360">
   <defs>
-    <linearGradient id="metalDark" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#6f7782"/>
-      <stop offset="50%" stop-color="#2b3440"/>
-      <stop offset="100%" stop-color="#0b1624"/>
-    </linearGradient>
-    <linearGradient id="blueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#1f5fbf"/>
-      <stop offset="100%" stop-color="#0a1a2f"/>
+    <linearGradient id="markGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1B3A6B"/>
+      <stop offset="100%" stop-color="#0A1F44"/>
     </linearGradient>
   </defs>
-  <rect width="100%" height="100%" fill="#ffffff"/>
-  <path d="M 250 400 C 150 400, 150 250, 350 250 L 750 250 C 900 250, 900 400, 750 400 L 400 400 C 250 400, 250 550, 400 550 L 750 550 C 950 550, 950 700, 750 700 L 300 700 C 150 700, 150 550, 250 550" fill="url(#metalDark)"/>
-  <path d="M 700 750 L 900 250 L 1100 750 L 1020 750 L 980 650 L 820 650 L 780 750 Z" fill="url(#blueGrad)"/>
-  <path d="M 900 600 L 950 700 L 850 700 Z" fill="#ffffff"/>
-  <text x="50%" y="900" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="120" letter-spacing="20" fill="#0b1624">STAAML</text>
-  <text x="50%" y="1000" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="60" letter-spacing="15" fill="#1f5fbf">CORP</text>
+
+  <!-- Background (remove for transparent use) -->
+  <rect width="600" height="360" fill="#FAFAF7"/>
+
+  <!-- The mark: a single continuous form -->
+  <!-- Concept: an "S" rendered as two offset rounded rectangles -->
+  <!-- The negative space between them encodes a temporal gap (TSD reference) -->
+  <g transform="translate(230, 80)">
+    <!-- Upper block -->
+    <path d="M 20,0
+             L 140,0
+             Q 140,0 140,20
+             L 140,70
+             Q 140,90 120,90
+             L 20,90
+             Q 0,90 0,70
+             L 0,20
+             Q 0,0 20,0 Z"
+          fill="url(#markGrad)"/>
+
+    <!-- Lower block, offset right -->
+    <path d="M 20,110
+             L 120,110
+             Q 140,110 140,130
+             L 140,180
+             Q 140,200 120,200
+             L 0,200
+             Q 0,200 0,180
+             L 0,130
+             Q 0,110 20,110 Z"
+          transform="translate(20, 0)"
+          fill="url(#markGrad)"/>
+  </g>
+
+  <!-- Wordmark -->
+  <text x="300" y="320"
+        font-family="Georgia, 'Times New Roman', serif"
+        font-size="28"
+        font-weight="400"
+        fill="#0A1F44"
+        text-anchor="middle"
+        letter-spacing="14">STAAML</text>
 </svg>
