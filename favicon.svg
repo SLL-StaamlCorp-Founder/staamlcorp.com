@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="160 30 300 300" width="300" height="300">
   <defs>
     <linearGradient id="markGrad" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#1B3A6B"/>
@@ -6,12 +6,10 @@
     </linearGradient>
   </defs>
 
-  <!-- Background (remove for transparent use) -->
-  <rect width="600" height="360" fill="#FAFAF7"/>
+  <!-- Background -->
+  <rect x="160" y="30" width="300" height="300" fill="#FAFAF7"/>
 
-  <!-- The mark: a single continuous form -->
-  <!-- Concept: an "S" rendered as two offset rounded rectangles -->
-  <!-- The negative space between them encodes a temporal gap (TSD reference) -->
+  <!-- The mark: two offset rounded blocks (S form with temporal-gap negative space) -->
   <g transform="translate(230, 80)">
     <!-- Upper block -->
     <path d="M 20,0
@@ -38,22 +36,4 @@
           transform="translate(20, 0)"
           fill="url(#markGrad)"/>
   </g>
-
-  <!-- Wordmark -->
-  <text x="300" y="310"
-        font-family="Georgia, 'Times New Roman', serif"
-        font-size="28"
-        font-weight="400"
-        fill="#0A1F44"
-        text-anchor="middle"
-        letter-spacing="14">STAAML</text>
-
-  <!-- Sub-wordmark -->
-  <text x="300" y="340"
-        font-family="Georgia, 'Times New Roman', serif"
-        font-size="14"
-        font-weight="400"
-        fill="#1B3A6B"
-        text-anchor="middle"
-        letter-spacing="8">CORP</text>
 </svg>
