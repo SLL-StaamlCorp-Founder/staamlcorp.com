@@ -42,7 +42,6 @@ Static HTML/CSS/JS site hosted on GitHub Pages.
 ├── staaml-layer4-verification.js   Layer 4 derivatives
 ├── staaml-orchestrator.js      TSB orchestrator
 ├── staaml-sw.js                Service worker
-├── staaml-agents.js            Agent integration layer
 ├── staaml-debug-gate.js        Production console gating
 ├── cookie-consent.js           Cookie consent banner
 ├── logo.svg / logo-light.svg   Brand logos

@@ -43,7 +43,6 @@ const PRECACHE_URLS = [
   '/contact.html',
   '/assessment.html',
   '/styles.css',
-  '/staaml-agents.js',
 ];
 
 const AUDIT_DB_NAME = 'tsb-audit';

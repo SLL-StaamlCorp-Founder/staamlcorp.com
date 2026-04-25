@@ -8,6 +8,7 @@
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta http-equiv="X-Frame-Options" content="DENY">
   <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self' https://formspree.io; form-action 'self' mailto: https://formspree.io; base-uri 'self'; object-src 'none'; upgrade-insecure-requests">
   <link rel="stylesheet" href="styles.css">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=3">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=3">
@@ -227,11 +228,15 @@
       if (!form) return;
 
       var params = new URLSearchParams(window.location.search);
-      if (params.get('subject')) {
+      var requestedSubject = params.get('subject');
+      if (requestedSubject && requestedSubject.indexOf('licensing-') === 0) {
+        requestedSubject = 'licensing';
+      }
+      if (requestedSubject) {
         var sel = document.getElementById('subject');
         if (sel) {
           for (var i = 0; i < sel.options.length; i++) {
-            if (sel.options[i].value === params.get('subject')) {
+            if (sel.options[i].value === requestedSubject) {
               sel.selectedIndex = i;
               break;
             }
@@ -242,7 +247,7 @@
       form.addEventListener('submit', function(e){
         e.preventDefault();
         var f = form.elements;
-        var subjectText = f.subject.options[f.subject.selectedIndex].text || 'General Inquiry';
+        var subjectText = f.subject.value ? f.subject.options[f.subject.selectedIndex].text : 'General Inquiry';
         var body = 'Name: ' + f.firstName.value + ' ' + f.lastName.value
           + '\nEmail: ' + f.email.value
           + '\nCompany: ' + (f.company.value || 'N/A')
@@ -265,8 +270,6 @@
   <script src="staaml-layer3-infrastructure.js"></script>
   <script src="staaml-layer4-verification.js"></script>
   <script src="staaml-orchestrator.js"></script>
-  <!-- Agent Integration Layer -->
-  <script src="staaml-agents.js"></script>
   <script>
     /* Framework initialization — logs gated behind window.__STAAML_DEBUG__ = true (see cookie-consent.js). */
     (async function() {
