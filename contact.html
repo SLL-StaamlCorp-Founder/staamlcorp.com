@@ -8,6 +8,7 @@
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta http-equiv="X-Frame-Options" content="DENY">
   <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self' https://formspree.io; form-action 'self' mailto: https://formspree.io; base-uri 'self'; object-src 'none'; upgrade-insecure-requests">
   <link rel="stylesheet" href="styles.css">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=3">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=3">
@@ -60,7 +61,7 @@
         <div>
           <h2>Send Us a Message</h2>
           <p style="color:var(--text-light);margin-bottom:2rem;">Fill out the form below and we'll respond within one business day.</p>
-          <form action="#" method="POST" onsubmit="handleSubmit(event)">
+          <form id="contactForm" action="mailto:info@staamlcorp.com" method="POST" enctype="text/plain">
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
               <div class="form-group">
                 <label for="firstName">First Name</label>
@@ -95,10 +96,10 @@
               <label for="message">Message</label>
               <textarea id="message" name="message" placeholder="Tell us about your interest in StaamlCorp's technology..." required></textarea>
             </div>
-            <button type="submit" class="btn btn-primary" style="width:100%;">Send Message</button>
+            <button type="submit" class="btn btn-primary" style="width:100%;" id="contactSubmit">Send Message</button>
           </form>
-          <div id="formSuccess" style="display:none;margin-top:1.5rem;padding:1.25rem;background:#ecfdf5;border:1px solid #6ee7b7;border-radius:var(--radius);color:#065f46;font-weight:500;">
-            Thank you for reaching out! We'll be in touch within one business day.
+          <div id="formSuccess" role="status" aria-live="polite" style="display:none;margin-top:1.5rem;padding:1.25rem;background:#ecfdf5;border:1px solid #6ee7b7;border-radius:var(--radius);color:#065f46;font-weight:500;">
+            Your email client should now be open with the message pre-filled. If it didn't open, please email <a href="mailto:info@staamlcorp.com">info@staamlcorp.com</a> directly.
           </div>
         </div>
 
@@ -222,49 +223,76 @@
       document.getElementById('navLinks').classList.toggle('open');
     });
 
-    function handleSubmit(e) {
-      e.preventDefault();
-      document.getElementById('formSuccess').style.display = 'block';
-      e.target.reset();
-      window.scrollTo({ top: document.getElementById('formSuccess').offsetTop - 100, behavior: 'smooth' });
-    }
+    (function(){
+      var form = document.getElementById('contactForm');
+      if (!form) return;
+
+      var params = new URLSearchParams(window.location.search);
+      var requestedSubject = params.get('subject');
+      if (requestedSubject && requestedSubject.indexOf('licensing-') === 0) {
+        requestedSubject = 'licensing';
+      }
+      if (requestedSubject) {
+        var sel = document.getElementById('subject');
+        if (sel) {
+          for (var i = 0; i < sel.options.length; i++) {
+            if (sel.options[i].value === requestedSubject) {
+              sel.selectedIndex = i;
+              break;
+            }
+          }
+        }
+      }
+
+      form.addEventListener('submit', function(e){
+        e.preventDefault();
+        var f = form.elements;
+        var subjectText = f.subject.value ? f.subject.options[f.subject.selectedIndex].text : 'General Inquiry';
+        var body = 'Name: ' + f.firstName.value + ' ' + f.lastName.value
+          + '\nEmail: ' + f.email.value
+          + '\nCompany: ' + (f.company.value || 'N/A')
+          + '\nSubject: ' + subjectText
+          + '\n\n' + f.message.value;
+        var mailto = 'mailto:info@staamlcorp.com'
+          + '?subject=' + encodeURIComponent('StaamlCorp Inquiry: ' + subjectText)
+          + '&body=' + encodeURIComponent(body);
+        window.location.href = mailto;
+        document.getElementById('formSuccess').style.display = 'block';
+        window.scrollTo({ top: document.getElementById('formSuccess').offsetTop - 100, behavior: 'smooth' });
+      });
+    })();
   </script>
   <!-- StaamlCorp Security Framework (Patent Pending: U.S. App. No. 19/640,793) -->
-  <!-- Qeratheon-1 Post-Quantum Encryption Primitive -->
+  <script src="staaml-debug-gate.js"></script>
   <script src="qeratheon-core.js"></script>
-  <!-- Temporal Security Binding Engine (Primitive) -->
   <script src="staaml-tsb.js"></script>
-  <!-- Layer 2: Governance Derivatives (D34, D37, D48, D49, D58) -->
   <script src="staaml-layer2-governance.js"></script>
-  <!-- Layer 3: Infrastructure Security Derivatives (D33, D35, D36, D38, D43, D50) -->
   <script src="staaml-layer3-infrastructure.js"></script>
-  <!-- Layer 4: Verification Derivatives (RIT, CBQE) -->
   <script src="staaml-layer4-verification.js"></script>
-  <!-- TSB Orchestrator — Full 59-Derivative Coordination -->
   <script src="staaml-orchestrator.js"></script>
   <script>
-    // Initialize Full STAAML Security Framework
+    /* Framework initialization — logs gated behind window.__STAAML_DEBUG__ = true (see cookie-consent.js). */
     (async function() {
+      var DBG = !!window.__STAAML_DEBUG__;
+      function log(){ if (DBG && console && console.log) console.log.apply(console, arguments); }
+      function warn(){ if (DBG && console && console.warn) console.warn.apply(console, arguments); }
       try {
-        // Generate session master key (512-bit → 128-char hex string)
         var rawKey = crypto.getRandomValues(new Uint8Array(64));
         var masterKey = Array.from(rawKey).map(function(b) { return b.toString(16).padStart(2, '0'); }).join('');
         var agentId = 'staamlcorp-web-' + Date.now().toString(36);
 
-        // Initialize all layers
-        if (window.QeratheonCore) { console.log('[StaamlCorp] Qeratheon-1 core loaded:', QeratheonCore.getVersion()); }
-        if (window.StaamlLayer2) { await StaamlLayer2.init(masterKey); console.log('[StaamlCorp] Layer 2 Governance initialized'); }
-        if (window.StaamlLayer3) { await StaamlLayer3.init(masterKey); console.log('[StaamlCorp] Layer 3 Infrastructure initialized'); }
-        if (window.StaamlLayer4) { await StaamlLayer4.init(masterKey, agentId); console.log('[StaamlCorp] Layer 4 Verification initialized'); }
-        if (window.StaamlOrchestrator) { await StaamlOrchestrator.init(masterKey, agentId); console.log('[StaamlCorp] TSB Orchestrator initialized — full derivative framework active'); }
+        if (window.QeratheonCore) { log('[StaamlCorp] Qeratheon-1 core loaded:', QeratheonCore.getVersion()); }
+        if (window.StaamlLayer2) { await StaamlLayer2.init(masterKey); log('[StaamlCorp] Layer 2 Governance initialized'); }
+        if (window.StaamlLayer3) { await StaamlLayer3.init(masterKey); log('[StaamlCorp] Layer 3 Infrastructure initialized'); }
+        if (window.StaamlLayer4) { await StaamlLayer4.init(masterKey, agentId); log('[StaamlCorp] Layer 4 Verification initialized'); }
+        if (window.StaamlOrchestrator) { await StaamlOrchestrator.init(masterKey, agentId); log('[StaamlCorp] TSB Orchestrator initialized'); }
 
-        // Register TSB Service Worker
         if ('serviceWorker' in navigator) {
           navigator.serviceWorker.register('/staaml-sw.js', { scope: '/' })
-            .then(function(reg) { console.log('[StaamlCorp] TSB Service Worker registered:', reg.scope); })
-            .catch(function(err) { console.warn('[StaamlCorp] TSB Service Worker registration failed:', err); });
+            .then(function(reg) { log('[StaamlCorp] TSB Service Worker registered:', reg.scope); })
+            .catch(function(err) { warn('[StaamlCorp] TSB Service Worker registration failed:', err); });
         }
-      } catch(e) { console.warn('[StaamlCorp] Framework initialization:', e.message); }
+      } catch(e) { warn('[StaamlCorp] Framework initialization:', e.message); }
     })();
   </script>
   <script src="cookie-consent.js"></script>
