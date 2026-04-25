@@ -8,8 +8,7 @@
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta http-equiv="X-Frame-Options" content="DENY">
   <meta name="referrer" content="strict-origin-when-cross-origin">
-  <!-- CSP: start in Report-Only, flip to Content-Security-Policy after ~1 week of clean reports -->
-  <meta http-equiv="Content-Security-Policy-Report-Only" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self' https://formspree.io; form-action 'self' https://formspree.io; frame-ancestors 'none'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests; report-uri /csp-report">
+  <meta http-equiv="Content-Security-Policy-Report-Only" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self'; form-action 'self' mailto:; frame-ancestors 'none'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests; report-uri /csp-report">
   <link rel="stylesheet" href="styles.css">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=3">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=3">
@@ -62,21 +61,7 @@
         <div>
           <h2>Send Us a Message</h2>
           <p style="color:var(--text-light);margin-bottom:2rem;">Fill out the form below and we'll respond within one business day.</p>
-          <!--
-            === LICENSING LEAD FORM ===
-            action URL below must be replaced with a real Formspree form endpoint.
-            1. Create a free form at https://formspree.io -> "New Form"
-            2. Copy the form ID (looks like "xyzabcde")
-            3. Replace FORMSPREE_FORM_ID below with that value
-            4. First submission will trigger Formspree to email info@staamlcorp.com for verification
-            Alternatives (pick one and swap action): Netlify Forms (data-netlify="true"),
-            Basin (https://usebasin.com/f/<id>), Web3Forms, or your own /api/contact endpoint.
-          -->
-          <form id="contactForm" action="https://formspree.io/f/FORMSPREE_FORM_ID" method="POST">
-            <!-- Honeypot: real humans leave this empty; bots fill every input. -->
-            <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;opacity:0;" aria-hidden="true">
-            <!-- Formspree: set the reply-to header and the subject line of the email we receive. -->
-            <input type="hidden" name="_subject" value="New licensing lead from staamlcorp.com">
+          <form id="contactForm" action="mailto:info@staamlcorp.com" method="POST" enctype="text/plain">
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
               <div class="form-group">
                 <label for="firstName">First Name</label>
@@ -114,10 +99,7 @@
             <button type="submit" class="btn btn-primary" style="width:100%;" id="contactSubmit">Send Message</button>
           </form>
           <div id="formSuccess" role="status" aria-live="polite" style="display:none;margin-top:1.5rem;padding:1.25rem;background:#ecfdf5;border:1px solid #6ee7b7;border-radius:var(--radius);color:#065f46;font-weight:500;">
-            Thank you for reaching out! We'll be in touch within one business day.
-          </div>
-          <div id="formError" role="alert" aria-live="assertive" style="display:none;margin-top:1.5rem;padding:1.25rem;background:#fef2f2;border:1px solid #fecaca;border-radius:var(--radius);color:#991b1b;font-weight:500;">
-            We couldn't submit your message. Please email <a href="mailto:info@staamlcorp.com">info@staamlcorp.com</a> directly.
+            Your email client should now be open with the message pre-filled. If it didn't open, please email <a href="mailto:info@staamlcorp.com">info@staamlcorp.com</a> directly.
           </div>
         </div>
 
@@ -241,41 +223,38 @@
       document.getElementById('navLinks').classList.toggle('open');
     });
 
-    /* Licensing lead submission — sends to Formspree, falls back to mailto on error. */
     (function(){
       var form = document.getElementById('contactForm');
-      var okBox = document.getElementById('formSuccess');
-      var errBox = document.getElementById('formError');
-      var btn = document.getElementById('contactSubmit');
       if (!form) return;
+
+      var params = new URLSearchParams(window.location.search);
+      if (params.get('subject')) {
+        var sel = document.getElementById('subject');
+        if (sel) {
+          for (var i = 0; i < sel.options.length; i++) {
+            if (sel.options[i].value === params.get('subject')) {
+              sel.selectedIndex = i;
+              break;
+            }
+          }
+        }
+      }
 
       form.addEventListener('submit', function(e){
         e.preventDefault();
-        okBox.style.display = 'none';
-        errBox.style.display = 'none';
-        btn.disabled = true;
-        btn.textContent = 'Sending...';
-
-        var data = new FormData(form);
-        fetch(form.action, {
-          method: 'POST',
-          body: data,
-          headers: { 'Accept': 'application/json' }
-        }).then(function(r){
-          if (r.ok) {
-            okBox.style.display = 'block';
-            form.reset();
-            window.scrollTo({ top: okBox.offsetTop - 100, behavior: 'smooth' });
-          } else {
-            throw new Error('HTTP ' + r.status);
-          }
-        }).catch(function(){
-          errBox.style.display = 'block';
-          window.scrollTo({ top: errBox.offsetTop - 100, behavior: 'smooth' });
-        }).finally(function(){
-          btn.disabled = false;
-          btn.textContent = 'Send Message';
-        });
+        var f = form.elements;
+        var subjectText = f.subject.options[f.subject.selectedIndex].text || 'General Inquiry';
+        var body = 'Name: ' + f.firstName.value + ' ' + f.lastName.value
+          + '\nEmail: ' + f.email.value
+          + '\nCompany: ' + (f.company.value || 'N/A')
+          + '\nSubject: ' + subjectText
+          + '\n\n' + f.message.value;
+        var mailto = 'mailto:info@staamlcorp.com'
+          + '?subject=' + encodeURIComponent('StaamlCorp Inquiry: ' + subjectText)
+          + '&body=' + encodeURIComponent(body);
+        window.location.href = mailto;
+        document.getElementById('formSuccess').style.display = 'block';
+        window.scrollTo({ top: document.getElementById('formSuccess').offsetTop - 100, behavior: 'smooth' });
       });
     })();
   </script>
