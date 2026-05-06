@@ -20,7 +20,7 @@
   <!-- Patent Banner -->
   <div class="patent-banner">
     <div class="container">
-      <strong>Patent Pending</strong> &mdash; U.S. App. No. 19/640,793 | Track One Prioritized Examination | 30 Claims | <a href="services.html" style="color:#fff;text-decoration:underline;">Licensing Available</a>
+      U.S. Patent Application No. 19/640,793 &mdash; Track One Prioritized Examination · Claims subject to amendment during examination · <a href="services.html" style="color:#fff;text-decoration:underline;">Licensing</a>
     </div>
   </div>
 
@@ -32,11 +32,9 @@
         <li><a href="index.html">Home</a></li>
         <li><a href="about.html" class="active">About</a></li>
         <li><a href="services.html">Licensing</a></li>
-        <li><a href="assessment.html">Risk Assessment</a></li>
-        <li><a href="team.html">Team</a></li>
+        <li><a href="resources.html">Resources</a></li>
         <li><a href="blog.html">Insights</a></li>
-        <li><a href="contact.html" class="btn btn-primary" style="padding:0.5rem 1.25rem;">Contact Us</a></li>
-      </ul>
+        <li><a href="contact.html" class="btn btn-primary" style="padding:0.5rem 1.25rem;">Contact</a></li></ul>
       <button class="hamburger" id="hamburger" aria-label="Toggle menu">
         <span></span><span></span><span></span>
       </button>
@@ -46,18 +44,18 @@
   <!-- Page Hero -->
   <section class="hero" style="padding:4rem 0;">
     <div class="container">
-      <h1>About StaamlCorp</h1>
-      <p>Born from independent security research. Built on a discovery that Apple took three years to miss.</p>
+      <h1>About</h1>
+      <p>Independent security research that surfaced a class of vulnerability, validated by Apple and generalized into a patented framework.</p>
     </div>
   </section>
 
   <!-- Origin Story -->
   <section class="section">
     <div class="container" style="max-width:800px;">
-      <h2>Our Origin</h2>
-      <p>StaamlCorp was founded by Stanley Lee Linton, a cybersecurity researcher and software engineer based in Lafayette, Louisiana. The company's intellectual property originated from a critical discovery made during independent security research between January and April 2025.</p>
-      <p>While analyzing how Apple's Safari browser manages cached content across security mode transitions, Stanley identified a previously undocumented vulnerability class &mdash; designated <strong>LDB-01</strong> (Lockdown-Bypass-01). The finding revealed that WebAssembly modules, JavaScript blobs, and Service Worker scripts cached during normal operation persisted and remained fully executable after a device transitioned into Lockdown Mode &mdash; Apple's most hardened security state, designed to protect high-risk individuals from targeted cyber-attacks.</p>
-      <p>This meant that malicious cached content from before Lockdown Mode was activated could continue running as if Lockdown Mode didn't exist. The vulnerability persisted across app restarts and device reboots.</p>
+      <h2>Origin</h2>
+      <p>StaamlCorp was founded by Stanley Lee Linton, a cybersecurity researcher and software engineer based in Lafayette, Louisiana. The company's intellectual property originated from independent security research conducted between January and April 2025.</p>
+      <p>While studying how Safari handled cached content across security mode transitions, Stanley identified a previously undocumented class of vulnerability &mdash; designated <strong>LDB-01</strong> (Lockdown-Bypass-01) &mdash; in which WebAssembly modules, JavaScript blobs, and Service Worker scripts cached during normal operation remained executable after a device transitioned into Lockdown Mode, Apple's hardened security state for high-risk users.</p>
+      <p>The finding showed that cached content captured before Lockdown Mode activation could continue executing under the new policy. The pattern persisted across app restarts and device reboots, and pointed to a more general class of issue at the boundary between cache layers and policy transitions.</p>
     </div>
   </section>
 
@@ -97,10 +95,9 @@
   <!-- Beyond the Fix -->
   <section class="section">
     <div class="container" style="max-width:800px;">
-      <h2>Beyond a Single Fix</h2>
-      <p>Apple's remediation addressed the specific LDB-01 instance on their own platform. But the underlying problem &mdash; temporal security discontinuities in cached executable content &mdash; is not unique to Apple. Any computing system that caches executables and supports security policy transitions is vulnerable.</p>
-      <p>StaamlCorp's patent covers the <strong>generalized architectural framework</strong> for solving this entire class of vulnerabilities. Our technology applies across operating systems (Windows, Linux, Android, iOS, macOS, embedded systems), across all cache types (HTTP cache, Cache API, IndexedDB, memory-mapped caches, application-specific caches), and across all security policy transition types (OS lockdown modes, enterprise MDM, browser security levels, AI sandbox policies, regulatory compliance modes).</p>
-      <p>Where Apple fixed a bug, StaamlCorp patented the solution to the problem.</p>
+      <h2>Beyond a single instance</h2>
+      <p>Apple's remediation addressed LDB-01 on their own platform. The underlying class &mdash; temporal security discontinuities in cached executable content &mdash; is structural, and appears wherever a system caches executables and supports policy transitions: operating systems, browsers, enterprise MDM frameworks, AI sandboxes, and container runtimes among them.</p>
+      <p>StaamlCorp's patent application describes a generalized architectural framework for that class: detecting policy transitions, computing the policy delta, identifying and validating cached content under the new policy, and mitigating non-compliant items with an audit trail. Apple validated the underlying issue on their platform; StaamlCorp patented the framework that applies across the rest.</p>
     </div>
   </section>
 
@@ -128,11 +125,11 @@
   </section>
 
   <!-- CTA -->
-  <section class="section" style="background:linear-gradient(135deg,var(--primary-dark),var(--primary-light));color:#fff;text-align:center;">
+  <section class="section" style="background:var(--primary-dark);color:#fff;text-align:center;">
     <div class="container">
-      <h2 style="color:#fff;">Ready to Learn More?</h2>
-      <p style="max-width:540px;margin:1rem auto 2rem;opacity:0.9;">Whether you're interested in licensing, partnership, or understanding how our technology applies to your platform, we'd like to hear from you.</p>
-      <a href="contact.html" class="btn btn-white">Get in Touch</a>
+      <h2 style="color:#fff;">Get in touch</h2>
+      <p style="max-width:540px;margin:1rem auto 2rem;opacity:0.9;">For licensing, partnership, or technical discussion of how the framework applies to your platform.</p>
+      <a href="contact.html" class="btn btn-white">Contact</a>
     </div>
   </section>
 
@@ -141,7 +138,7 @@
       <div class="footer-grid">
         <div>
           <img src="/logo-light.svg" alt="StaamlCorp" class="footer-logo-img">
-          <p>Cybersecurity IP licensing. Patent-pending technology for mitigating cached executable persistence across security policy transitions. U.S. App. No. 19/640,793.</p>
+          <p>Cybersecurity IP licensing. Framework for mitigating cached executable persistence across security policy transitions.</p>
         </div>
         <div>
           <h4>Pages</h4>
@@ -156,25 +153,24 @@
         <div>
           <h4>Resources</h4>
           <ul>
+            <li><a href="resources.html">Resources &amp; Briefs</a></li>
+            <li><a href="licensing-policy.html">Licensing Policy</a></li>
             <li><a href="blog.html">Insights</a></li>
-            <li><a href="compliance.html">Compliance</a></li>
-            <li><a href="privacy.html">Privacy Policy</a></li>
-            <li><a href="terms.html">Terms of Service</a></li>
-            <li><a href="accessibility.html">Accessibility</a></li>
+            <li><a href="privacy.html">Privacy</a></li>
+            <li><a href="terms.html">Terms</a></li>
           </ul>
         </div>
         <div>
           <h4>Contact</h4>
           <ul>
-            <li><a href="mailto:info@staamlcorp.com">info@staamlcorp.com</a></li>
-            <li><a href="tel:+15043802214">(504) 380-2214</a></li>
-            <li>Lafayette, LA</li>
-            <li>staamlcorp.com</li>
+            <li><a href="mailto:licensing@staamlcorp.com">licensing@staamlcorp.com</a></li>
+            <li><a href="mailto:legal@staamlcorp.com">legal@staamlcorp.com</a></li>
+            <li>Louisiana &middot; Delaware</li>
           </ul>
         </div>
       </div>
       <div class="footer-bottom">
-        <p>&copy; 2026 StaamlCorp. All rights reserved. | Patent Pending: U.S. App. No. 19/640,793 | <a href="privacy.html" style="color:inherit;">Privacy</a> | <a href="terms.html" style="color:inherit;">Terms</a> | <a href="accessibility.html" style="color:inherit;">Accessibility</a></p>
+        <p>&copy; 2026 StaamlCorp · <a href="privacy.html" style="color:inherit;">Privacy</a> · <a href="terms.html" style="color:inherit;">Terms</a> · <a href="accessibility.html" style="color:inherit;">Accessibility</a></p>
       </div>
     </div>
   </footer>
@@ -183,44 +179,6 @@
     document.getElementById('hamburger').addEventListener('click', function() {
       document.getElementById('navLinks').classList.toggle('open');
     });
-  </script>
-  <!-- StaamlCorp Security Framework (Patent Pending: U.S. App. No. 19/640,793) -->
-  <!-- Qeratheon-1 Post-Quantum Encryption Primitive -->
-  <script src="qeratheon-core.js"></script>
-  <!-- Temporal Security Binding Engine (Primitive) -->
-  <script src="staaml-tsb.js"></script>
-  <!-- Layer 2: Governance Derivatives (D34, D37, D48, D49, D58) -->
-  <script src="staaml-layer2-governance.js"></script>
-  <!-- Layer 3: Infrastructure Security Derivatives (D33, D35, D36, D38, D43, D50) -->
-  <script src="staaml-layer3-infrastructure.js"></script>
-  <!-- Layer 4: Verification Derivatives (RIT, CBQE) -->
-  <script src="staaml-layer4-verification.js"></script>
-  <!-- TSB Orchestrator — Full 59-Derivative Coordination -->
-  <script src="staaml-orchestrator.js"></script>
-  <script>
-    // Initialize Full STAAML Security Framework
-    (async function() {
-      try {
-        // Generate session master key (512-bit → 128-char hex string)
-        var rawKey = crypto.getRandomValues(new Uint8Array(64));
-        var masterKey = Array.from(rawKey).map(function(b) { return b.toString(16).padStart(2, '0'); }).join('');
-        var agentId = 'staamlcorp-web-' + Date.now().toString(36);
-
-        // Initialize all layers
-        if (window.QeratheonCore) { console.log('[StaamlCorp] Qeratheon-1 core loaded:', QeratheonCore.getVersion()); }
-        if (window.StaamlLayer2) { await StaamlLayer2.init(masterKey); console.log('[StaamlCorp] Layer 2 Governance initialized'); }
-        if (window.StaamlLayer3) { await StaamlLayer3.init(masterKey); console.log('[StaamlCorp] Layer 3 Infrastructure initialized'); }
-        if (window.StaamlLayer4) { await StaamlLayer4.init(masterKey, agentId); console.log('[StaamlCorp] Layer 4 Verification initialized'); }
-        if (window.StaamlOrchestrator) { await StaamlOrchestrator.init(masterKey, agentId); console.log('[StaamlCorp] TSB Orchestrator initialized — full derivative framework active'); }
-
-        // Register TSB Service Worker
-        if ('serviceWorker' in navigator) {
-          navigator.serviceWorker.register('/staaml-sw.js', { scope: '/' })
-            .then(function(reg) { console.log('[StaamlCorp] TSB Service Worker registered:', reg.scope); })
-            .catch(function(err) { console.warn('[StaamlCorp] TSB Service Worker registration failed:', err); });
-        }
-      } catch(e) { console.warn('[StaamlCorp] Framework initialization:', e.message); }
-    })();
   </script>
   <script src="cookie-consent.js"></script>
 </body>

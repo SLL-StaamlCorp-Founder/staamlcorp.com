@@ -237,35 +237,31 @@ p { margin-bottom: 1rem; }
 
 /* ===== Hero ===== */
 .hero {
-  background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 50%, var(--primary-light) 100%);
+  background: var(--primary-dark);
   color: #fff;
   padding: 6rem 0;
   position: relative;
   overflow: hidden;
 }
 
-.hero::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  right: -20%;
-  width: 600px;
-  height: 600px;
-  background: rgba(255,255,255,0.03);
-  border-radius: 50%;
-}
-
 .hero h1 {
   color: #fff;
   margin-bottom: 1.25rem;
-  max-width: 700px;
+  max-width: 760px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
 }
 
 .hero p {
-  font-size: 1.2rem;
-  opacity: 0.9;
-  max-width: 560px;
+  font-size: 1.15rem;
+  opacity: 0.85;
+  max-width: 620px;
   margin-bottom: 2rem;
+  line-height: 1.65;
+}
+
+.hero a {
+  color: #fff;
 }
 
 .hero-buttons {
@@ -655,17 +651,13 @@ p { margin-bottom: 1rem; }
 
 .patent-banner {
   width: 100%;
-  background: var(--primary);
-  color: rgba(255, 255, 255, 0.92);
-  font-size: 0.85rem;
+  background: var(--primary-dark);
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.8rem;
   text-align: center;
-  padding: 0.55rem 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.75rem;
-  border-bottom: 2px solid var(--accent);
+  padding: 0.6rem 1rem;
   letter-spacing: 0.01em;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .patent-banner strong {

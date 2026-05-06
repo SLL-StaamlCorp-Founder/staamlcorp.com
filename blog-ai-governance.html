@@ -182,7 +182,7 @@
   <!-- Patent Banner -->
   <div class="patent-banner">
     <div class="container">
-      <strong>Patent Pending</strong> &mdash; U.S. App. No. 19/640,793 | Track One Prioritized Examination | 30 Claims (4 Independent, 26 Dependent) | <a href="services.html" style="color:#fff;text-decoration:underline;">Licensing Available</a>
+      U.S. Patent Application No. 19/640,793 &mdash; Track One Prioritized Examination · Claims subject to amendment during examination · <a href="services.html" style="color:#fff;text-decoration:underline;">Licensing</a>
     </div>
   </div>
 
@@ -194,11 +194,9 @@
         <li><a href="index.html">Home</a></li>
         <li><a href="about.html">About</a></li>
         <li><a href="services.html">Licensing</a></li>
-        <li><a href="assessment.html">Risk Assessment</a></li>
-        <li><a href="team.html">Team</a></li>
+        <li><a href="resources.html">Resources</a></li>
         <li><a href="blog.html" class="active">Insights</a></li>
-        <li><a href="contact.html" class="btn btn-primary" style="padding:0.5rem 1.25rem;">Contact Us</a></li>
-      </ul>
+        <li><a href="contact.html" class="btn btn-primary" style="padding:0.5rem 1.25rem;">Contact</a></li></ul>
       <button class="hamburger" id="hamburger" aria-label="Toggle menu">
         <span></span><span></span><span></span>
       </button>
@@ -299,7 +297,7 @@
             </div>
             <div class="related-card">
               <div class="rc-cat">Vulnerability Research</div>
-              <h3><a href="blog-ldb01-three-years.html">Three Years in Plain Sight: What LDB-01 Reveals About Security Assumptions</a></h3>
+              <h3><a href="blog-ldb01-three-years.html">What LDB-01 Reveals About Cache-Layer Security Assumptions</a></h3>
             </div>
           </div>
         </div>
@@ -321,7 +319,7 @@
       <div class="footer-grid">
         <div>
           <img src="/logo-light.svg" alt="StaamlCorp" class="footer-logo-img">
-          <p>Cybersecurity IP licensing. Patent-pending technology for mitigating cached executable persistence across security policy transitions. U.S. App. No. 19/640,793.</p>
+          <p>Cybersecurity IP licensing. Framework for mitigating cached executable persistence across security policy transitions.</p>
         </div>
         <div>
           <h4>Pages</h4>
@@ -336,25 +334,24 @@
         <div>
           <h4>Resources</h4>
           <ul>
+            <li><a href="resources.html">Resources &amp; Briefs</a></li>
+            <li><a href="licensing-policy.html">Licensing Policy</a></li>
             <li><a href="blog.html">Insights</a></li>
-            <li><a href="compliance.html">Compliance</a></li>
-            <li><a href="privacy.html">Privacy Policy</a></li>
-            <li><a href="terms.html">Terms of Service</a></li>
-            <li><a href="accessibility.html">Accessibility</a></li>
+            <li><a href="privacy.html">Privacy</a></li>
+            <li><a href="terms.html">Terms</a></li>
           </ul>
         </div>
         <div>
           <h4>Contact</h4>
           <ul>
-            <li><a href="mailto:info@staamlcorp.com">info@staamlcorp.com</a></li>
-            <li><a href="tel:+15043802214">(504) 380-2214</a></li>
-            <li>Lafayette, LA</li>
-            <li>staamlcorp.com</li>
+            <li><a href="mailto:licensing@staamlcorp.com">licensing@staamlcorp.com</a></li>
+            <li><a href="mailto:legal@staamlcorp.com">legal@staamlcorp.com</a></li>
+            <li>Louisiana &middot; Delaware</li>
           </ul>
         </div>
       </div>
       <div class="footer-bottom">
-        <p>&copy; 2026 StaamlCorp. All rights reserved. | Patent Pending: U.S. App. No. 19/640,793 | <a href="privacy.html" style="color:inherit;">Privacy</a> | <a href="terms.html" style="color:inherit;">Terms</a> | <a href="accessibility.html" style="color:inherit;">Accessibility</a></p>
+        <p>&copy; 2026 StaamlCorp · <a href="privacy.html" style="color:inherit;">Privacy</a> · <a href="terms.html" style="color:inherit;">Terms</a> · <a href="accessibility.html" style="color:inherit;">Accessibility</a></p>
       </div>
     </div>
   </footer>
@@ -363,44 +360,6 @@
     document.getElementById('hamburger').addEventListener('click', function() {
       document.getElementById('navLinks').classList.toggle('open');
     });
-  </script>
-  <!-- StaamlCorp Security Framework (Patent Pending: U.S. App. No. 19/640,793) -->
-  <!-- Qeratheon-1 Post-Quantum Encryption Primitive -->
-  <script src="qeratheon-core.js"></script>
-  <!-- Temporal Security Binding Engine (Primitive) -->
-  <script src="staaml-tsb.js"></script>
-  <!-- Layer 2: Governance Derivatives (D34, D37, D48, D49, D58) -->
-  <script src="staaml-layer2-governance.js"></script>
-  <!-- Layer 3: Infrastructure Security Derivatives (D33, D35, D36, D38, D43, D50) -->
-  <script src="staaml-layer3-infrastructure.js"></script>
-  <!-- Layer 4: Verification Derivatives (RIT, CBQE) -->
-  <script src="staaml-layer4-verification.js"></script>
-  <!-- TSB Orchestrator — Full 59-Derivative Coordination -->
-  <script src="staaml-orchestrator.js"></script>
-  <script>
-    // Initialize Full STAAML Security Framework
-    (async function() {
-      try {
-        // Generate session master key (512-bit → 128-char hex string)
-        var rawKey = crypto.getRandomValues(new Uint8Array(64));
-        var masterKey = Array.from(rawKey).map(function(b) { return b.toString(16).padStart(2, '0'); }).join('');
-        var agentId = 'staamlcorp-web-' + Date.now().toString(36);
-
-        // Initialize all layers
-        if (window.QeratheonCore) { console.log('[StaamlCorp] Qeratheon-1 core loaded:', QeratheonCore.getVersion()); }
-        if (window.StaamlLayer2) { await StaamlLayer2.init(masterKey); console.log('[StaamlCorp] Layer 2 Governance initialized'); }
-        if (window.StaamlLayer3) { await StaamlLayer3.init(masterKey); console.log('[StaamlCorp] Layer 3 Infrastructure initialized'); }
-        if (window.StaamlLayer4) { await StaamlLayer4.init(masterKey, agentId); console.log('[StaamlCorp] Layer 4 Verification initialized'); }
-        if (window.StaamlOrchestrator) { await StaamlOrchestrator.init(masterKey, agentId); console.log('[StaamlCorp] TSB Orchestrator initialized — full derivative framework active'); }
-
-        // Register TSB Service Worker
-        if ('serviceWorker' in navigator) {
-          navigator.serviceWorker.register('/staaml-sw.js', { scope: '/' })
-            .then(function(reg) { console.log('[StaamlCorp] TSB Service Worker registered:', reg.scope); })
-            .catch(function(err) { console.warn('[StaamlCorp] TSB Service Worker registration failed:', err); });
-        }
-      } catch(e) { console.warn('[StaamlCorp] Framework initialization:', e.message); }
-    })();
   </script>
   <script src="cookie-consent.js"></script>
 </body>
