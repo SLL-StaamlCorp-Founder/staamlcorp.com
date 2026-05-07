@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>About — StaamlCorp</title>
-  <meta name="description" content="Learn how StaamlCorp was founded through the discovery of a critical vulnerability class and the development of a patented cybersecurity framework.">
+  <meta name="description" content="How StaamlCorp originated &mdash; independent security research, an Apple-validated finding, and a generalized framework for cached-executable security across policy transitions.">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta http-equiv="X-Frame-Options" content="DENY">
   <meta name="referrer" content="strict-origin-when-cross-origin">
@@ -44,8 +44,8 @@
   <!-- Page Hero -->
   <section class="hero" style="padding:4rem 0;">
     <div class="container">
-      <h1>About</h1>
-      <p>Independent security research that surfaced a class of vulnerability, validated by Apple and generalized into a patented framework.</p>
+      <h1>About StaamlCorp</h1>
+      <p>Founded out of independent security research. Built around a generalized framework for cached-executable security across policy transitions.</p>
     </div>
   </section>
 
@@ -53,16 +53,16 @@
   <section class="section">
     <div class="container" style="max-width:800px;">
       <h2>Origin</h2>
-      <p>StaamlCorp was founded by Stanley Lee Linton, a cybersecurity researcher and software engineer based in Lafayette, Louisiana. The company's intellectual property originated from independent security research conducted between January and April 2025.</p>
-      <p>While studying how Safari handled cached content across security mode transitions, Stanley identified a previously undocumented class of vulnerability &mdash; designated <strong>LDB-01</strong> (Lockdown-Bypass-01) &mdash; in which WebAssembly modules, JavaScript blobs, and Service Worker scripts cached during normal operation remained executable after a device transitioned into Lockdown Mode, Apple's hardened security state for high-risk users.</p>
-      <p>The finding showed that cached content captured before Lockdown Mode activation could continue executing under the new policy. The pattern persisted across app restarts and device reboots, and pointed to a more general class of issue at the boundary between cache layers and policy transitions.</p>
+      <p>StaamlCorp was founded by Stanley Lee Linton, a cybersecurity researcher and software engineer based in Louisiana. The company&rsquo;s intellectual property originated from a finding made during independent security research conducted between January and April 2025.</p>
+      <p>While analyzing how Safari managed cached content across security mode transitions, Stanley identified a previously undocumented class of vulnerability &mdash; designated <strong>LDB-01</strong> (Lockdown-Bypass-01). Cached WebAssembly modules, JavaScript blobs, and Service Worker scripts that had been stored during normal operation remained executable after a device transitioned into Lockdown Mode &mdash; Apple&rsquo;s most hardened security state, designed to protect high-risk individuals from targeted cyber-attacks.</p>
+      <p>Cached content from before Lockdown Mode activation could continue executing under what users believed was their most restrictive security state. The behavior persisted across app restarts and device reboots.</p>
     </div>
   </section>
 
   <!-- Timeline -->
   <section class="section section-alt">
     <div class="container" style="max-width:800px;">
-      <h2>Discovery Timeline</h2>
+      <h2>Discovery timeline</h2>
       <div style="display:flex;flex-direction:column;gap:1.5rem;">
         <div class="card" style="border-left:4px solid var(--accent);">
           <h3>January &ndash; April 2025</h3>
@@ -92,33 +92,34 @@
     </div>
   </section>
 
-  <!-- Beyond the Fix -->
+  <!-- From a finding to a framework -->
   <section class="section">
     <div class="container" style="max-width:800px;">
-      <h2>Beyond a single instance</h2>
-      <p>Apple's remediation addressed LDB-01 on their own platform. The underlying class &mdash; temporal security discontinuities in cached executable content &mdash; is structural, and appears wherever a system caches executables and supports policy transitions: operating systems, browsers, enterprise MDM frameworks, AI sandboxes, and container runtimes among them.</p>
-      <p>StaamlCorp's patent application describes a generalized architectural framework for that class: detecting policy transitions, computing the policy delta, identifying and validating cached content under the new policy, and mitigating non-compliant items with an audit trail. Apple validated the underlying issue on their platform; StaamlCorp patented the framework that applies across the rest.</p>
+      <h2>From a finding to a framework</h2>
+      <p>Apple&rsquo;s remediation addressed the specific instance on their own platform. The underlying class &mdash; cached executable content surviving a security policy change &mdash; appears wherever those two conditions coexist: a system that caches executables, and a security model that supports policy transitions.</p>
+      <p>StaamlCorp&rsquo;s pending application covers the generalized architectural framework. The claims are written to operate across operating systems, across cache types, and across policy transition types &mdash; from OS lockdown modes and enterprise MDM to browser security levels and AI sandbox policies.</p>
+      <p>The framework is intended for broad deployment under the <a href="licensing-policy.html">Licensing Policy</a>.</p>
     </div>
   </section>
 
-  <!-- Mission -->
+  <!-- What we work on -->
   <section class="section section-alt">
     <div class="container">
       <div class="section-header">
-        <h2>Our Mission</h2>
+        <h2>What we work on</h2>
       </div>
       <div class="card-grid">
         <div class="card">
-          <h3>Advance Security</h3>
-          <p>We believe that cached executable persistence across security policy transitions represents one of the most overlooked vulnerability classes in modern computing. Our mission is to ensure this class of vulnerability is systematically addressed across the industry.</p>
+          <h3>Cached-executable security</h3>
+          <p>We treat cached executable persistence across security policy transitions as a systematically under-addressed surface in modern computing. The pending claims, the technical briefs in <a href="resources.html">Resources</a>, and ongoing research are oriented toward this surface.</p>
         </div>
         <div class="card">
-          <h3>License Responsibly</h3>
-          <p>Our licensing program is built on the belief that patented security innovations should be deployed broadly. We work with companies to integrate our framework in ways that strengthen their products and protect their users.</p>
+          <h3>Licensing as the deployment path</h3>
+          <p>Patent licensing is the deployment path we have chosen. We engage with platform vendors, browser teams, enterprise security providers, and AI platforms whose products fall within the framework&rsquo;s scope, on fair and reasonable terms.</p>
         </div>
         <div class="card">
-          <h3>Innovate Continuously</h3>
-          <p>The threat landscape evolves constantly. We continue our research into temporal security discontinuities, AI sandbox policy transitions, and emerging cache architectures to stay ahead of the next generation of vulnerabilities.</p>
+          <h3>Forward research</h3>
+          <p>Adjacent research continues into AI sandbox policy transitions, agent-cache architectures, and cache-layer assumptions in emerging compute platforms.</p>
         </div>
       </div>
     </div>
@@ -127,9 +128,12 @@
   <!-- CTA -->
   <section class="section" style="background:var(--primary-dark);color:#fff;text-align:center;">
     <div class="container">
-      <h2 style="color:#fff;">Get in touch</h2>
-      <p style="max-width:540px;margin:1rem auto 2rem;opacity:0.9;">For licensing, partnership, or technical discussion of how the framework applies to your platform.</p>
-      <a href="contact.html" class="btn btn-white">Contact</a>
+      <h2 style="color:#fff;">Open to a conversation</h2>
+      <p style="max-width:540px;margin:1rem auto 2rem;opacity:0.9;">Whether you&rsquo;re interested in licensing, partnership, or scoping how the framework applies to your platform &mdash; we welcome the conversation.</p>
+      <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+        <a href="contact.html" class="btn btn-white">Contact</a>
+        <a href="resources.html" class="btn btn-outline" style="color:#fff;border-color:#fff;">Resources</a>
+      </div>
     </div>
   </section>
 
